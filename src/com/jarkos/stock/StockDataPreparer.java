@@ -55,11 +55,13 @@ public class StockDataPreparer {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
 
             if (huobiBtcCnyStockData != null && bitBayLtcPlnStockData != null) {
-                Main.lastHuobiRoiLTC = HuobiDataService.prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, huobiBtcCnyStockData, bitBayBtcPlnStockData);
+                Main.lastHuobiRoiLTC = new HuobiDataService()
+                        .prepareBitBayLtcBuyAndBtcSellRoiABSTARC(bitBayLtcPlnStockData, huobiBtcCnyStockData, bitBayBtcPlnStockData, HUOBI_TRADE_PROVISION, HUOBI_WITHDRAW_PROV);
             }
             if (krakenBtcEurStockData != null && bitBayLtcPlnStockData != null) {
-                Main.lastKrakenRoiLTC = KrakenDataService.prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData);
-
+                Main.lastKrakenRoiLTC = new KrakenDataService()
+                        .prepareBitBayLtcBuyAndBtcSellRoiABSTARC(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData, KRAKEN_MAKER_TRADE_PROV,
+                                                                 KRAKEN_BTC_WITHDRAW_PROV);
             }
 
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
@@ -69,7 +71,7 @@ public class StockDataPreparer {
         }
     }
 
-    private static void printRoiBitstamp(BitBayStockData bitBayStockData, WalutomatData walutomatEurPlnData) {
+    private void printRoiBitstamp(BitBayStockData bitBayStockData, WalutomatData walutomatEurPlnData) {
         Float sellBitBayLowest = bitBayStockData.getAsk();
         String resBitstamp = sendRequest(BitstampURL);
         BitstampStockData bitstampStockData = getBitstampData(resBitstamp);
@@ -77,11 +79,11 @@ public class StockDataPreparer {
         System.out.println("Dif BB vs Bitstamp: " + (((bitstampKursBtcEurRate) * Float.valueOf(walutomatEurPlnData.getAvg())) - sellBitBayLowest) + " PLN");
     }
 
-    private static String prepareRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
+    private String prepareRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
         return countRoiBBtoKraken(bitBayStockData, krakenBtcEurData, walutomatEurPlnData);
     }
 
-    private static String countRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
+    private String countRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
         Float sellBitBayLowest = bitBayStockData.getAsk();
         Float btcCanBeBought = BTC_BUY_MONEY / sellBitBayLowest;
         Float btcBoughtAfterExchangeProvisionPLNtoBTCFromBB = btcCanBeBought - (btcCanBeBought * BIT_BAY_TRADE_PROVISION);
@@ -101,7 +103,7 @@ public class StockDataPreparer {
         return result;
     }
 
-    private static String printKrakenRoiResult(WalutomatData walutomatEurPlnData, Float sellBitBayLowest, Float krakenExchangeBtcEurRate, Float moneyAfterExchangeWalutomatProv) {
+    private String printKrakenRoiResult(WalutomatData walutomatEurPlnData, Float sellBitBayLowest, Float krakenExchangeBtcEurRate, Float moneyAfterExchangeWalutomatProv) {
         //        DISPLAY
         Float roi = ((moneyAfterExchangeWalutomatProv - BTC_BUY_MONEY) / BTC_BUY_MONEY) * 100;
 
@@ -120,7 +122,7 @@ public class StockDataPreparer {
                walutomatEurPlnData.getAvg();
     }
 
-    private static float getZarobek(Float roi) {
+    private float getZarobek(Float roi) {
 
         if (roi < 0F) {
             return -(BTC_BUY_MONEY * Math.abs(roi / 100F));
@@ -128,7 +130,7 @@ public class StockDataPreparer {
         return BTC_BUY_MONEY * roi / 100F;
     }
 
-    private static BitstampStockData getBitstampData(String res) {
+    private BitstampStockData getBitstampData(String res) {
         Gson gson = new Gson();
         return gson.fromJson(res, BitstampStockData.class);
     }

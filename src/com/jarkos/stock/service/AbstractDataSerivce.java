@@ -17,8 +17,8 @@ public abstract class AbstractDataSerivce {
 
     public abstract AbstractStockData getLtcEurStockData();
 
-    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoiABSTARC(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData, BitBayStockData bitBayBtcPlnStockData,
-                                                              BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
+    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoiABSTARC(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData,
+                                                              BitBayStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
         AbstractStockData ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
