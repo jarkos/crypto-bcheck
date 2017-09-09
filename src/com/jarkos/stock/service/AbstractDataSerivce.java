@@ -17,8 +17,8 @@ public abstract class AbstractDataSerivce {
 
     public abstract AbstractStockData getLtcEurStockData();
 
-    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoiABSTARC(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData,
-                                                              BitBayStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
+    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData,
+                                                       BitBayStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
         AbstractStockData ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -31,6 +31,7 @@ public abstract class AbstractDataSerivce {
             BigDecimal numberOfBtcBought = eurNumberAfterLtcSellAfterTradeProv.divide(BigDecimal.valueOf(btcEurAbstractStockData.getLastBtcPrice()), 5, RoundingMode.HALF_DOWN);
             BigDecimal numberOfBtcBoughtAfterTradeProv = numberOfBtcBought.subtract(numberOfBtcBought.multiply(stockTradeProv));
             BigDecimal numberOfBtcBoughtWithdrawToBitBayAfterProv = numberOfBtcBoughtAfterTradeProv.subtract(stockWithdrawProv);
+            //DOLICZYC TRANSFER FEE?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBtcPlnStockData.getLast()));
             BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell

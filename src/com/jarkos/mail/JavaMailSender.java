@@ -89,7 +89,7 @@ public class JavaMailSender {
 
     public static void sendMail(String msg) {
 
-        System.out.println("Send emails example using JavaMail");
+        System.out.println("Sending notification email... ");
         String host = "smtp.gmail.com";
         String port = "587";
 

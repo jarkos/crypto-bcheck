@@ -56,12 +56,12 @@ public class StockDataPreparer {
 
             if (huobiBtcCnyStockData != null && bitBayLtcPlnStockData != null) {
                 Main.lastHuobiRoiLTC = new HuobiDataService()
-                        .prepareBitBayLtcBuyAndBtcSellRoiABSTARC(bitBayLtcPlnStockData, huobiBtcCnyStockData, bitBayBtcPlnStockData, HUOBI_TRADE_PROVISION, HUOBI_WITHDRAW_PROV);
+                        .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, huobiBtcCnyStockData, bitBayBtcPlnStockData, HUOBI_TRADE_PROVISION, HUOBI_WITHDRAW_PROV);
             }
             if (krakenBtcEurStockData != null && bitBayLtcPlnStockData != null) {
                 Main.lastKrakenRoiLTC = new KrakenDataService()
-                        .prepareBitBayLtcBuyAndBtcSellRoiABSTARC(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData, KRAKEN_MAKER_TRADE_PROV,
-                                                                 KRAKEN_BTC_WITHDRAW_PROV);
+                        .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData, KRAKEN_MAKER_TRADE_PROV,
+                                                          KRAKEN_BTC_WITHDRAW_PROV);
             }
 
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
