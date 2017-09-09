@@ -5,10 +5,12 @@ import com.jarkos.RequestSender;
 import com.jarkos.stock.dto.AbstractStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampStockData;
 
+import java.math.BigDecimal;
+
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
-public class BitstampDataService extends AbstractDataSerivce {
+public class BitstampDataService extends AbstractDataService {
 
     private static String BitstampLtcCnyApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
     private static String BitstampBtcCnyApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
@@ -36,5 +38,11 @@ public class BitstampDataService extends AbstractDataSerivce {
     @Override
     public String getStockCodeName() {
         return "Bitstamp";
+    }
+
+    @Override
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractTradeProv) {
+        // NON FEE
+        return btcToSubtractTradeProv;
     }
 }

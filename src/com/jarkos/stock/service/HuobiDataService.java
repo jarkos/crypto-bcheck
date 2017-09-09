@@ -3,19 +3,17 @@ package com.jarkos.stock.service;
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.dto.AbstractStockData;
-import com.jarkos.stock.dto.bitbay.BitBayStockData;
 import com.jarkos.stock.dto.huobi.HuobiStockData;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
-import static com.jarkos.stock.StockDataPreparer.*;
+import static com.jarkos.stock.StockDataPreparer.HUOBI_WITHDRAW_PROV;
 
 
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
-public class HuobiDataService extends AbstractDataSerivce {
+public class HuobiDataService extends AbstractDataService {
 
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";
@@ -43,5 +41,10 @@ public class HuobiDataService extends AbstractDataSerivce {
     @Override
     public String getStockCodeName() {
         return "Huobi";
+    }
+
+    @Override
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractTradeProv) {
+        return btcToSubtractTradeProv.subtract(HUOBI_WITHDRAW_PROV);
     }
 }
