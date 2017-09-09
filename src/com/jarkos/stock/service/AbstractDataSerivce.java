@@ -17,8 +17,10 @@ public abstract class AbstractDataSerivce {
 
     public abstract AbstractStockData getLtcEurStockData();
 
-    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData,
-                                                       BitBayStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
+    public abstract String getStockCodeName();
+
+    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayStockData bitBayLtcPlnStockData, AbstractStockData btcEurAbstractStockData, BitBayStockData bitBayBtcPlnStockData,
+                                                       BigDecimal stockTradeProv, BigDecimal stockWithdrawProv) throws Exception {
         AbstractStockData ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -37,10 +39,10 @@ public abstract class AbstractDataSerivce {
             BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell
                     .subtract((numberOfMoneyFromBitBayBtcSell.multiply(BigDecimal.valueOf(BIT_BAY_TRADE_PROVISION))));
             BigDecimal bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(LTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
-            System.err.println("ROI LTC BitBay -> Kraken: " + bitBayLtcBuyAndBtcSellRoi);
+            System.err.println("ROI LTC BitBay -> " + getStockCodeName() + ": " + bitBayLtcBuyAndBtcSellRoi);
             return bitBayLtcBuyAndBtcSellRoi;
         }
-        throw new Exception("NO Kraken data");
+        throw new Exception("NO" + getStockCodeName() + " data");
     }
 
 }

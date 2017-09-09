@@ -39,4 +39,9 @@ public class HuobiDataService extends AbstractDataSerivce {
     public AbstractStockData getLtcEurStockData() {
         return getHuobiLtcCnyStockData();
     }
+
+    @Override
+    public String getStockCodeName() {
+        return "Huobi";
+    }
 }

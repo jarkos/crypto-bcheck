@@ -33,4 +33,9 @@ public class KrakenDataService extends AbstractDataSerivce {
         KrakenStockData krakenLtcEurStockData = getKrakenLtcEurStockData();
         return krakenLtcEurStockData;
     }
+
+    @Override
+    public String getStockCodeName() {
+        return "Kraken";
+    }
 }

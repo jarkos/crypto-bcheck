@@ -10,9 +10,10 @@ public class Main {
     public static final String BIT_BAY_BTC_DATA_REPOSITORIES_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";
     public static final int HALF_MINUTE_IN_MILLIS = 30000;
     public static Double lastMACD = 0d;
+    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.045d);
     public static BigDecimal lastHuobiRoiLTC = BigDecimal.valueOf(0d);
     public static BigDecimal lastKrakenRoiLTC = BigDecimal.valueOf(0d);
-    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.045d);
+    public static BigDecimal lastBitstampRoiLTC = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
         CandlestickChart.start();
@@ -25,7 +26,8 @@ public class Main {
             }
             CandlestickChart.refresh();
 
-            if (lastMACD < -50.0d || (lastHuobiRoiLTC.compareTo(marginRoiNotificationCall) > 0) || (lastKrakenRoiLTC.compareTo(marginRoiNotificationCall) > 0)) {
+            if (lastMACD < -50.0d || (lastHuobiRoiLTC.compareTo(marginRoiNotificationCall) > 0) || (lastKrakenRoiLTC.compareTo(marginRoiNotificationCall) > 0) ||
+                (lastBitstampRoiLTC.compareTo(marginRoiNotificationCall) > 0)) {
                 JavaMailSender.sendMail(" MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiRoiLTC + " Kraken LTC ROI: " + lastKrakenRoiLTC);
             }
 
