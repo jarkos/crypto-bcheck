@@ -3,6 +3,7 @@ package com.jarkos.stock.service;
 import com.jarkos.stock.dto.AbstractStockData;
 import com.jarkos.stock.dto.bitbay.BitBayStockData;
 import com.jarkos.walutomat.WalutomatData;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,6 +16,7 @@ import static com.jarkos.stock.StockDataPreparer.WALUTOMAT_WITHDRAW_RATIO;
  * Created by jkostrzewa on 2017-09-09.
  */
 public abstract class AbstractDataService {
+    private static final Logger logger = Logger.getLogger(AbstractStockData.class);
 
     public abstract AbstractStockData getLtcEurStockData();
 
@@ -41,7 +43,7 @@ public abstract class AbstractDataService {
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBtcPlnStockData.getLast()));
             BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell.subtract((numberOfMoneyFromBitBayBtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
             BigDecimal bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(LTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
-            System.err.println("ROI LTC BitBay -> " + getStockCodeName() + ": " + bitBayLtcBuyAndBtcSellRoi);
+            logger.info("ROI LTC BitBay -> " + getStockCodeName() + ": " + bitBayLtcBuyAndBtcSellRoi);
             return bitBayLtcBuyAndBtcSellRoi;
         }
         throw new Exception("NO" + getStockCodeName() + " data");
@@ -63,7 +65,7 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyBtcExchangedAfterProv = plnMoneyAfterBtcExchange.subtract(plnMoneyAfterBtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndBtcSellRoi = plnMoneyBtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        System.err.println("ROI EUR Walutomat BTC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
+        logger.info("ROI EUR Walutomat BTC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
         return eurBuyAndBtcSellRoi;
     }
 

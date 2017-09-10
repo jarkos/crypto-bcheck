@@ -22,7 +22,7 @@ public class KrakenDataService extends AbstractDataService {
         try {
             resKraken = sendRequest(KrakenBtcEurApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getKrakenMarketData(resKraken);
     }
@@ -32,7 +32,7 @@ public class KrakenDataService extends AbstractDataService {
         try {
             resKraken = sendRequest(KrakenLtcEurApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getKrakenMarketData(resKraken);
     }

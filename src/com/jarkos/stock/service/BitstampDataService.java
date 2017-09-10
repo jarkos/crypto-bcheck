@@ -28,7 +28,7 @@ public class BitstampDataService extends AbstractDataService {
         try {
             resBitstamp = RequestSender.sendRequest(BitstampLtcCnyApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getBitstampMarketData(resBitstamp);
     }
@@ -43,7 +43,7 @@ public class BitstampDataService extends AbstractDataService {
         try {
             resBitstamp = RequestSender.sendRequest(BitstampBtcCnyApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getBitstampMarketData(resBitstamp);
     }

@@ -24,7 +24,7 @@ public class HuobiDataService extends AbstractDataService {
         try {
             resHuobi = RequestSender.sendRequest(HuobiBtcCnyApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getHuobiMarketData(resHuobi);
     }
@@ -34,7 +34,7 @@ public class HuobiDataService extends AbstractDataService {
         try {
             resHuobi = RequestSender.sendRequest(HuobiLtcCnyApiUrl);
         } catch (DataFetchUnavailableException e) {
-            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getHuobiMarketData(resHuobi);
     }

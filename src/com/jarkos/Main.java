@@ -37,7 +37,7 @@ public class Main {
                         lastKrakenEurRoiBTC + " Bitstamp EUR BTC ROI: " + lastBitstampEurRoiBTC);
             }
 
-            System.err.println("Last BB BTC MACD indicator: " + lastMACD);
+            logger.info("Last BB BTC MACD indicator: " + lastMACD);
             Thread.sleep(HALF_MINUTE_IN_MILLIS);
         }
     }

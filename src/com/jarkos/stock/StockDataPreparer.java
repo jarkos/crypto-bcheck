@@ -7,6 +7,7 @@ import com.jarkos.stock.dto.huobi.HuobiStockData;
 import com.jarkos.stock.dto.kraken.KrakenStockData;
 import com.jarkos.stock.service.*;
 import com.jarkos.walutomat.WalutomatData;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -16,6 +17,8 @@ import java.util.Date;
  * Created by jkostrzewa on 2017-09-02.
  */
 public class StockDataPreparer {
+    private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
+
 
     private static String ConmarketcapBtcURL = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
     //TODO wynies do configu
@@ -124,9 +127,9 @@ public class StockDataPreparer {
         System.out.println("Time: " + currentTime.toString());
         System.out.println("Walutomat currency: " + walutomatEurPlnData.getAvg());
         System.out.println("Dif BB vs Kraken: " + (((krakenExchangeBtcEurRate) * Float.valueOf(walutomatEurPlnData.getAvg())) - sellBitBayLowest) + " PLN");
-        System.err.println("Zarobek: : " + getZarobek(roi) + " PLN");
+        logger.info("Zarobek: : " + getZarobek(roi) + " PLN");
         String roiValueToDispaly = String.format("%.2f", roi);
-        System.err.println("ROI: : " + roiValueToDispaly + "%");
+        logger.info("ROI: : " + roiValueToDispaly + "%");
 
         //        RESULT
         return "" + currentTime.toString() + "   " + BTC_BUY_MONEY + "   " + moneyAfterExchangeWalutomatProv + "   " + roiValueToDispaly + "   " + getZarobek(roi) + "   " +
