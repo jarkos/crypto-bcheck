@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 import static com.jarkos.RequestSender.sendRequest;
 import static com.jarkos.stock.StockDataPreparer.KRAKEN_BTC_WITHDRAW_PROV;
+import static com.jarkos.stock.StockDataPreparer.KRAKEN_LTC_WITHDRAW_PROV;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
@@ -54,8 +55,13 @@ public class KrakenDataService extends AbstractDataService {
     }
 
     @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal numberOfBtcBoughtAfterTradeProv) {
-        return numberOfBtcBoughtAfterTradeProv.subtract(KRAKEN_BTC_WITHDRAW_PROV);
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
+        return btcToSubtractWithdrawProv.subtract(KRAKEN_BTC_WITHDRAW_PROV);
+    }
+
+    @Override
+    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
+        return ltcToSubtractWithdrawProv.subtract(KRAKEN_LTC_WITHDRAW_PROV);
     }
 
 }

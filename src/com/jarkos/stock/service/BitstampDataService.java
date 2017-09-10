@@ -15,18 +15,18 @@ import static com.jarkos.stock.StockDataPreparer.BITSTAMP_WITHDRAW_PROV;
  */
 public class BitstampDataService extends AbstractDataService {
 
-    private static String BitstampLtcCnyApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
-    private static String BitstampBtcCnyApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
+    private static String BitstampLtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
+    private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
 
     @Override
     public AbstractStockData getLtcEurStockData() {
-        return getBitstampLtcCnyStockData();
+        return getBitstampLtcEurStockData();
     }
 
-    public BitstampStockData getBitstampLtcCnyStockData() {
+    public BitstampStockData getBitstampLtcEurStockData() {
         String resBitstamp = null;
         try {
-            resBitstamp = RequestSender.sendRequest(BitstampLtcCnyApiUrl);
+            resBitstamp = RequestSender.sendRequest(BitstampLtcEurApiUrl);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
@@ -41,7 +41,7 @@ public class BitstampDataService extends AbstractDataService {
     public BitstampStockData getBitstampBtcEurStockData() {
         String resBitstamp = null;
         try {
-            resBitstamp = RequestSender.sendRequest(BitstampBtcCnyApiUrl);
+            resBitstamp = RequestSender.sendRequest(BitstampBtcEurApiUrl);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
@@ -54,8 +54,14 @@ public class BitstampDataService extends AbstractDataService {
     }
 
     @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractTradeProv) {
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
         // NON FEE
-        return btcToSubtractTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
+        return btcToSubtractWithdrawProv.subtract(BITSTAMP_WITHDRAW_PROV);
+    }
+
+    @Override
+    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
+        // NON FEE
+        return ltcToSubtractWithdrawProv.subtract(BITSTAMP_WITHDRAW_PROV);
     }
 }

@@ -8,7 +8,7 @@ import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.stock.StockDataPreparer.HUOBI_WITHDRAW_PROV;
+import static com.jarkos.stock.StockDataPreparer.HUOBI_WITHDRAW_PROV_AMOUNT;
 
 
 /**
@@ -55,7 +55,12 @@ public class HuobiDataService extends AbstractDataService {
     }
 
     @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractTradeProv) {
-        return btcToSubtractTradeProv.subtract(HUOBI_WITHDRAW_PROV);
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
+        return btcToSubtractWithdrawProv.subtract(HUOBI_WITHDRAW_PROV_AMOUNT);
+    }
+
+    @Override
+    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
+        return ltcToSubtractWithdrawProv.subtract(HUOBI_WITHDRAW_PROV_AMOUNT);
     }
 }

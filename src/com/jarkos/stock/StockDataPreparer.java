@@ -19,7 +19,6 @@ import java.util.Date;
 public class StockDataPreparer {
     private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
 
-
     private static String ConmarketcapBtcURL = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
     //TODO wynies do configu
     public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
@@ -34,10 +33,11 @@ public class StockDataPreparer {
     public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);
 
     public static final BigDecimal HUOBI_TRADE_PROVISION = BigDecimal.valueOf(0.002F);
-    public static final BigDecimal HUOBI_WITHDRAW_PROV = BigDecimal.valueOf(0.0001F);
+    public static final BigDecimal HUOBI_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.0001F);
 
     public static final BigDecimal KRAKEN_MAKER_TRADE_PROV = BigDecimal.valueOf(0.0016F);
     public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
+    public static final BigDecimal KRAKEN_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.02F);
     public static final BigDecimal KRAKEN_BTC_TO_EUR_TAKER_PROV_PERCENTAGE = BigDecimal.valueOf(0.0026F);
     public static final BigDecimal KRAKEN_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
 
@@ -49,33 +49,40 @@ public class StockDataPreparer {
         BitBayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
         HuobiStockData huobiBtcCnyStockData = new HuobiDataService().getHuobiBtcCnyStockData();
         KrakenStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
+        KrakenStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
         BitstampStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
+        BitstampStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
         WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
         //
         //        KrakenStockData krakenBtcEurData = KrakenDataService.getKrakenBtcEurStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
-
+            // LTC on Bitbay -> External LTC to BTC -> BTC sell on Bitbay
             if (huobiBtcCnyStockData != null && bitBayLtcPlnStockData != null) {
-                Main.lastHuobiRoiLTC = new HuobiDataService()
+                Main.lastHuobiLtcToBitbayBtcRoi = new HuobiDataService()
                         .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, huobiBtcCnyStockData, bitBayBtcPlnStockData, HUOBI_TRADE_PROVISION);
             }
             if (krakenBtcEurStockData != null && bitBayLtcPlnStockData != null) {
-                Main.lastKrakenRoiLTC = new KrakenDataService()
+                Main.lastKrakenLtcToBitbayBtcRoi = new KrakenDataService()
                         .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData, KRAKEN_MAKER_TRADE_PROV);
             }
             if (bitstampBtcEurStockData != null && bitBayLtcPlnStockData != null) {
-                Main.lastBitstampRoiLTC = new BitstampDataService()
+                Main.lastBitstampLtcToBitbayBtcRoi = new BitstampDataService()
                         .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, bitstampBtcEurStockData, bitBayBtcPlnStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
+            // Eur on Walutomat -> External to BTC/LTC -> BTC/LTC sell on Bitbay
             if (walutomatEurPlnData != null && krakenBtcEurStockData != null) {
-                Main.lastKrakenEurRoiBTC = new KrakenDataService()
+                Main.lastKrakenEurToBtcRoi = new KrakenDataService()
                         .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
+                new KrakenDataService()
+                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
             }
             if (walutomatEurPlnData != null && bitstampBtcEurStockData != null) {
-                Main.lastBitstampEurRoiBTC = new BitstampDataService()
-                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
+                Main.lastBitstampEurToBtcRoi = new BitstampDataService()
+                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
+                new BitstampDataService()
+                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
             //                prepareRoiBBtoKraken(bitBayBtcPlnStockData, krakenBtcEurData, walutomatEurPlnData);
