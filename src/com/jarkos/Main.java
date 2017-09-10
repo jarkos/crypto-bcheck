@@ -8,10 +8,12 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.jarkos.config.IndicatorsSystemConfig.HALF_MINUTE_IN_MILLIS;
+
 public class Main {
+
     private static final Logger logger = Logger.getLogger(Main.class);
-    public static final String BIT_BAY_BTC_DATA_REPOSITORIES_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";
-    public static final int HALF_MINUTE_IN_MILLIS = 30000;
+
     public static Double lastMACD = 0d;
     public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.05d);
     public static BigDecimal lastHuobiLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);

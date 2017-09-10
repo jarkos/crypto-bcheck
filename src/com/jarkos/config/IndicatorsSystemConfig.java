@@ -7,6 +7,9 @@ import java.math.BigDecimal;
  */
 public class IndicatorsSystemConfig {
 
+    public static final String BIT_BAY_BTC_DATA_REPOSITORIES_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";
+    public static final int HALF_MINUTE_IN_MILLIS = 30000;
+
     public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal MONEY_TO_EUR_BUY = BigDecimal.valueOf(1000F);

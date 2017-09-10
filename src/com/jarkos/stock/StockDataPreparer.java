@@ -20,9 +20,6 @@ import static com.jarkos.config.IndicatorsSystemConfig.*;
 public class StockDataPreparer {
     private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
 
-    private static String ConmarketcapBtcURL = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
-    //TODO wynies do configu
-
     public void fetchAndPrintStockData() throws Exception {
         BitBayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
         BitBayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
