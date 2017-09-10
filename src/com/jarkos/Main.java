@@ -18,7 +18,9 @@ public class Main {
     public static BigDecimal lastKrakenLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitstampLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastKrakenEurToBtcRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal lastKrakenEurToLtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitstampEurToBtcRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal lastBitstampEurToLtcRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -34,8 +36,8 @@ public class Main {
             List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
             if (lastMACD < -50.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
                 JavaMailSender.sendMail(
-                        " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi + " Kraken EUR BTC ROI: " +
-                        lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi);
+                        " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
+                        " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi);
             }
 
             logger.info("Last BB BTC MACD indicator: " + lastMACD);
@@ -45,7 +47,7 @@ public class Main {
 
     private static List<BigDecimal> innitInternalIndicatorsList() {
         return Arrays.asList(lastHuobiLtcToBitbayBtcRoi, lastKrakenLtcToBitbayBtcRoi, lastBitstampLtcToBitbayBtcRoi
-                             //                             ,lastKrakenEurToBtcRoi, lastBitstampEurToBtcRoi
+                             //                             ,lastKrakenEurToBtcRoi, lastBitstampEurToBtcRoi, lastKrakenEurToLtcRoi,lastBitstampEurToLtcRoi
                             );
     }
 
