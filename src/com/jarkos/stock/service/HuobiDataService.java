@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.dto.AbstractStockData;
 import com.jarkos.stock.dto.huobi.HuobiStockData;
+import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
 
@@ -18,13 +19,23 @@ public class HuobiDataService extends AbstractDataService {
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";
 
-    public static HuobiStockData getHuobiBtcCnyStockData() {
-        String resHuobi = RequestSender.sendRequest(HuobiBtcCnyApiUrl);
+    public HuobiStockData getHuobiBtcCnyStockData() {
+        String resHuobi = null;
+        try {
+            resHuobi = RequestSender.sendRequest(HuobiBtcCnyApiUrl);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getHuobiMarketData(resHuobi);
     }
 
-    public static HuobiStockData getHuobiLtcCnyStockData() {
-        String resHuobi = RequestSender.sendRequest(HuobiLtcCnyApiUrl);
+    public HuobiStockData getHuobiLtcCnyStockData() {
+        String resHuobi = null;
+        try {
+            resHuobi = RequestSender.sendRequest(HuobiLtcCnyApiUrl);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getHuobiMarketData(resHuobi);
     }
 

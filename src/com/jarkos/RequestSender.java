@@ -1,6 +1,7 @@
 package com.jarkos;
 
 import com.jarkos.json.JsonFetcher;
+import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.http.conn.ConnectTimeoutException;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -12,15 +13,14 @@ import java.net.UnknownHostException;
  */
 public class RequestSender {
 
-    public static String sendRequest(String url) {
+    public static String sendRequest(String url) throws DataFetchUnavailableException {
         String result = null;
         try {
             result = JsonFetcher.fetchJsonData(url);
         } catch (SocketTimeoutException ste) {
-            System.err.println("SOCKET TIMEOUT EXCEPTION.");
-            return null;
+            throw new DataFetchUnavailableException("TIMEOUT EXCEPTION!");
         } catch (ConnectTimeoutException | SSLPeerUnverifiedException | UnknownHostException cne) {
-            System.err.println("CONNECTION EXCEPTION.");
+            throw new DataFetchUnavailableException("CONNECTION EXCEPTION!");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
 import com.jarkos.stock.dto.bitbay.BitBayStockData;
 import com.jarkos.stock.dto.bitbay.Transaction;
+import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.joda.time.DateTime;
 
@@ -25,14 +26,28 @@ public class BitBayDataService {
     private static String BitBayLtcPlnApiURL = "https://bitbay.net/API/Public/LTCPLN/all.json";
 
 
-    public static BitBayStockData getBtcPlnStockData() {
-        String resBitBay = sendRequest(BitBayBtcPlnApiURL);
+    public BitBayStockData getBtcPlnStockData() {
+        String resBitBay = null;
+        try {
+            resBitBay = sendRequest(BitBayBtcPlnApiURL);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getBitBayMarketData(resBitBay);
     }
 
-    public static BitBayStockData getLtcPlnStockData() {
-        String resBitBay = sendRequest(BitBayLtcPlnApiURL);
+    public BitBayStockData getLtcPlnStockData() {
+        String resBitBay = null;
+        try {
+            resBitBay = sendRequest(BitBayLtcPlnApiURL);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getBitBayMarketData(resBitBay);
+    }
+
+    public String getStockCodeName() {
+        return "Bitbay";
     }
 
     public static void addNewBitBayTransactionsToCSV(BitBayStockData bitBayStockData) {

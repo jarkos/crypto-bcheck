@@ -42,12 +42,12 @@ public class StockDataPreparer {
     public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.0F);
 
     public void fetchAndPrintStockData() throws Exception {
-        BitBayStockData bitBayBtcPlnStockData = BitBayDataService.getBtcPlnStockData();
-        BitBayStockData bitBayLtcPlnStockData = BitBayDataService.getLtcPlnStockData();
-        HuobiStockData huobiBtcCnyStockData = HuobiDataService.getHuobiBtcCnyStockData();
-        KrakenStockData krakenBtcEurStockData = KrakenDataService.getKrakenBtcEurStockData();
+        BitBayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
+        BitBayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
+        HuobiStockData huobiBtcCnyStockData = new HuobiDataService().getHuobiBtcCnyStockData();
+        KrakenStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
         BitstampStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
-        WalutomatData walutomatEurPlnData = WalutomatDataService.getWalutomatEurToPlnData();
+        WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
         //
         //        KrakenStockData krakenBtcEurData = KrakenDataService.getKrakenBtcEurStockData();
 

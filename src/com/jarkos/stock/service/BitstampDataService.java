@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.dto.AbstractStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampStockData;
+import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
 
@@ -22,8 +23,13 @@ public class BitstampDataService extends AbstractDataService {
         return getBitstampLtcCnyStockData();
     }
 
-    public static BitstampStockData getBitstampLtcCnyStockData() {
-        String resBitstamp = RequestSender.sendRequest(BitstampLtcCnyApiUrl);
+    public BitstampStockData getBitstampLtcCnyStockData() {
+        String resBitstamp = null;
+        try {
+            resBitstamp = RequestSender.sendRequest(BitstampLtcCnyApiUrl);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getBitstampMarketData(resBitstamp);
     }
 
@@ -33,7 +39,12 @@ public class BitstampDataService extends AbstractDataService {
     }
 
     public BitstampStockData getBitstampBtcEurStockData() {
-        String resBitstamp = RequestSender.sendRequest(BitstampBtcCnyApiUrl);
+        String resBitstamp = null;
+        try {
+            resBitstamp = RequestSender.sendRequest(BitstampBtcCnyApiUrl);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
+        }
         return getBitstampMarketData(resBitstamp);
     }
 

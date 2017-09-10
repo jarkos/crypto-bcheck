@@ -1,6 +1,7 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
+import com.jarkos.stock.exception.DataFetchUnavailableException;
 import com.jarkos.walutomat.WalutomatData;
 
 import static com.jarkos.RequestSender.sendRequest;
@@ -12,9 +13,18 @@ public class WalutomatDataService {
 
     private static String WalutomatPlnEurURL = "https://panel.walutomat.pl/api/v1/best_offers.php?curr1=EUR&curr2=PLN";
 
-    public static WalutomatData getWalutomatEurToPlnData() {
-        String resWalutomat = sendRequest(WalutomatPlnEurURL);
+    public WalutomatData getWalutomatEurToPlnData() {
+        String resWalutomat = null;
+        try {
+            resWalutomat = sendRequest(WalutomatPlnEurURL);
+        } catch (DataFetchUnavailableException e) {
+            System.out.printf(e.getMessage().concat(" " + getServiceCodeName()));
+        }
         return getWalutomatEurPlnData(resWalutomat);
+    }
+
+    private String getServiceCodeName() {
+        return "Walutomat";
     }
 
 
