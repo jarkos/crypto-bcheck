@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static com.jarkos.stock.StockDataPreparer.*;
-import static com.jarkos.stock.StockDataPreparer.MONEY_TO_EUR_BUY;
-import static com.jarkos.stock.StockDataPreparer.WALUTOMAT_WITHDRAW_RATIO;
+import static com.jarkos.config.IndicatorsSystemConfig.*;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
@@ -90,8 +88,7 @@ public abstract class AbstractDataService {
         // WALUTOMAT
         BigDecimal eurPlnExchangeRate = walutomatEurPlnData.getAverageExchangeRate();
         BigDecimal numberOfEurAfterExchange = amountOfMoney.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN);
-        return (numberOfEurAfterExchange.subtract(WALUTOMAT_WITHDRAW_RATIO))
-                .subtract(ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN));
+        return (numberOfEurAfterExchange.subtract(WALUTOMAT_WITHDRAW_RATIO)).subtract(ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN));
     }
 
 }

@@ -7,8 +7,8 @@ import com.jarkos.stock.exception.DataFetchUnavailableException;
 import java.math.BigDecimal;
 
 import static com.jarkos.RequestSender.sendRequest;
-import static com.jarkos.stock.StockDataPreparer.KRAKEN_BTC_WITHDRAW_PROV;
-import static com.jarkos.stock.StockDataPreparer.KRAKEN_LTC_WITHDRAW_PROV;
+import static com.jarkos.config.IndicatorsSystemConfig.KRAKEN_BTC_WITHDRAW_PROV;
+import static com.jarkos.config.IndicatorsSystemConfig.KRAKEN_LTC_WITHDRAW_PROV;
 
 /**
  * Created by jkostrzewa on 2017-09-09.

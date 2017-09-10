@@ -9,9 +9,10 @@ import com.jarkos.stock.service.*;
 import com.jarkos.walutomat.WalutomatData;
 import org.apache.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.jarkos.config.IndicatorsSystemConfig.*;
 
 /**
  * Created by jkostrzewa on 2017-09-02.
@@ -21,28 +22,6 @@ public class StockDataPreparer {
 
     private static String ConmarketcapBtcURL = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
     //TODO wynies do configu
-    public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal MONEY_TO_EUR_BUY = BigDecimal.valueOf(1000F);
-
-    public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0035F);
-    public static final BigDecimal BITBAY_BTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00045F);
-    public static final BigDecimal BITBAY_LTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.005F);
-
-    public static final BigDecimal BITSTAMP_WITHDRAW_PROV = BigDecimal.valueOf(0F);
-    public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);
-
-    public static final BigDecimal HUOBI_TRADE_PROVISION = BigDecimal.valueOf(0.002F);
-    public static final BigDecimal HUOBI_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.0001F);
-
-    public static final BigDecimal KRAKEN_MAKER_TRADE_PROV = BigDecimal.valueOf(0.0016F);
-    public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
-    public static final BigDecimal KRAKEN_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.02F);
-    public static final BigDecimal KRAKEN_BTC_TO_EUR_TAKER_PROV_PERCENTAGE = BigDecimal.valueOf(0.0026F);
-    public static final BigDecimal KRAKEN_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
-
-    public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);
-    public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.0F);
 
     public void fetchAndPrintStockData() throws Exception {
         BitBayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
@@ -75,12 +54,13 @@ public class StockDataPreparer {
             if (walutomatEurPlnData != null && krakenBtcEurStockData != null) {
                 Main.lastKrakenEurToBtcRoi = new KrakenDataService()
                         .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
-                Main.lastKrakenEurToLtcRoi = new KrakenDataService().prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
+                Main.lastKrakenEurToLtcRoi = new KrakenDataService()
+                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
             }
             if (walutomatEurPlnData != null && bitstampBtcEurStockData != null) {
                 Main.lastBitstampEurToBtcRoi = new BitstampDataService()
                         .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
-                Main.lastBitstampEurToLtcRoi= new BitstampDataService()
+                Main.lastBitstampEurToLtcRoi = new BitstampDataService()
                         .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {

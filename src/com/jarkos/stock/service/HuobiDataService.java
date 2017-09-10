@@ -8,8 +8,7 @@ import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.stock.StockDataPreparer.HUOBI_WITHDRAW_PROV_AMOUNT;
-
+import static com.jarkos.config.IndicatorsSystemConfig.HUOBI_WITHDRAW_PROV_AMOUNT;
 
 /**
  * Created by jkostrzewa on 2017-09-09.

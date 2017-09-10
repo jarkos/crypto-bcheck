@@ -34,7 +34,7 @@ public class Main {
             }
             CandlestickChart.refresh();
             List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
-            if (lastMACD < -50.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
+            if (lastMACD < -40.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
                 JavaMailSender.sendMail(
                         " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
                         " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi);
