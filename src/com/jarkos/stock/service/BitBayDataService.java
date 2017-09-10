@@ -2,8 +2,8 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
-import com.jarkos.stock.dto.bitbay.BitBayStockData;
-import com.jarkos.stock.dto.bitbay.Transaction;
+import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
+import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.joda.time.DateTime;
@@ -14,8 +14,8 @@ import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Collections;
 
-import static com.jarkos.Main.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
 import static com.jarkos.RequestSender.sendRequest;
+import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
 import static com.jarkos.json.JsonFetcher.UTF_8;
 
 /**
@@ -30,7 +30,7 @@ public class BitBayDataService {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayBtcPlnApiURL);
-        } catch (DataFetchUnavailableException e) {
+        } catch (Exception e) {
             System.out.printf(e.getMessage().concat(" " + getStockCodeName()));
         }
         return getBitBayMarketData(resBitBay);

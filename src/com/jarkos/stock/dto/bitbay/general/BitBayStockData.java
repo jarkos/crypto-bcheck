@@ -1,4 +1,4 @@
-package com.jarkos.stock.dto.bitbay;
+package com.jarkos.stock.dto.bitbay.general;
 
 import java.io.Serializable;
 import java.util.List;

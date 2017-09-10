@@ -1,15 +1,17 @@
-
-package com.jarkos.stock.dto.bitstamp;
+package com.jarkos.stock.dto.bitstamp.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.jarkos.stock.dto.AbstractStockData;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class BitstampStockData extends AbstractStockData {
+@NoArgsConstructor
+@AllArgsConstructor
+public class BitstampStockData {
 
     @SerializedName("high")
     @Expose
@@ -39,18 +41,5 @@ public class BitstampStockData extends AbstractStockData {
     @Expose
     private String open;
 
-    @Override
-    public float getLastBtcPrice() {
-        return Float.valueOf(getLast());
-    }
 
-    @Override
-    public float getLastLtcPrice() {
-        return Float.valueOf(getLast());
-    }
-
-    @Override
-    public Object getLtcEurStockData() {
-        return this;
-    }
 }

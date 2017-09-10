@@ -1,16 +1,19 @@
-package com.jarkos.stock.dto.huobi;
-
-import java.util.List;
+package com.jarkos.stock.dto.huobi.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.jarkos.stock.dto.AbstractStockData;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
-public class HuobiStockData extends AbstractStockData {
+@AllArgsConstructor
+@NoArgsConstructor
+public class HuobiStockData {
 
     @SerializedName("amount")
     @Expose
@@ -58,18 +61,4 @@ public class HuobiStockData extends AbstractStockData {
     @Expose
     private List<Trade> trades = null;
 
-    @Override
-    public float getLastBtcPrice() {
-        return getPLast();
-    }
-
-    @Override
-    public float getLastLtcPrice() {
-        return getPLast();
-    }
-
-    @Override
-    public Object getLtcEurStockData() {
-        return this;
-    }
 }

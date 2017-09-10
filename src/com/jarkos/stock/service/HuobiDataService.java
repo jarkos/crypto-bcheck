@@ -2,8 +2,9 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
-import com.jarkos.stock.dto.AbstractStockData;
-import com.jarkos.stock.dto.huobi.HuobiStockData;
+import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
+import com.jarkos.stock.dto.huobi.HuobiLtcStockData;
+import com.jarkos.stock.dto.huobi.general.HuobiStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
@@ -18,24 +19,24 @@ public class HuobiDataService extends AbstractDataService {
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";
 
-    public HuobiStockData getHuobiBtcCnyStockData() {
+    public HuobiBtcStockData getHuobiBtcCnyStockData() {
         String resHuobi = null;
         try {
             resHuobi = RequestSender.sendRequest(HuobiBtcCnyApiUrl);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getHuobiMarketData(resHuobi);
+        return new HuobiBtcStockData(getHuobiMarketData(resHuobi));
     }
 
-    public HuobiStockData getHuobiLtcCnyStockData() {
+    public HuobiLtcStockData getHuobiLtcCnyStockData() {
         String resHuobi = null;
         try {
             resHuobi = RequestSender.sendRequest(HuobiLtcCnyApiUrl);
-        } catch (DataFetchUnavailableException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getHuobiMarketData(resHuobi);
+        return new HuobiLtcStockData(getHuobiMarketData(resHuobi));
     }
 
     private static HuobiStockData getHuobiMarketData(String res) {
@@ -44,7 +45,7 @@ public class HuobiDataService extends AbstractDataService {
     }
 
     @Override
-    public AbstractStockData getLtcEurStockData() {
+    public HuobiLtcStockData getLtcEurStockData() {
         return getHuobiLtcCnyStockData();
     }
 

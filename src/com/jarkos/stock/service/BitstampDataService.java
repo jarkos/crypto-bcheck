@@ -2,8 +2,9 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
-import com.jarkos.stock.dto.AbstractStockData;
-import com.jarkos.stock.dto.bitstamp.BitstampStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
+import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
@@ -19,18 +20,18 @@ public class BitstampDataService extends AbstractDataService {
     private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
 
     @Override
-    public AbstractStockData getLtcEurStockData() {
+    public BitstampLtcStockData getLtcEurStockData() {
         return getBitstampLtcEurStockData();
     }
 
-    public BitstampStockData getBitstampLtcEurStockData() {
+    public BitstampLtcStockData getBitstampLtcEurStockData() {
         String resBitstamp = null;
         try {
             resBitstamp = RequestSender.sendRequest(BitstampLtcEurApiUrl);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getBitstampMarketData(resBitstamp);
+        return new BitstampLtcStockData(getBitstampMarketData(resBitstamp));
     }
 
     private static BitstampStockData getBitstampMarketData(String res) {
@@ -38,14 +39,14 @@ public class BitstampDataService extends AbstractDataService {
         return gson.fromJson(res, BitstampStockData.class);
     }
 
-    public BitstampStockData getBitstampBtcEurStockData() {
+    public BitstampBtcStockData getBitstampBtcEurStockData() {
         String resBitstamp = null;
         try {
             resBitstamp = RequestSender.sendRequest(BitstampBtcEurApiUrl);
-        } catch (DataFetchUnavailableException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getBitstampMarketData(resBitstamp);
+        return new BitstampBtcStockData(getBitstampMarketData(resBitstamp));
     }
 
     @Override

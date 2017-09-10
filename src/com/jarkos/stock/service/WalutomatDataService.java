@@ -17,7 +17,7 @@ public class WalutomatDataService {
         String resWalutomat = null;
         try {
             resWalutomat = sendRequest(WalutomatPlnEurURL);
-        } catch (DataFetchUnavailableException e) {
+        } catch (Exception e) {
             System.out.printf(e.getMessage().concat(" " + getServiceCodeName()));
         }
         return getWalutomatEurPlnData(resWalutomat);

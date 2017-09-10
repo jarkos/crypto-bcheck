@@ -1,10 +1,10 @@
 
-package com.jarkos.stock.dto.huobi;
+package com.jarkos.stock.dto.huobi.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TopSell {
+public class Buy {
 
     @SerializedName("price")
     @Expose
@@ -15,9 +15,6 @@ public class TopSell {
     @SerializedName("level")
     @Expose
     private Integer level;
-    @SerializedName("accu")
-    @Expose
-    private Float accu;
 
     public Float getPrice() {
         return price;
@@ -41,14 +38,6 @@ public class TopSell {
 
     public void setLevel(Integer level) {
         this.level = level;
-    }
-
-    public Float getAccu() {
-        return accu;
-    }
-
-    public void setAccu(Float accu) {
-        this.accu = accu;
     }
 
 }

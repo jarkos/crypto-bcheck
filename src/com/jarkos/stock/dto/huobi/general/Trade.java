@@ -1,5 +1,5 @@
 
-package com.jarkos.stock.dto.huobi;
+package com.jarkos.stock.dto.huobi.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

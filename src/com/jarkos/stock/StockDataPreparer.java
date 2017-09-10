@@ -1,10 +1,14 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.BitBayStockData;
-import com.jarkos.stock.dto.bitstamp.BitstampStockData;
-import com.jarkos.stock.dto.huobi.HuobiStockData;
-import com.jarkos.stock.dto.kraken.KrakenStockData;
+import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
+import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
+import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
+import com.jarkos.stock.dto.kraken.KrakenBtcStockData;
+import com.jarkos.stock.dto.kraken.KrakenLtcStockData;
+import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 import com.jarkos.stock.service.*;
 import com.jarkos.walutomat.WalutomatData;
 import org.apache.log4j.Logger;
@@ -23,11 +27,11 @@ public class StockDataPreparer {
     public void fetchAndPrintStockData() throws Exception {
         BitBayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
         BitBayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
-        HuobiStockData huobiBtcCnyStockData = new HuobiDataService().getHuobiBtcCnyStockData();
-        KrakenStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
-        KrakenStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
-        BitstampStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
-        BitstampStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
+        HuobiBtcStockData huobiBtcCnyStockData = new HuobiDataService().getHuobiBtcCnyStockData();
+        KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
+        KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
+        BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
+        BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
         WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
         //
         //        KrakenStockData krakenBtcEurData = KrakenDataService.getKrakenBtcEurStockData();

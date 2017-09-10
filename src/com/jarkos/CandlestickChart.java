@@ -45,7 +45,7 @@ import org.jfree.ui.RefineryUtilities;
 import java.awt.*;
 import java.util.Date;
 
-import static com.jarkos.Main.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
+import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
 
 /**
  * This class builds a traditional candlestick chart.
@@ -53,6 +53,7 @@ import static com.jarkos.Main.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
 public class CandlestickChart {
 
     static ApplicationFrame frame;
+
     /**
      * Builds a JFreeChart OHLC dataset from a ta4j time series.
      *

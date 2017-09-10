@@ -1,4 +1,4 @@
-package com.jarkos.stock.dto.kraken;
+package com.jarkos.stock.dto.kraken.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
