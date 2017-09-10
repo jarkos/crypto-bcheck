@@ -4,18 +4,23 @@ import com.jarkos.mail.JavaMailSender;
 import com.jarkos.stock.StockDataPreparer;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
     public static final String BIT_BAY_BTC_DATA_REPOSITORIES_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";
     public static final int HALF_MINUTE_IN_MILLIS = 30000;
     public static Double lastMACD = 0d;
-    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.045d);
+    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.06d);
     public static BigDecimal lastHuobiRoiLTC = BigDecimal.valueOf(0d);
     public static BigDecimal lastKrakenRoiLTC = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitstampRoiLTC = BigDecimal.valueOf(0d);
+    public static BigDecimal lastKrakenEurRoiBTC = BigDecimal.valueOf(0d);
+    public static BigDecimal lastBitstampurRoiBTC = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
+        List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
         CandlestickChart.start();
         while (true) {
             try {
@@ -26,14 +31,17 @@ public class Main {
             }
             CandlestickChart.refresh();
 
-            if (lastMACD < -50.0d || (lastHuobiRoiLTC.compareTo(marginRoiNotificationCall) > 0) || (lastKrakenRoiLTC.compareTo(marginRoiNotificationCall) > 0) ||
-                (lastBitstampRoiLTC.compareTo(marginRoiNotificationCall) > 0)) {
+            if (lastMACD < -50.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
                 JavaMailSender.sendMail(" MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiRoiLTC + " Kraken LTC ROI: " + lastKrakenRoiLTC);
             }
 
             System.err.println("Last BB BTC MACD indicator: " + lastMACD);
             Thread.sleep(HALF_MINUTE_IN_MILLIS);
         }
+    }
+
+    private static List<BigDecimal> innitInternalIndicatorsList() {
+        return Arrays.asList(lastHuobiRoiLTC, lastKrakenRoiLTC, lastBitstampRoiLTC, lastKrakenEurRoiBTC, lastBitstampurRoiBTC);
     }
 
 }

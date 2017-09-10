@@ -28,7 +28,7 @@ public class StockDataPreparer {
     public static final BigDecimal BIT_BAY_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.005F);
 
     public static final BigDecimal BITSTAMP_WITHDRAW_PROV = BigDecimal.valueOf(0F);
-    public static final BigDecimal BITSTAMP_TRADE_PROVISION = BigDecimal.valueOf(0.0025F);
+    public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);
 
     public static final BigDecimal HUOBI_TRADE_PROVISION = BigDecimal.valueOf(0.002F);
     public static final BigDecimal HUOBI_WITHDRAW_PROV = BigDecimal.valueOf(0.0001F);
@@ -63,11 +63,15 @@ public class StockDataPreparer {
             }
             if (bitstampBtcEurStockData != null && bitBayLtcPlnStockData != null) {
                 Main.lastBitstampRoiLTC = new BitstampDataService()
-                        .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, bitstampBtcEurStockData, bitBayBtcPlnStockData, BITSTAMP_TRADE_PROVISION);
+                        .prepareBitBayLtcBuyAndBtcSellRoi(bitBayLtcPlnStockData, bitstampBtcEurStockData, bitBayBtcPlnStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             if (walutomatEurPlnData != null && krakenBtcEurStockData != null) {
-                new KrakenDataService().prepareEurBuyBtcSellRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData);
-
+                Main.lastKrakenEurRoiBTC = new KrakenDataService()
+                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
+            }
+            if (walutomatEurPlnData != null && bitstampBtcEurStockData != null) {
+                Main.lastBitstampurRoiBTC = new BitstampDataService()
+                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
             //                prepareRoiBBtoKraken(bitBayBtcPlnStockData, krakenBtcEurData, walutomatEurPlnData);

@@ -2,13 +2,14 @@ package com.jarkos.stock.service;
 
 import com.jarkos.stock.dto.AbstractStockData;
 import com.jarkos.stock.dto.bitbay.BitBayStockData;
+import com.jarkos.walutomat.WalutomatData;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static com.jarkos.stock.StockDataPreparer.BIT_BAY_LTC_WITHDRAW_PROV;
-import static com.jarkos.stock.StockDataPreparer.BIT_BAY_TRADE_PROVISION;
-import static com.jarkos.stock.StockDataPreparer.LTC_BUY_MONEY;
+import static com.jarkos.stock.StockDataPreparer.*;
+import static com.jarkos.stock.StockDataPreparer.MONEY_TO_EUR_BUY;
+import static com.jarkos.stock.StockDataPreparer.WALUTOMAT_WITHDRAW_RATIO;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
@@ -29,7 +30,7 @@ public abstract class AbstractDataService {
             BigDecimal numberOfLtcBoughtOnBitBay = LTC_BUY_MONEY.divide(BigDecimal.valueOf(bitBayLtcPlnStockData.getLast()), 2, RoundingMode.HALF_DOWN);
             BigDecimal ltcNumberAfterTradeProvision = numberOfLtcBoughtOnBitBay.subtract(numberOfLtcBoughtOnBitBay.multiply(BIT_BAY_TRADE_PROVISION));
             BigDecimal ltcNumberAfterWithdrawFromBitBay = ltcNumberAfterTradeProvision.subtract(BIT_BAY_LTC_WITHDRAW_PROV);
-            //ABSTARCT STOCK
+            //EXTERNAL STOCK
             BigDecimal eurNumberAfterLtcSell = ltcNumberAfterWithdrawFromBitBay.multiply(BigDecimal.valueOf(Float.valueOf(ltcEurStockData.getLastLtcPrice())));
             BigDecimal eurNumberAfterLtcSellAfterTradeProv = eurNumberAfterLtcSell.subtract(eurNumberAfterLtcSell.multiply(stockTradeProv));
             BigDecimal numberOfBtcBought = eurNumberAfterLtcSellAfterTradeProv.divide(BigDecimal.valueOf(btcEurAbstractStockData.getLastBtcPrice()), 5, RoundingMode.HALF_DOWN);
@@ -44,6 +45,25 @@ public abstract class AbstractDataService {
             return bitBayLtcBuyAndBtcSellRoi;
         }
         throw new Exception("NO" + getStockCodeName() + " data");
+    }
+
+    public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitBayStockData bitBayBtcPlnStockData, AbstractStockData abstraBtcEurStockData, WalutomatData walutomatEurPlnData,
+                                                       BigDecimal stockTradeProv) {
+        // WALUTOMAT
+        BigDecimal eurPlnExchangeRate = BigDecimal.valueOf(Float.valueOf(walutomatEurPlnData.getAvg()));
+        BigDecimal numberOfEurAfterExchange = MONEY_TO_EUR_BUY.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfEurExchangedAfterProv = numberOfEurAfterExchange.subtract(WALUTOMAT_WITHDRAW_RATIO);
+        //EXTERNAL STOCK
+        BigDecimal numberOfBtcBoughtOnStock = numberOfEurExchangedAfterProv.divide(BigDecimal.valueOf(abstraBtcEurStockData.getLastBtcPrice()), 4, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfBtcBoughtOnStockAfterProv = numberOfBtcBoughtOnStock.subtract(numberOfBtcBoughtOnStock.multiply(stockTradeProv));
+        BigDecimal numberOfBtcWithdrawAfterProv = getBtcAfterWithdrawalProv(numberOfBtcBoughtOnStockAfterProv);
+        // BITBAY
+        BigDecimal plnMoneyAfterBtcExchange = numberOfBtcWithdrawAfterProv.multiply(BigDecimal.valueOf(bitBayBtcPlnStockData.getLast()));
+        BigDecimal plnMoneyBtcExchangedAfterProv = plnMoneyAfterBtcExchange.subtract(plnMoneyAfterBtcExchange.multiply(BIT_BAY_TRADE_PROVISION));
+
+        BigDecimal eurBuyAndBtcSellRoi = plnMoneyBtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
+        System.err.println("ROI EUR Walutomat BTC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
+        return eurBuyAndBtcSellRoi;
     }
 
 }
