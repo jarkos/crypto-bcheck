@@ -18,14 +18,14 @@ import java.util.Date;
 public class StockDataPreparer {
 
     private static String ConmarketcapBtcURL = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
-
-    public static final Float BTC_BUY_MONEY = 10000F;
+    //TODO wynies do configu
+    public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal MONEY_TO_EUR_BUY = BigDecimal.valueOf(1000F);
 
-    public static final BigDecimal BIT_BAY_TRADE_PROVISION = BigDecimal.valueOf(0.0035F);
-    public static final Float BIT_BAY_BTC_WITHDRAW_PROV = 0.00045F;
-    public static final BigDecimal BIT_BAY_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.005F);
+    public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0035F);
+    public static final BigDecimal BITBAY_BTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00045F);
+    public static final BigDecimal BITBAY_LTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.005F);
 
     public static final BigDecimal BITSTAMP_WITHDRAW_PROV = BigDecimal.valueOf(0F);
     public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);
@@ -35,10 +35,11 @@ public class StockDataPreparer {
 
     public static final BigDecimal KRAKEN_MAKER_TRADE_PROV = BigDecimal.valueOf(0.0016F);
     public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
-    public static final Float KRAKEN_BTC_TO_EUR_PROV = 0.0026F;
-    public static final Float KRAKEN_EUR_WITHDRAW_PROV = 0.09F;
+    public static final BigDecimal KRAKEN_BTC_TO_EUR_TAKER_PROV_PERCENTAGE = BigDecimal.valueOf(0.0026F);
+    public static final BigDecimal KRAKEN_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
 
     public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);
+    public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.0F);
 
     public void fetchAndPrintStockData() throws Exception {
         BitBayStockData bitBayBtcPlnStockData = BitBayDataService.getBtcPlnStockData();
@@ -70,7 +71,7 @@ public class StockDataPreparer {
                         .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
             }
             if (walutomatEurPlnData != null && bitstampBtcEurStockData != null) {
-                Main.lastBitstampurRoiBTC = new BitstampDataService()
+                Main.lastBitstampEurRoiBTC = new BitstampDataService()
                         .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
@@ -80,6 +81,7 @@ public class StockDataPreparer {
         }
     }
 
+    //    TODO uporzadkowac PLN to EUR
     private void printRoiBitstamp(BitBayStockData bitBayStockData, WalutomatData walutomatEurPlnData) {
         Float sellBitBayLowest = bitBayStockData.getAsk();
         BitstampStockData bitstampStockData = new BitstampDataService().getBitstampBtcEurStockData();
@@ -93,16 +95,17 @@ public class StockDataPreparer {
 
     private String countRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
         Float sellBitBayLowest = bitBayStockData.getAsk();
-        Float btcCanBeBought = BTC_BUY_MONEY / sellBitBayLowest;
-        Float btcBoughtAfterExchangeProvisionPLNtoBTCFromBB = btcCanBeBought - (btcCanBeBought * BIT_BAY_TRADE_PROVISION.floatValue());
-        Float btcAfterWidthdrawProvisionFromBB = btcBoughtAfterExchangeProvisionPLNtoBTCFromBB - BIT_BAY_BTC_WITHDRAW_PROV;
+        Float btcCanBeBought = BTC_BUY_MONEY.floatValue() / sellBitBayLowest;
+        Float btcBoughtAfterExchangeProvisionPLNtoBTCFromBB = btcCanBeBought - (btcCanBeBought * BITBAY_TRADE_PROVISION_PERCENTAGE.floatValue());
+        Float btcAfterWithdrawProvisionFromBB = btcBoughtAfterExchangeProvisionPLNtoBTCFromBB - BITBAY_BTC_WITHDRAW_PROV_AMOUNT.floatValue();
         //        Doliczyć fee ponmiedzy portfelami?
 
         //        KRAKEN
         Float krakenExchangeBtcEurRate = Float.valueOf(krakenBtcEurData.getResult().getXXBTZEUR().getLastTradePrice().get(0));
-        Float krakenBalanceInEuroAfterSell = krakenExchangeBtcEurRate * btcAfterWidthdrawProvisionFromBB;
-        Float krakenBalanceInEuroAfterSellAfterExchangeProvBTCtoEUR = krakenBalanceInEuroAfterSell - (krakenExchangeBtcEurRate * KRAKEN_BTC_TO_EUR_PROV);
-        Float moneyExchangedToEURAfterWirdhtrawProv = krakenBalanceInEuroAfterSellAfterExchangeProvBTCtoEUR - KRAKEN_EUR_WITHDRAW_PROV;
+        Float krakenBalanceInEuroAfterSell = krakenExchangeBtcEurRate * btcAfterWithdrawProvisionFromBB;
+        Float krakenBalanceInEuroAfterSellAfterExchangeProvBTCtoEUR =
+                krakenBalanceInEuroAfterSell - (krakenExchangeBtcEurRate * KRAKEN_BTC_TO_EUR_TAKER_PROV_PERCENTAGE.floatValue());
+        Float moneyExchangedToEURAfterWirdhtrawProv = krakenBalanceInEuroAfterSellAfterExchangeProvBTCtoEUR - KRAKEN_EUR_WITHDRAW_PROV_AMOUNT.floatValue();
         Float moneyAfterExchange = moneyExchangedToEURAfterWirdhtrawProv * Float.valueOf(walutomatEurPlnData.getAvg());
         Float moneyAfterExchangeWalutomatProv = moneyAfterExchange * WALUTOMAT_WITHDRAW_RATIO.floatValue();
 
@@ -113,7 +116,7 @@ public class StockDataPreparer {
 
     private String printKrakenRoiResult(WalutomatData walutomatEurPlnData, Float sellBitBayLowest, Float krakenExchangeBtcEurRate, Float moneyAfterExchangeWalutomatProv) {
         //        DISPLAY
-        Float roi = ((moneyAfterExchangeWalutomatProv - BTC_BUY_MONEY) / BTC_BUY_MONEY) * 100;
+        Float roi = ((moneyAfterExchangeWalutomatProv - BTC_BUY_MONEY.floatValue()) / BTC_BUY_MONEY.floatValue()) * 100;
 
         Calendar cal = Calendar.getInstance();
         Date currentTime = cal.getTime();
@@ -133,8 +136,8 @@ public class StockDataPreparer {
     private float getZarobek(Float roi) {
 
         if (roi < 0F) {
-            return -(BTC_BUY_MONEY * Math.abs(roi / 100F));
+            return -(BTC_BUY_MONEY.floatValue() * Math.abs(roi / 100F));
         }
-        return BTC_BUY_MONEY * roi / 100F;
+        return BTC_BUY_MONEY.floatValue() * roi / 100F;
     }
 }

@@ -7,6 +7,8 @@ import com.jarkos.stock.dto.bitstamp.BitstampStockData;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.stock.StockDataPreparer.BITSTAMP_WITHDRAW_PROV;
+
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
@@ -43,6 +45,6 @@ public class BitstampDataService extends AbstractDataService {
     @Override
     public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractTradeProv) {
         // NON FEE
-        return btcToSubtractTradeProv;
+        return btcToSubtractTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
     }
 }
