@@ -1,11 +1,13 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
+import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
+import com.jarkos.stock.dto.kraken.KrakenBccStockData;
 import com.jarkos.stock.dto.kraken.KrakenBtcStockData;
 import com.jarkos.stock.dto.kraken.KrakenLtcStockData;
 import com.jarkos.stock.dto.kraken.general.KrakenStockData;
@@ -25,10 +27,12 @@ public class StockDataPreparer {
     private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
 
     public void fetchAndPrintStockData() throws Exception {
-        BitBayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
-        BitBayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
+        BitbayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
+        BitbayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
+        BitbayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
         HuobiBtcStockData huobiBtcCnyStockData = new HuobiDataService().getHuobiBtcCnyStockData();
         KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
+        KrakenBccStockData krakenBccEurStockData = new KrakenDataService().getKrakenBccEurStockData();
         KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
@@ -64,6 +68,9 @@ public class StockDataPreparer {
                 Main.lastBitstampEurToLtcRoi = new BitstampDataService()
                         .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
+            if (walutomatEurPlnData != null && bitBayBccPlnStockData != null && krakenBccEurStockData != null) {
+                new KrakenDataService().prepareEuroBuyBccSellOnBitBayRoi(bitBayBccPlnStockData, krakenBccEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
+            }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
             //                prepareRoiBBtoKraken(bitBayBtcPlnStockData, krakenBtcEurData, walutomatEurPlnData);
             //                printRoiBitstamp(bitBayBtcPlnStockData, walutomatEurPlnData);
@@ -72,19 +79,19 @@ public class StockDataPreparer {
     }
 
     //    TODO uporzadkowac PLN to EUR
-    private void printRoiBitstamp(BitBayStockData bitBayStockData, WalutomatData walutomatEurPlnData) {
-        Float sellBitBayLowest = bitBayStockData.getAsk();
+    private void printRoiBitstamp(BitbayStockData bitbayStockData, WalutomatData walutomatEurPlnData) {
+        Float sellBitBayLowest = bitbayStockData.getAsk();
         BitstampStockData bitstampStockData = new BitstampDataService().getBitstampBtcEurStockData();
         Float bitstampKursBtcEurRate = Float.valueOf(bitstampStockData.getLast());
         System.out.println("Dif BB vs Bitstamp: " + (((bitstampKursBtcEurRate) * Float.valueOf(walutomatEurPlnData.getAvg())) - sellBitBayLowest) + " PLN");
     }
 
-    private String prepareRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
-        return countRoiBBtoKraken(bitBayStockData, krakenBtcEurData, walutomatEurPlnData);
+    private String prepareRoiBBtoKraken(BitbayStockData bitbayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
+        return countRoiBBtoKraken(bitbayStockData, krakenBtcEurData, walutomatEurPlnData);
     }
 
-    private String countRoiBBtoKraken(BitBayStockData bitBayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
-        Float sellBitBayLowest = bitBayStockData.getAsk();
+    private String countRoiBBtoKraken(BitbayStockData bitbayStockData, KrakenStockData krakenBtcEurData, WalutomatData walutomatEurPlnData) {
+        Float sellBitBayLowest = bitbayStockData.getAsk();
         Float btcCanBeBought = BTC_BUY_MONEY.floatValue() / sellBitBayLowest;
         Float btcBoughtAfterExchangeProvisionPLNtoBTCFromBB = btcCanBeBought - (btcCanBeBought * BITBAY_TRADE_PROVISION_PERCENTAGE.floatValue());
         Float btcAfterWithdrawProvisionFromBB = btcBoughtAfterExchangeProvisionPLNtoBTCFromBB - BITBAY_BTC_WITHDRAW_PROV_AMOUNT.floatValue();

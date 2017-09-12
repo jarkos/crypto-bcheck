@@ -6,6 +6,7 @@ import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
+import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
@@ -64,5 +65,15 @@ public class BitstampDataService extends AbstractDataService {
     public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
         // NON FEE
         return ltcToSubtractWithdrawProv.subtract(BITSTAMP_WITHDRAW_PROV);
+    }
+
+    @Override
+    public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
+        try {
+            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

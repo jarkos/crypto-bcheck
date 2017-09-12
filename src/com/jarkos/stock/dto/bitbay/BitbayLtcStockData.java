@@ -1,14 +1,14 @@
 package com.jarkos.stock.dto.bitbay;
 
 import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
-import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
+import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 
 import java.math.BigDecimal;
 
 /**
  * Created by jkostrzewa on 2017-09-10.
  */
-public class BitBayLtcStockData extends BitBayStockData implements LtcStockDataInterface {
+public class BitbayLtcStockData extends BitbayStockData implements LtcStockDataInterface {
 
     @Override
     public BigDecimal getLastLtcPrice() {

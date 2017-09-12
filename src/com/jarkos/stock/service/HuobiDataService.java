@@ -6,6 +6,7 @@ import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
 import com.jarkos.stock.dto.huobi.HuobiLtcStockData;
 import com.jarkos.stock.dto.huobi.general.HuobiStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
+import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
@@ -62,5 +63,15 @@ public class HuobiDataService extends AbstractDataService {
     @Override
     public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
         return ltcToSubtractWithdrawProv.subtract(HUOBI_WITHDRAW_PROV_AMOUNT);
+    }
+
+    @Override
+    public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
+        try {
+            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

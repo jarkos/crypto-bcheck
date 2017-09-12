@@ -26,11 +26,12 @@ public class IndicatorsSystemConfig {
 
     public static final BigDecimal KRAKEN_MAKER_TRADE_PROV = BigDecimal.valueOf(0.0016F);
     public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
+    public static final BigDecimal KRAKEN_BCC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
     public static final BigDecimal KRAKEN_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.02F);
     public static final BigDecimal KRAKEN_BTC_TO_EUR_TAKER_PROV_PERCENTAGE = BigDecimal.valueOf(0.0026F);
     public static final BigDecimal KRAKEN_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
 
     public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);
-    public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.0F);
+    public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.3F);
 
 }

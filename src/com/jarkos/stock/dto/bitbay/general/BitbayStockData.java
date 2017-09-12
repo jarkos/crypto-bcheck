@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BitBayStockData implements Serializable {
+public class BitbayStockData implements Serializable {
 
     @SerializedName("max")
     @Expose
@@ -46,7 +46,7 @@ public class BitBayStockData implements Serializable {
     /**
      * No args constructor for use in serialization
      */
-    public BitBayStockData() {
+    public BitbayStockData() {
     }
 
     /**
@@ -62,7 +62,7 @@ public class BitBayStockData implements Serializable {
      * @param asks
      * @param transactions
      */
-    public BitBayStockData(Float max, Float min, Float last, Float bid, Float ask, Float vwap, Float average, Float volume, List<List<Float>> bids, List<List<Float>> asks,
+    public BitbayStockData(Float max, Float min, Float last, Float bid, Float ask, Float vwap, Float average, Float volume, List<List<Float>> bids, List<List<Float>> asks,
                            List<Transaction> transactions) {
         super();
         this.max = max;
@@ -86,7 +86,7 @@ public class BitBayStockData implements Serializable {
         this.max = max;
     }
 
-    public BitBayStockData withMax(Float max) {
+    public BitbayStockData withMax(Float max) {
         this.max = max;
         return this;
     }
@@ -99,7 +99,7 @@ public class BitBayStockData implements Serializable {
         this.min = min;
     }
 
-    public BitBayStockData withMin(Float min) {
+    public BitbayStockData withMin(Float min) {
         this.min = min;
         return this;
     }
@@ -112,7 +112,7 @@ public class BitBayStockData implements Serializable {
         this.last = last;
     }
 
-    public BitBayStockData withLast(Float last) {
+    public BitbayStockData withLast(Float last) {
         this.last = last;
         return this;
     }
@@ -125,7 +125,7 @@ public class BitBayStockData implements Serializable {
         this.bid = bid;
     }
 
-    public BitBayStockData withBid(Float bid) {
+    public BitbayStockData withBid(Float bid) {
         this.bid = bid;
         return this;
     }
@@ -138,7 +138,7 @@ public class BitBayStockData implements Serializable {
         this.ask = ask;
     }
 
-    public BitBayStockData withAsk(Float ask) {
+    public BitbayStockData withAsk(Float ask) {
         this.ask = ask;
         return this;
     }
@@ -151,7 +151,7 @@ public class BitBayStockData implements Serializable {
         this.vwap = vwap;
     }
 
-    public BitBayStockData withVwap(Float vwap) {
+    public BitbayStockData withVwap(Float vwap) {
         this.vwap = vwap;
         return this;
     }
@@ -164,7 +164,7 @@ public class BitBayStockData implements Serializable {
         this.average = average;
     }
 
-    public BitBayStockData withAverage(Float average) {
+    public BitbayStockData withAverage(Float average) {
         this.average = average;
         return this;
     }
@@ -177,7 +177,7 @@ public class BitBayStockData implements Serializable {
         this.volume = volume;
     }
 
-    public BitBayStockData withVolume(Float volume) {
+    public BitbayStockData withVolume(Float volume) {
         this.volume = volume;
         return this;
     }
@@ -190,7 +190,7 @@ public class BitBayStockData implements Serializable {
         this.bids = bids;
     }
 
-    public BitBayStockData withBids(List<List<Float>> bids) {
+    public BitbayStockData withBids(List<List<Float>> bids) {
         this.bids = bids;
         return this;
     }
@@ -203,7 +203,7 @@ public class BitBayStockData implements Serializable {
         this.asks = asks;
     }
 
-    public BitBayStockData withAsks(List<List<Float>> asks) {
+    public BitbayStockData withAsks(List<List<Float>> asks) {
         this.asks = asks;
         return this;
     }
@@ -216,7 +216,7 @@ public class BitBayStockData implements Serializable {
         this.transactions = transactions;
     }
 
-    public BitBayStockData withTransactions(List<Transaction> transactions) {
+    public BitbayStockData withTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
         return this;
     }
