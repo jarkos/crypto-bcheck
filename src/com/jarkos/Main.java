@@ -15,7 +15,7 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class);
 
     public static Double lastMACD = 0d;
-    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.05d);
+    public static BigDecimal marginRoiNotificationCall = BigDecimal.valueOf(1.09d);
     public static BigDecimal lastHuobiLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastKrakenLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitstampLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
@@ -36,14 +36,14 @@ public class Main {
             }
             CandlestickChart.refresh();
             List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
-            if (lastMACD < -70.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
-//                JavaMailSender.sendMail(
-//                        " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
-//                        " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi);
+            if (lastMACD < -350.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginRoiNotificationCall) > 0)) {
+                JavaMailSender.sendMail(
+                        " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
+                        " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi);
             }
 
             logger.info("Last BB BTC MACD indicator: " + lastMACD);
-            Thread.sleep(HALF_MINUTE_IN_MILLIS);
+            Thread.sleep(2* HALF_MINUTE_IN_MILLIS);
         }
     }
 

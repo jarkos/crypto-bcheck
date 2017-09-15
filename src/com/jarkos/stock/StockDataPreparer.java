@@ -71,6 +71,9 @@ public class StockDataPreparer {
             if (walutomatEurPlnData != null && bitBayBccPlnStockData != null && krakenBccEurStockData != null) {
                 new KrakenDataService().prepareEuroBuyBccSellOnBitBayRoi(bitBayBccPlnStockData, krakenBccEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV);
             }
+            if (bitBayLtcPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
+                new KrakenDataService().prepareBitBayLtcBuyAndBccSellRoi(bitBayLtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData, KRAKEN_MAKER_TRADE_PROV);
+            }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {
             //                prepareRoiBBtoKraken(bitBayBtcPlnStockData, krakenBtcEurData, walutomatEurPlnData);
             //                printRoiBitstamp(bitBayBtcPlnStockData, walutomatEurPlnData);
