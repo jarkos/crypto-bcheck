@@ -3,8 +3,8 @@ package com.jarkos.stock.service;
 import com.jarkos.stock.abstractional.api.BccStockDataInterface;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
-import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.walutomat.WalutomatData;
 import org.apache.log4j.Logger;
 
@@ -30,7 +30,7 @@ public abstract class AbstractDataService {
     public abstract BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv);
 
     public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitbayStockData bitBayLtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData, BitbayStockData bitBayBtcPlnStockData,
-                                                       BigDecimal stockTradeProv) throws Exception {
+                                                       BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -51,11 +51,12 @@ public abstract class AbstractDataService {
             logger.info("ROI LTC BitBay -> " + getStockCodeName() + ": " + bitBayLtcBuyAndBtcSellRoi);
             return bitBayLtcBuyAndBtcSellRoi;
         }
-        throw new Exception("NO" + getStockCodeName() + " data");
+        System.out.println("NO" + getStockCodeName() + " data");
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal prepareBitBayLtcBuyAndBccSellRoi(BitbayStockData bitBayLtcPlnStockData, BccStockDataInterface bccEurAbstractStockData, BitbayStockData bitBayBccPlnStockData,
-                                                       BigDecimal stockTradeProv) throws Exception {
+                                                       BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -74,9 +75,13 @@ public abstract class AbstractDataService {
             BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell.subtract((numberOfMoneyFromBitBayBtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
             BigDecimal bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(LTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
             logger.info("ROI LTC BitBay -> " + getStockCodeName() + " BCC -> Bitbay PLN : " + bitBayLtcBuyAndBtcSellRoi);
+            System.out.println("LTC BitBay -> " + bitBayLtcPlnStockData.getLast() + " LTC " + getStockCodeName() + " -> " +
+                               ltcEurStockData.getLastLtcPrice().multiply(BigDecimal.valueOf(4.28d)) + " # BCC " + getStockCodeName() + " ->" +
+                               bccEurAbstractStockData.getLastBccPrice().multiply(BigDecimal.valueOf(4.28d)) + " BCC BitBay -> " + bitBayBccPlnStockData.getLast());
             return bitBayLtcBuyAndBtcSellRoi;
         }
-        throw new Exception("NO" + getStockCodeName() + " data");
+        System.out.println("NO" + getStockCodeName() + " data");
+        return BigDecimal.ZERO;
     }
 
     public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitbayStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData, WalutomatData walutomatEurPlnData,
@@ -92,7 +97,7 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyBtcExchangedAfterProv = plnMoneyAfterBtcExchange.subtract(plnMoneyAfterBtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndBtcSellRoi = plnMoneyBtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat BTC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
+        logger.info("ROI EUR Walutomat -> BTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
         return eurBuyAndBtcSellRoi;
     }
 
@@ -110,7 +115,7 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyLtcExchangedAfterProv = plnMoneyAfterLtcExchange.subtract(plnMoneyAfterLtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndLtcSellRoi = plnMoneyLtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat LTC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndLtcSellRoi);
+        logger.info("ROI EUR Walutomat -> LTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndLtcSellRoi);
         return eurBuyAndLtcSellRoi;
     }
 
@@ -128,7 +133,7 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyBccExchangedAfterProv = plnMoneyAfterBccExchange.subtract(plnMoneyAfterBccExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndBccSellRoi = plnMoneyBccExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat BCC -> " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBccSellRoi);
+        logger.info("ROI EUR Walutomat -> BCC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBccSellRoi);
         return eurBuyAndBccSellRoi;
     }
 
