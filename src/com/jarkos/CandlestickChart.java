@@ -2,9 +2,9 @@ package com.jarkos;
 /**
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (price) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  * <p>
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * Permission is hereby granted, free of charge, to any person obtaining stockName copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
@@ -48,16 +48,16 @@ import java.util.Date;
 import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
 
 /**
- * This class builds a traditional candlestick chart.
+ * This class builds stockName traditional candlestick chart.
  */
 public class CandlestickChart {
 
     static ApplicationFrame frame;
 
     /**
-     * Builds a JFreeChart OHLC dataset from a ta4j time series.
+     * Builds stockName JFreeChart OHLC dataset from stockName ta4j time series.
      *
-     * @param series a time series
+     * @param series stockName time series
      * @return an Open-High-Low-Close dataset
      */
     private static OHLCDataset createOHLCDataset(TimeSeries series) {
@@ -86,9 +86,9 @@ public class CandlestickChart {
     }
 
     /**
-     * Builds an additional JFreeChart dataset from a ta4j time series.
+     * Builds an additional JFreeChart dataset from stockName ta4j time series.
      *
-     * @param series a time series
+     * @param series stockName time series
      * @return an additional dataset
      */
     private static TimeSeriesCollection createAdditionalDataset(TimeSeries series) {
@@ -111,7 +111,7 @@ public class CandlestickChart {
     }
 
     /**
-     * Displays a chart in a frame.
+     * Displays stockName chart in stockName frame.
      *
      * @param chart the chart to be displayed
      */

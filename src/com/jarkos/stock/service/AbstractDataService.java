@@ -97,8 +97,18 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyBtcExchangedAfterProv = plnMoneyAfterBtcExchange.subtract(plnMoneyAfterBtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndBtcSellRoi = plnMoneyBtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat -> BTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi);
+        String resultToDisplay = "ROI EUR Walutomat -> BTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi;
+        displayDependOnRoi(eurBuyAndBtcSellRoi, resultToDisplay);
+
         return eurBuyAndBtcSellRoi;
+    }
+
+    private void displayDependOnRoi(BigDecimal eurBuyAndBtcSellRoi, String resultToDisplay) {
+        if (eurBuyAndBtcSellRoi.compareTo(BigDecimal.valueOf(1.04)) > 0) {
+            logger.error(resultToDisplay);
+        } else {
+            logger.info(resultToDisplay);
+        }
     }
 
     public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitbayStockData bitBayLtcPlnStockData, LtcStockDataInterface abstractLtcEurStockData, WalutomatData walutomatEurPlnData,
@@ -115,7 +125,8 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyLtcExchangedAfterProv = plnMoneyAfterLtcExchange.subtract(plnMoneyAfterLtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndLtcSellRoi = plnMoneyLtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat -> LTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndLtcSellRoi);
+        String resultToDisplay = "ROI EUR Walutomat -> LTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndLtcSellRoi;
+        displayDependOnRoi(eurBuyAndLtcSellRoi, resultToDisplay);
         return eurBuyAndLtcSellRoi;
     }
 
@@ -133,7 +144,8 @@ public abstract class AbstractDataService {
         BigDecimal plnMoneyBccExchangedAfterProv = plnMoneyAfterBccExchange.subtract(plnMoneyAfterBccExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
 
         BigDecimal eurBuyAndBccSellRoi = plnMoneyBccExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        logger.info("ROI EUR Walutomat -> BCC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBccSellRoi);
+        String resultToDisplay = "ROI EUR Walutomat -> BCC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBccSellRoi;
+        displayDependOnRoi(eurBuyAndBccSellRoi, resultToDisplay);
         return eurBuyAndBccSellRoi;
     }
 

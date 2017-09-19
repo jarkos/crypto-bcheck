@@ -92,7 +92,7 @@ public class BitBayDataService {
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(2);
         String res = t.getDate() + "," + t.getPrice() + "," + nf.format(t.getAmount()).replace(",", ".");
-        System.out.println(new DateTime(t.getDate() * 1000L).toString() + " " + res);
+//        System.out.println(new DateTime(t.getDate() * 1000L).toString() + " " + res);
         return res;
     }
 
