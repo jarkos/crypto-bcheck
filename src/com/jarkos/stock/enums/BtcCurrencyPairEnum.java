@@ -3,7 +3,7 @@ package com.jarkos.stock.enums;
 /**
  * Created by jkostrzewa on 2017-09-19.
  */
-public enum CurrencyPairsEnum {
+public enum BtcCurrencyPairEnum {
     BTCPLN("BTC/PLN"),
     BTCEUR("BTC/EUR"),
     BTCUSD("BTC/USD"),
@@ -11,8 +11,12 @@ public enum CurrencyPairsEnum {
 
     private String value;
 
-    CurrencyPairsEnum(String s) {
+    BtcCurrencyPairEnum(String s) {
         this.value = s;
+    }
+
+    public String getCode(BtcCurrencyPairEnum s) {
+        return s.value;
     }
 
     public String toString() {
