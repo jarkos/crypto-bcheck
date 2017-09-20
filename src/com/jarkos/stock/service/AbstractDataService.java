@@ -105,7 +105,7 @@ public abstract class AbstractDataService {
 
     private void displayDependOnRoi(BigDecimal eurBuyAndBtcSellRoi, String resultToDisplay) {
         if (eurBuyAndBtcSellRoi.compareTo(BigDecimal.valueOf(1.04)) > 0) {
-            logger.error(resultToDisplay);
+            logger.warn(resultToDisplay);
         } else {
             logger.info(resultToDisplay);
         }

@@ -7,7 +7,6 @@ import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
 import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
-import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.text.NumberFormat;
 import java.util.Collections;
 
 import static com.jarkos.RequestSender.sendRequest;
-import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
+import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 import static com.jarkos.json.JsonFetcher.UTF_8;
 
 /**
@@ -72,7 +71,7 @@ public class BitBayDataService {
     private static Long getLastTransactionUpdateTime() {
         long lastTimeStamp = 0l;
         try {
-            File file = new File(BIT_BAY_BTC_DATA_REPOSITORIES_CSV);
+            File file = new File(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
             ReversedLinesFileReader object = new ReversedLinesFileReader(file, Charset.forName(UTF_8));
             String[] line = object.readLine().split(",");
             lastTimeStamp = Long.parseLong(line[0]);
@@ -84,7 +83,7 @@ public class BitBayDataService {
 
     private static void saveDataRowIfNotAvailable(Transaction t, Long lastCsvUpdateTimeStamp) {
         if (t.getDate() > lastCsvUpdateTimeStamp) {
-            FileUpdater.addResultData(getTransactionDataRowResult(t), BIT_BAY_BTC_DATA_REPOSITORIES_CSV);
+            FileUpdater.addResultData(getTransactionDataRowResult(t), BIT_BAY_BTC_DATA_REPOSITORY_CSV);
         }
     }
 

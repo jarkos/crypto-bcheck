@@ -1,8 +1,6 @@
 package com.jarkos;
 
-import com.jarkos.stock.enums.BtcCurrencyPairEnum;
-import com.jarkos.stock.enums.LtcCurrencyPairEnum;
-import com.jarkos.stock.enums.StockNameEnum;
+import com.jarkos.stock.enums.*;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -25,15 +23,30 @@ public class CoinmarketcapPriceCompare {
     private static final Logger logger = Logger.getLogger(CoinmarketcapPriceCompare.class);
 
     public void compare() {
-        logger.trace("*** BTC");
+        logger.error("*** BTC");
         List<MarketTableRow> btcMarketsData = getMarketsData("https://coinmarketcap.com/currencies/bitcoin/#markets");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);
 
-        logger.trace("*** LTC");
+        logger.error("*** LTC");
         List<MarketTableRow> ltcMarketsData = getMarketsData("https://coinmarketcap.com/currencies/litecoin/#markets");
         final Set<String> ltcCurrencyParisToCompare = Arrays.stream(LtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(ltcMarketsData, StockNameEnum.BitBay, LtcCurrencyPairEnum.LTCPLN.toString(), ltcCurrencyParisToCompare);
+
+        logger.error("*** ETH");
+        List<MarketTableRow> ethMarketsData = getMarketsData("https://coinmarketcap.com/currencies/ethereum/#markets");
+        final Set<String> ethCurrencyParisToCompare = Arrays.stream(EthCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
+        compareStockPrice(ethMarketsData, StockNameEnum.BitBay, EthCurrencyPairEnum.ETHPLN.toString(), ethCurrencyParisToCompare);
+
+        logger.error("*** BCC");
+        List<MarketTableRow> bccMarketsData = getMarketsData("https://coinmarketcap.com/currencies/bitcoin-cash/#markets");
+        final Set<String> bccCurrencyParisToCompare = Arrays.stream(BccCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
+        compareStockPrice(bccMarketsData, StockNameEnum.BitBay, BccCurrencyPairEnum.BCCPLN.toString(), bccCurrencyParisToCompare);
+
+        logger.error("*** LISK");
+        List<MarketTableRow> liskMarketsData = getMarketsData("https://coinmarketcap.com/currencies/lisk/#markets");
+        final Set<String> liskCurrencyParisToCompare = Arrays.stream(LiskCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
+        compareStockPrice(liskMarketsData, StockNameEnum.BitBay, LiskCurrencyPairEnum.LSKPLN.toString(), liskCurrencyParisToCompare);
 
     }
 
@@ -48,10 +61,10 @@ public class CoinmarketcapPriceCompare {
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +
                         " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff;
-                if (diff.compareTo(BigDecimal.valueOf(1.045)) > 0) {
+                if (diff.compareTo(Main.marginCompareWarnDisplayRoi) > 0) {
                     logger.warn(resultToDisplay);
-                } else if (diff.compareTo(BigDecimal.ONE) > 0) {
-                    logger.trace(resultToDisplay);
+                } else {
+                    logger.error(resultToDisplay);
                 }
             }
         }));

@@ -45,7 +45,7 @@ import org.jfree.ui.RefineryUtilities;
 import java.awt.*;
 import java.util.Date;
 
-import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORIES_CSV;
+import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 
 /**
  * This class builds stockName traditional candlestick chart.
@@ -143,7 +143,7 @@ public class CandlestickChart {
         /**
          * Getting time series
          */
-        TimeSeries series = CsvTradesLoaderCustom.loadBitstampSeries(BIT_BAY_BTC_DATA_REPOSITORIES_CSV);
+        TimeSeries series = CsvTradesLoaderCustom.loadBitstampSeries(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
 
         /**
          * Creating the OHLC dataset
