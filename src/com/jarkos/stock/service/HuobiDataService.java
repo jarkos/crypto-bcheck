@@ -17,6 +17,7 @@ import static com.jarkos.config.IndicatorsSystemConfig.HUOBI_WITHDRAW_PROV_AMOUN
  * Created by jkostrzewa on 2017-09-09.
  */
 public class HuobiDataService extends AbstractDataService {
+//public class HuobiDataService extends AbstractDataService {
 
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";

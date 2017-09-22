@@ -4,8 +4,8 @@ import com.jarkos.stock.abstractional.api.BccStockDataInterface;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
-import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.walutomat.WalutomatData;
 import org.apache.log4j.Logger;
@@ -19,6 +19,7 @@ import static com.jarkos.config.IndicatorsSystemConfig.*;
  * Created by jkostrzewa on 2017-09-09.
  */
 public abstract class AbstractDataService {
+
     private static final Logger logger = Logger.getLogger(AbstractDataService.class);
 
     public abstract String getStockCodeName();
