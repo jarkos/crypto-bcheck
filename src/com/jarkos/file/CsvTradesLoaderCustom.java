@@ -28,7 +28,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
 
     public static final String UTF_8 = "UTF-8";
 
-    public static TimeSeries loadBitstampSeries(String filePath) {
+    public static TimeSeries loadStockSeries(String filePath) {
         System.out.println("Loading csv file...");
         long startTime = System.nanoTime();
         CSVReader csvReader = null;

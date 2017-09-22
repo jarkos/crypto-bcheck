@@ -18,4 +18,9 @@ public class BitstampBtcStockData extends BitstampStockData implements BtcStockD
     public BigDecimal getLastBtcPrice() {
         return BigDecimal.valueOf(Float.valueOf(getLast()));
     }
+
+    @Override
+    public Object getBtcEurStockData() {
+        return this;
+    }
 }

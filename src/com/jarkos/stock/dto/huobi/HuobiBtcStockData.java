@@ -21,4 +21,9 @@ public class HuobiBtcStockData extends HuobiStockData implements BtcStockDataInt
         return BigDecimal.valueOf(getPLast());
     }
 
+    @Override
+    public Object getBtcEurStockData() {
+        return this;
+    }
+
 }

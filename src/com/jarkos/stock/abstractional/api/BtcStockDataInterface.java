@@ -9,4 +9,5 @@ public interface BtcStockDataInterface {
 
     BigDecimal getLastBtcPrice();
 
+    Object getBtcEurStockData();
 }

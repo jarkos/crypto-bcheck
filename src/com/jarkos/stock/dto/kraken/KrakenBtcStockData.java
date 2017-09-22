@@ -19,4 +19,9 @@ public class KrakenBtcStockData extends KrakenStockData implements BtcStockDataI
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXXBTZEUR().getLastTradePrice().get(0)));
     }
 
+    @Override
+    public Object getBtcEurStockData() {
+        return this.getResult().getXXBTZEUR();
+    }
+
 }

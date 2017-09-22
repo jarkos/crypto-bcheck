@@ -27,6 +27,7 @@ public class Main {
     public static BigDecimal lastBitstampEurToLtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitbayLtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitbayEthToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal lastBitbayBtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -55,18 +56,19 @@ public class Main {
                                     " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi + " Bitstamp LTC Bitbay BTC ROI: " +
                                     lastBitstampLtcToBitbayBtcRoi + " Kraken EUR to Bitbay LTC ROI: " + lastKrakenEurToLtcRoi + " Bitstamp Eur to Bitbay LTC ROI: " +
                                     lastBitstampEurToLtcRoi + " Kraken Ltc to Bitbay BBC ROI: " + lastBitbayLtcToKrakenBccToBitbayPlnRoi + " Kraken Eth to Bitbay BBC ROI: " +
-                                    lastBitbayEthToKrakenBccToBitbayPlnRoi);
+                                    lastBitbayEthToKrakenBccToBitbayPlnRoi + " Bitbay Btc to Kraken BBC ROI: " +
+                                    lastBitbayBtcToKrakenBccToBitbayPlnRoi);
         }
     }
 
     private static List<BigDecimal> innitInternalIndicatorsList() {
         return Arrays.asList(
                 //                lastHuobiLtcToBitbayBtcRoi,
-                lastKrakenLtcToBitbayBtcRoi, lastBitstampLtcToBitbayBtcRoi, lastBitbayLtcToKrakenBccToBitbayPlnRoi, lastBitbayEthToKrakenBccToBitbayPlnRoi
+                lastKrakenLtcToBitbayBtcRoi, lastBitstampLtcToBitbayBtcRoi, lastBitbayLtcToKrakenBccToBitbayPlnRoi, lastBitbayEthToKrakenBccToBitbayPlnRoi, lastBitbayBtcToKrakenBccToBitbayPlnRoi
 
-                , lastKrakenEurToBtcRoi,
+//                , lastKrakenEurToBtcRoi,
                 //                lastBitstampEurToBtcRoi,
-                lastKrakenEurToLtcRoi
+//                lastKrakenEurToLtcRoi
                 //                lastBitstampEurToLtcRoi
                             );
     }

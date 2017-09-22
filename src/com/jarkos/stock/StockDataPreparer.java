@@ -2,6 +2,7 @@ package com.jarkos.stock;
 
 import com.jarkos.Main;
 import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayBtcStockData;
 import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
@@ -28,7 +29,7 @@ public class StockDataPreparer {
     private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
 
     public void fetchAndPrintStockData() {
-        BitbayStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
+        BitbayBtcStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
         BitbayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
         BitbayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
         KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
@@ -85,6 +86,13 @@ public class StockDataPreparer {
                         .prepareBitBayEthBuyAndBccSellRoi(bitBayEthPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData, KRAKEN_MAKER_TRADE_PROV);
                 if (bitBayEthBuyAndBtcSellRoi.compareTo(BigDecimal.ZERO) > 0) {
                     Main.lastBitbayEthToKrakenBccToBitbayPlnRoi = bitBayEthBuyAndBtcSellRoi;
+                }
+            }
+            if (bitBayEthPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
+                BigDecimal bitBayEthBuyAndBtcSellRoi = new KrakenDataService()
+                        .prepareBitBayBtcBuyAndBccSellRoi(bitBayBtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData, KRAKEN_MAKER_TRADE_PROV);
+                if (bitBayEthBuyAndBtcSellRoi.compareTo(BigDecimal.ZERO) > 0) {
+                    Main.lastBitbayBtcToKrakenBccToBitbayPlnRoi = bitBayEthBuyAndBtcSellRoi;
                 }
             }
         }

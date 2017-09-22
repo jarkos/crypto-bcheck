@@ -2,6 +2,7 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
+import com.jarkos.stock.dto.bitbay.BitbayBtcStockData;
 import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
@@ -29,14 +30,14 @@ public class BitBayDataService {
     private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
 
 
-    public BitbayStockData getBtcPlnStockData() {
+    public BitbayBtcStockData getBtcPlnStockData() {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayBtcPlnApiURL);
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getBitBayMarketData(resBitBay);
+        return new BitbayBtcStockData(getBitBayMarketData(resBitBay));
     }
 
     public BitbayStockData getLtcPlnStockData() {
@@ -77,6 +78,7 @@ public class BitBayDataService {
         Long lastCsvUpdateTimeStamp = getLastTransactionUpdateTime();
         Collections.sort(bitbayStockData.getTransactions());
         bitbayStockData.getTransactions().stream().forEach(t -> saveDataRowIfNotAvailable(t, lastCsvUpdateTimeStamp));
+        System.out.println("Last BitBay BTC price PLN: " + bitbayStockData.getLast());
     }
 
 

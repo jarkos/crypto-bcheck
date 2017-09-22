@@ -10,8 +10,19 @@ import java.math.BigDecimal;
  */
 public class BitbayBtcStockData extends BitbayStockData implements BtcStockDataInterface {
 
+
+    public BitbayBtcStockData(BitbayStockData b) {
+        super(b.getMax(), b.getMin(), b.getLast(), b.getBid(), b.getAsk(), b.getVwap(), b.getAverage(), b.getVolume(), b.getBids(), b.getAsks(), b.getTransactions());
+    }
+
     @Override
     public BigDecimal getLastBtcPrice() {
         return BigDecimal.valueOf(this.getBid());
     }
+
+    @Override
+    public Object getBtcEurStockData() {
+        return this;
+    }
+
 }

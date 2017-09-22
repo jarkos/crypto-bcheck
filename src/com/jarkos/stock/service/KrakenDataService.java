@@ -1,6 +1,7 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
+import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.kraken.KrakenBccStockData;
 import com.jarkos.stock.dto.kraken.KrakenBtcStockData;
@@ -67,6 +68,11 @@ public class KrakenDataService extends AbstractDataService {
     @Override
     public EthStockDataInterface getEthEurStockData() {
         return getKrakenEthEurStockData();
+    }
+
+    @Override
+    protected BtcStockDataInterface getBtcEurStockData() {
+        return getKrakenBtcEurStockData();
     }
 
     private EthStockDataInterface getKrakenEthEurStockData() {

@@ -2,6 +2,7 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
+import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
@@ -31,6 +32,11 @@ public class BitstampDataService extends AbstractDataService {
     @Override
     public EthStockDataInterface getEthEurStockData() {
         return getBitstampEthEurStockData();
+    }
+
+    @Override
+    protected BtcStockDataInterface getBtcEurStockData() {
+        return getBitstampBtcEurStockData();
     }
 
     private EthStockDataInterface getBitstampEthEurStockData() {

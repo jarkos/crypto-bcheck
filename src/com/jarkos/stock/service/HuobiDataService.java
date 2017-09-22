@@ -2,6 +2,7 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
+import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
 import com.jarkos.stock.dto.huobi.HuobiLtcStockData;
@@ -17,7 +18,7 @@ import static com.jarkos.config.IndicatorsSystemConfig.HUOBI_WITHDRAW_PROV_AMOUN
  * Created by jkostrzewa on 2017-09-09.
  */
 public class HuobiDataService extends AbstractDataService {
-//public class HuobiDataService extends AbstractDataService {
+    //public class HuobiDataService extends AbstractDataService {
 
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";
@@ -55,7 +56,17 @@ public class HuobiDataService extends AbstractDataService {
     @Override
     public EthStockDataInterface getEthEurStockData() {
         try {
-            throw new NotSupportedOperationException("I dont implement ETH for " + getStockCodeName());
+            throw new NotSupportedOperationException("I don't implement ETH for " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected BtcStockDataInterface getBtcEurStockData() {
+        try {
+            throw new NotSupportedOperationException("I don't implement BTC for " + getStockCodeName());
         } catch (NotSupportedOperationException e) {
             e.printStackTrace();
         }
