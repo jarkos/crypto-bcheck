@@ -1,12 +1,12 @@
 package com.jarkos.stock.dto.bitbay.general;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BitbayStockData implements Serializable {
+import java.io.Serializable;
+import java.util.List;
+
+public class BitBayStockData implements Serializable {
 
     @SerializedName("max")
     @Expose
@@ -46,7 +46,7 @@ public class BitbayStockData implements Serializable {
     /**
      * No args constructor for use in serialization
      */
-    public BitbayStockData() {
+    public BitBayStockData() {
     }
 
     /**
@@ -62,7 +62,7 @@ public class BitbayStockData implements Serializable {
      * @param asks
      * @param transactions
      */
-    public BitbayStockData(Float max, Float min, Float last, Float bid, Float ask, Float vwap, Float average, Float volume, List<List<Float>> bids, List<List<Float>> asks,
+    public BitBayStockData(Float max, Float min, Float last, Float bid, Float ask, Float vwap, Float average, Float volume, List<List<Float>> bids, List<List<Float>> asks,
                            List<Transaction> transactions) {
         super();
         this.max = max;
@@ -86,7 +86,7 @@ public class BitbayStockData implements Serializable {
         this.max = max;
     }
 
-    public BitbayStockData withMax(Float max) {
+    public BitBayStockData withMax(Float max) {
         this.max = max;
         return this;
     }
@@ -99,7 +99,7 @@ public class BitbayStockData implements Serializable {
         this.min = min;
     }
 
-    public BitbayStockData withMin(Float min) {
+    public BitBayStockData withMin(Float min) {
         this.min = min;
         return this;
     }
@@ -112,7 +112,7 @@ public class BitbayStockData implements Serializable {
         this.last = last;
     }
 
-    public BitbayStockData withLast(Float last) {
+    public BitBayStockData withLast(Float last) {
         this.last = last;
         return this;
     }
@@ -125,7 +125,7 @@ public class BitbayStockData implements Serializable {
         this.bid = bid;
     }
 
-    public BitbayStockData withBid(Float bid) {
+    public BitBayStockData withBid(Float bid) {
         this.bid = bid;
         return this;
     }
@@ -138,7 +138,7 @@ public class BitbayStockData implements Serializable {
         this.ask = ask;
     }
 
-    public BitbayStockData withAsk(Float ask) {
+    public BitBayStockData withAsk(Float ask) {
         this.ask = ask;
         return this;
     }
@@ -151,7 +151,7 @@ public class BitbayStockData implements Serializable {
         this.vwap = vwap;
     }
 
-    public BitbayStockData withVwap(Float vwap) {
+    public BitBayStockData withVwap(Float vwap) {
         this.vwap = vwap;
         return this;
     }
@@ -164,7 +164,7 @@ public class BitbayStockData implements Serializable {
         this.average = average;
     }
 
-    public BitbayStockData withAverage(Float average) {
+    public BitBayStockData withAverage(Float average) {
         this.average = average;
         return this;
     }
@@ -177,7 +177,7 @@ public class BitbayStockData implements Serializable {
         this.volume = volume;
     }
 
-    public BitbayStockData withVolume(Float volume) {
+    public BitBayStockData withVolume(Float volume) {
         this.volume = volume;
         return this;
     }
@@ -190,7 +190,7 @@ public class BitbayStockData implements Serializable {
         this.bids = bids;
     }
 
-    public BitbayStockData withBids(List<List<Float>> bids) {
+    public BitBayStockData withBids(List<List<Float>> bids) {
         this.bids = bids;
         return this;
     }
@@ -203,7 +203,7 @@ public class BitbayStockData implements Serializable {
         this.asks = asks;
     }
 
-    public BitbayStockData withAsks(List<List<Float>> asks) {
+    public BitBayStockData withAsks(List<List<Float>> asks) {
         this.asks = asks;
         return this;
     }
@@ -216,12 +216,12 @@ public class BitbayStockData implements Serializable {
         this.transactions = transactions;
     }
 
-    public BitbayStockData withTransactions(List<Transaction> transactions) {
+    public BitBayStockData withTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
         return this;
     }
 
-    public void sort(List<Transaction> transactions){
+    public void sort(List<Transaction> transactions) {
 
     }
 

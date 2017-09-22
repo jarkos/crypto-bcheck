@@ -1,10 +1,10 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
-import com.jarkos.stock.dto.bitbay.BitbayBtcStockData;
-import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
-import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
+import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
+import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
+import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.kraken.KrakenBccStockData;
@@ -29,16 +29,16 @@ public class StockDataPreparer {
     private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
 
     public void fetchAndPrintStockData() {
-        BitbayBtcStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
-        BitbayStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
-        BitbayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
+        BitBayBtcStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
+        BitBayLtcStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
+        BitBayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
         KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
         KrakenBccStockData krakenBccEurStockData = new KrakenDataService().getKrakenBccEurStockData();
         KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
         WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
-        BitbayEthStockData bitBayEthPlnStockData = new BitBayDataService().getEthPlnStockData();
+        BitBayEthStockData bitBayEthPlnStockData = new BitBayDataService().getEthPlnStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
@@ -95,6 +95,14 @@ public class StockDataPreparer {
                     Main.lastBitbayBtcToKrakenBccToBitbayPlnRoi = bitBayEthBuyAndBtcSellRoi;
                 }
             }
+            if (bitBayBtcPlnStockData != null && krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
+                final BigDecimal bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi = new KrakenDataService()
+                        .prepareBitBayBtcBuyAndLtcSellRoi(bitBayBtcPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData, KRAKEN_MAKER_TRADE_PROV);
+                if (bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi.compareTo(BigDecimal.ZERO) > 0) {
+                    Main.lastBitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi = bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi;
+                }
+            }
+
         }
     }
 

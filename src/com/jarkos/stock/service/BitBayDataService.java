@@ -2,14 +2,16 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
-import com.jarkos.stock.dto.bitbay.BitbayBtcStockData;
-import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
-import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
-import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
+import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
+import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
+import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -29,52 +31,56 @@ public class BitBayDataService {
     private static String BitBayBccPlnApiURL = "https://bitbay.net/API/Public/BCCPLN/all.json";
     private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
 
+    @Inject
+    public BitBayDataService() {
+    }
 
-    public BitbayBtcStockData getBtcPlnStockData() {
+
+    public BitBayBtcStockData getBtcPlnStockData() {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayBtcPlnApiURL);
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitbayBtcStockData(getBitBayMarketData(resBitBay));
+        return new BitBayBtcStockData(getBitBayMarketData(resBitBay));
     }
 
-    public BitbayStockData getLtcPlnStockData() {
+    public BitBayLtcStockData getLtcPlnStockData() {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayLtcPlnApiURL);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return getBitBayMarketData(resBitBay);
+        return new BitBayLtcStockData(getBitBayMarketData(resBitBay));
     }
 
-    public BitbayBccStockData getBccPlnStockData() {
+    public BitBayBccStockData getBccPlnStockData() {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayBccPlnApiURL);
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitbayBccStockData(getBitBayMarketData(resBitBay));
+        return new BitBayBccStockData(getBitBayMarketData(resBitBay));
     }
 
-    public BitbayEthStockData getEthPlnStockData() {
+    public BitBayEthStockData getEthPlnStockData() {
         String resBitBay = null;
         try {
             resBitBay = sendRequest(BitBayEthPlnApiURL);
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitbayEthStockData(getBitBayMarketData(resBitBay));
+        return new BitBayEthStockData(getBitBayMarketData(resBitBay));
     }
 
     public String getStockCodeName() {
         return "Bitbay";
     }
 
-    public static void addNewBitBayTransactionsToCSV(BitbayStockData bitbayStockData) {
+    public static void addNewBitBayTransactionsToCSV(BitBayStockData bitbayStockData) {
         Long lastCsvUpdateTimeStamp = getLastTransactionUpdateTime();
         Collections.sort(bitbayStockData.getTransactions());
         bitbayStockData.getTransactions().stream().forEach(t -> saveDataRowIfNotAvailable(t, lastCsvUpdateTimeStamp));
@@ -105,13 +111,13 @@ public class BitBayDataService {
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(2);
         String res = t.getDate() + "," + t.getPrice() + "," + nf.format(t.getAmount()).replace(",", ".");
-//        System.out.println(new DateTime(t.getDate() * 1000L).toString() + " " + res);
+        //        System.out.println(new DateTime(t.getDate() * 1000L).toString() + " " + res);
         return res;
     }
 
-    private static BitbayStockData getBitBayMarketData(String res) {
+    private static BitBayStockData getBitBayMarketData(String res) {
         Gson gson = new Gson();
-        return gson.fromJson(res, BitbayStockData.class);
+        return gson.fromJson(res, BitBayStockData.class);
     }
 
 }
