@@ -48,6 +48,11 @@ public class CoinmarketcapPriceCompare {
         final Set<String> liskCurrencyParisToCompare = Arrays.stream(LiskCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(liskMarketsData, StockNameEnum.BitBay, LiskCurrencyPairEnum.LSKPLN.toString(), liskCurrencyParisToCompare);
 
+//        logger.error("*** DASH");
+//        List<MarketTableRow> dashMarketsData = getMarketsData("https://coinmarketcap.com/currencies/dash/#markets");
+//        final Set<String> dashCurrencyParisToCompare = Arrays.stream(DashCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
+//        compareStockPrice(dashMarketsData, StockNameEnum.BitBay, DashCurrencyPairEnum.DASHPLN.toString(), dashCurrencyParisToCompare);
+//
     }
 
     private void compareStockPrice(List<MarketTableRow> marketsData, StockNameEnum mainStockName, String mainCurrencyPair, Set<String> currencyParisToCompare) {
