@@ -1,6 +1,7 @@
-package com.jarkos.stock.dto.bitbay.general;
+package com.jarkos.stock.dto.bitbay;
 
 import com.jarkos.stock.abstractional.api.BccStockDataInterface;
+import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 
 import java.math.BigDecimal;
 

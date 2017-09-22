@@ -12,11 +12,13 @@ public class IndicatorsSystemConfig {
 
     public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
+    public static final BigDecimal ETH_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal MONEY_TO_EUR_BUY = BigDecimal.valueOf(1000F);
 
     public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0035F);
     public static final BigDecimal BITBAY_BTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00045F);
     public static final BigDecimal BITBAY_LTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.005F);
+    public static final BigDecimal BITBAY_ETH_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00126F);
 
     public static final BigDecimal BITSTAMP_WITHDRAW_PROV = BigDecimal.valueOf(0F);
     public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);

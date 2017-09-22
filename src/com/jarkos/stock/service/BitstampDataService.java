@@ -2,7 +2,9 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
+import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
@@ -19,10 +21,26 @@ public class BitstampDataService extends AbstractDataService {
 
     private static String BitstampLtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
     private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
+    private static String BitstampEthEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/etheur";
 
     @Override
     public BitstampLtcStockData getLtcEurStockData() {
         return getBitstampLtcEurStockData();
+    }
+
+    @Override
+    public EthStockDataInterface getEthEurStockData() {
+        return getBitstampEthEurStockData();
+    }
+
+    private EthStockDataInterface getBitstampEthEurStockData() {
+        String resBitstamp = null;
+        try {
+            resBitstamp = RequestSender.sendRequest(BitstampEthEurApiUrl);
+        } catch (DataFetchUnavailableException e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        return new BitstampEthStockData(getBitstampMarketData(resBitstamp));
     }
 
     public BitstampLtcStockData getBitstampLtcEurStockData() {

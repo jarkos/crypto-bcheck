@@ -1,7 +1,8 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
@@ -38,8 +39,7 @@ public class StockDataPreparer {
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
         WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
-        //
-        //        KrakenStockData krakenBtcEurData = KrakenDataService.getKrakenBtcEurStockData();
+        BitbayEthStockData bitBayEthPlnStockData = new BitBayDataService().getEthPlnStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
@@ -88,6 +88,13 @@ public class StockDataPreparer {
                         .prepareBitBayLtcBuyAndBccSellRoi(bitBayLtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData, KRAKEN_MAKER_TRADE_PROV);
                 if (bitBayLtcBuyAndBtcSellRoi.compareTo(BigDecimal.ZERO) > 0) {
                     Main.lastBitbayLtcToKrakenBccToBitbayPlnRoi = bitBayLtcBuyAndBtcSellRoi;
+                }
+            }
+            if (bitBayEthPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
+                BigDecimal bitBayEthBuyAndBtcSellRoi = new KrakenDataService()
+                        .prepareBitBayEthBuyAndBccSellRoi(bitBayEthPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData, KRAKEN_MAKER_TRADE_PROV);
+                if (bitBayEthBuyAndBtcSellRoi.compareTo(BigDecimal.ZERO) > 0) {
+                    Main.lastBitbayEthToKrakenBccToBitbayPlnRoi = bitBayEthBuyAndBtcSellRoi;
                 }
             }
             //            if (krakenBtcEurData != null && walutomatEurPlnData != null) {

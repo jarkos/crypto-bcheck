@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -85,6 +86,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
         }
         long endTime = System.nanoTime();
         System.out.println("Ended loading of csv file: " + ((endTime - startTime))/1000000000l + " sek");
+        System.out.println(LocalDateTime.now());
         return new TimeSeries("bitstamp_trades", ticks);
     }
 

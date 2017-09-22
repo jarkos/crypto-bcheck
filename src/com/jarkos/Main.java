@@ -26,6 +26,7 @@ public class Main {
     public static BigDecimal lastBitstampEurToBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitstampEurToLtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitbayLtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal lastBitbayEthToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -49,24 +50,24 @@ public class Main {
 
     private static void goodIndicatorsMailNotify() {
         List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
-        if (lastMACD < -130.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
-            JavaMailSender.sendMail(
-                    " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
-                    " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi + " Bitstamp LTC Bitbay BTC ROI: " +
-                    lastBitstampLtcToBitbayBtcRoi + " Kraken EUR to Bitbay LTC ROI: " + lastKrakenEurToLtcRoi + " Bitstamp Eur to Bitbay LTC ROI: " + lastBitstampEurToLtcRoi +
-                    " Kraken Ltc to Bitbay BBC ROI: " + lastBitbayLtcToKrakenBccToBitbayPlnRoi);
+        if (lastMACD < -250.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
+            JavaMailSender.sendMail(" MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + lastKrakenLtcToBitbayBtcRoi +
+                                    " Kraken EUR BTC ROI: " + lastKrakenEurToBtcRoi + " Bitstamp EUR BTC ROI: " + lastBitstampEurToBtcRoi + " Bitstamp LTC Bitbay BTC ROI: " +
+                                    lastBitstampLtcToBitbayBtcRoi + " Kraken EUR to Bitbay LTC ROI: " + lastKrakenEurToLtcRoi + " Bitstamp Eur to Bitbay LTC ROI: " +
+                                    lastBitstampEurToLtcRoi + " Kraken Ltc to Bitbay BBC ROI: " + lastBitbayLtcToKrakenBccToBitbayPlnRoi + " Kraken Eth to Bitbay BBC ROI: " +
+                                    lastBitbayEthToKrakenBccToBitbayPlnRoi);
         }
     }
 
     private static List<BigDecimal> innitInternalIndicatorsList() {
         return Arrays.asList(
                 //                lastHuobiLtcToBitbayBtcRoi,
-                lastKrakenLtcToBitbayBtcRoi, lastBitstampLtcToBitbayBtcRoi, lastBitbayLtcToKrakenBccToBitbayPlnRoi
+                lastKrakenLtcToBitbayBtcRoi, lastBitstampLtcToBitbayBtcRoi, lastBitbayLtcToKrakenBccToBitbayPlnRoi, lastBitbayEthToKrakenBccToBitbayPlnRoi
 
-                ,lastKrakenEurToBtcRoi,
-//                lastBitstampEurToBtcRoi,
-                 lastKrakenEurToLtcRoi
-//                lastBitstampEurToLtcRoi
+                , lastKrakenEurToBtcRoi,
+                //                lastBitstampEurToBtcRoi,
+                lastKrakenEurToLtcRoi
+                //                lastBitstampEurToLtcRoi
                             );
     }
 

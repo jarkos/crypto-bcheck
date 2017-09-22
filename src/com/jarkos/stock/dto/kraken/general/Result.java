@@ -17,6 +17,10 @@ public class Result {
     @Expose
     private XLTCZEUR xLTCZEUR;
 
+    @SerializedName("XETHZEUR")
+    @Expose
+    private XETHZEUR xETHZEUR;
+
     @SerializedName("BCHEUR")
     @Expose
     private BCHEUR xBCHEUR;

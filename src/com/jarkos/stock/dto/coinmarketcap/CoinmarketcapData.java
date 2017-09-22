@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
-
+//NOT USED - to think if should be deleted
 @Getter
 @Setter
 public class CoinmarketcapData {

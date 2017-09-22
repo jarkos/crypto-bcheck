@@ -2,8 +2,9 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
+import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
-import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
 import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
@@ -25,6 +26,7 @@ public class BitBayDataService {
     private static String BitBayBtcPlnApiURL = "https://bitbay.net/API/Public/BTCPLN/all.json";
     private static String BitBayLtcPlnApiURL = "https://bitbay.net/API/Public/LTCPLN/all.json";
     private static String BitBayBccPlnApiURL = "https://bitbay.net/API/Public/BCCPLN/all.json";
+    private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
 
 
     public BitbayStockData getBtcPlnStockData() {
@@ -55,6 +57,16 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return new BitbayBccStockData(getBitBayMarketData(resBitBay));
+    }
+
+    public BitbayEthStockData getEthPlnStockData() {
+        String resBitBay = null;
+        try {
+            resBitBay = sendRequest(BitBayEthPlnApiURL);
+        } catch (DataFetchUnavailableException e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        return new BitbayEthStockData(getBitBayMarketData(resBitBay));
     }
 
     public String getStockCodeName() {

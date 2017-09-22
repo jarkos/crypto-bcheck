@@ -56,7 +56,7 @@ public class CoinmarketcapPriceCompare {
 
         stocksToCompare.stream().forEach(s -> currencyParisToCompare.stream().forEach(c -> {
             MarketTableRow priceInUsdByStockAndCurrencyPair = getPriceInUsdByStockAndCurrencyPair(marketsData, s.toString(), c);
-            if (priceInUsdByStockAndCurrencyPair != null) {
+            if (priceInUsdByStockAndCurrencyPair != null && mainStockName.name() != s.name()) {
                 BigDecimal diff = mainStockAndCurrencyData.getPrice().divide(priceInUsdByStockAndCurrencyPair.getPrice(), 3, RoundingMode.HALF_DOWN);
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +

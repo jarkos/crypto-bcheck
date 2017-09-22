@@ -2,8 +2,10 @@ package com.jarkos.stock.service;
 
 import com.jarkos.stock.abstractional.api.BccStockDataInterface;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
+import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
-import com.jarkos.stock.dto.bitbay.general.BitbayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitbayEthStockData;
+import com.jarkos.stock.dto.bitbay.BitbayBccStockData;
 import com.jarkos.stock.dto.bitbay.general.BitbayStockData;
 import com.jarkos.walutomat.WalutomatData;
 import org.apache.log4j.Logger;
@@ -22,6 +24,8 @@ public abstract class AbstractDataService {
     public abstract String getStockCodeName();
 
     public abstract LtcStockDataInterface getLtcEurStockData();
+
+    public abstract EthStockDataInterface getEthEurStockData();
 
     public abstract BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv);
 
@@ -79,6 +83,35 @@ public abstract class AbstractDataService {
                                ltcEurStockData.getLastLtcPrice().multiply(BigDecimal.valueOf(4.28d)) + " # BCC " + getStockCodeName() + " ->" +
                                bccEurAbstractStockData.getLastBccPrice().multiply(BigDecimal.valueOf(4.28d)) + " BCC BitBay -> " + bitBayBccPlnStockData.getLast());
             return bitBayLtcBuyAndBtcSellRoi;
+        }
+        System.out.println("NO" + getStockCodeName() + " data");
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal prepareBitBayEthBuyAndBccSellRoi(BitbayEthStockData bitBayEthPlnStockData, BccStockDataInterface bccEurAbstractStockData, BitbayStockData bitBayBccPlnStockData,
+                                                       BigDecimal stockTradeProv) {
+        EthStockDataInterface ethEurStockData = getEthEurStockData();
+        if (ethEurStockData.getEthEurStockData() != null) {
+            //BITBAY LTC
+            BigDecimal numberOfEthBoughtOnBitBay = ETH_BUY_MONEY.divide(BigDecimal.valueOf(bitBayEthPlnStockData.getLast()), 2, RoundingMode.HALF_DOWN);
+            BigDecimal ethNumberAfterTradeProvision = numberOfEthBoughtOnBitBay.subtract(numberOfEthBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
+            BigDecimal ethNumberAfterWithdrawFromBitBay = ethNumberAfterTradeProvision.subtract(BITBAY_ETH_WITHDRAW_PROV_AMOUNT);
+            //EXTERNAL STOCK
+            BigDecimal eurNumberAfterEthSell = ethNumberAfterWithdrawFromBitBay.multiply(ethEurStockData.getLastEthPrice());
+            BigDecimal eurNumberAfterEthSellAfterTradeProv = eurNumberAfterEthSell.subtract(eurNumberAfterEthSell.multiply(stockTradeProv));
+            BigDecimal numberOfBccBought = eurNumberAfterEthSellAfterTradeProv.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
+            BigDecimal numberOfBccBoughtAfterTradeProv = numberOfBccBought.subtract(numberOfBccBought.multiply(stockTradeProv));
+            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = getBccAfterWithdrawalProv(numberOfBccBoughtAfterTradeProv);
+            //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
+            //BITBAY BTC
+            BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBccBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getLast()));
+            BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell.subtract((numberOfMoneyFromBitBayBtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
+            BigDecimal bitBayEthBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(LTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+            logger.info("ROI ETH BitBay -> " + getStockCodeName() + " BCC -> Bitbay PLN : " + bitBayEthBuyAndBtcSellRoi);
+            System.out.println("ETH BitBay -> " + bitBayEthPlnStockData.getLast() + " ETH " + getStockCodeName() + " -> " +
+                               ethEurStockData.getLastEthPrice().multiply(BigDecimal.valueOf(4.28d)) + " # BCC " + getStockCodeName() + " ->" +
+                               bccEurAbstractStockData.getLastBccPrice().multiply(BigDecimal.valueOf(4.28d)) + " BCC BitBay -> " + bitBayBccPlnStockData.getLast());
+            return bitBayEthBuyAndBtcSellRoi;
         }
         System.out.println("NO" + getStockCodeName() + " data");
         return BigDecimal.ZERO;
