@@ -1,8 +1,8 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
 import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
+import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
 import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
 import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
@@ -14,8 +14,6 @@ import com.jarkos.stock.service.BitBayDataService;
 import com.jarkos.stock.service.BitstampDataService;
 import com.jarkos.stock.service.KrakenDataService;
 import com.jarkos.stock.service.WalutomatDataService;
-import com.jarkos.walutomat.WalutomatData;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 
@@ -26,9 +24,12 @@ import static com.jarkos.config.IndicatorsSystemConfig.KRAKEN_MAKER_TRADE_PROV__
  * Created by jkostrzewa on 2017-09-02.
  */
 public class StockDataPreparer {
-    private static final Logger logger = Logger.getLogger(StockDataPreparer.class);
+
+    public static BigDecimal lastAverageWalutomatEurPlnExchangeRate;
 
     public void fetchAndPrintStockData() {
+        lastAverageWalutomatEurPlnExchangeRate = new WalutomatDataService().getWalutomatEurToPlnData().getAverageExchangeRate();
+
         BitBayBtcStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
         BitBayLtcStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
         BitBayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
@@ -37,7 +38,6 @@ public class StockDataPreparer {
         KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
-        WalutomatData walutomatEurPlnData = new WalutomatDataService().getWalutomatEurToPlnData();
         BitBayEthStockData bitBayEthPlnStockData = new BitBayDataService().getEthPlnStockData();
 
         if (bitBayBtcPlnStockData != null) {
@@ -58,20 +58,20 @@ public class StockDataPreparer {
                 }
             }
             // Eur on Walutomat -> External to BTC/LTC -> BTC/LTC sell on Bitbay
-            if (walutomatEurPlnData != null && krakenBtcEurStockData != null) {
+            if (lastAverageWalutomatEurPlnExchangeRate != null && krakenBtcEurStockData != null) {
                 Main.lastKrakenEurToBtcRoi = new KrakenDataService()
-                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
                 Main.lastKrakenEurToLtcRoi = new KrakenDataService()
-                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
             }
-            if (walutomatEurPlnData != null && bitstampBtcEurStockData != null) {
+            if (lastAverageWalutomatEurPlnExchangeRate != null && bitstampBtcEurStockData != null) {
                 Main.lastBitstampEurToBtcRoi = new BitstampDataService()
-                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
+                        .prepareEuroBuyBtcSellOnBitBayRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
                 Main.lastBitstampEurToLtcRoi = new BitstampDataService()
-                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, walutomatEurPlnData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
+                        .prepareEuroBuyLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
-            if (walutomatEurPlnData != null && bitBayBccPlnStockData != null && krakenBccEurStockData != null) {
-                new KrakenDataService().prepareEuroBuyBccSellOnBitBayRoi(bitBayBccPlnStockData, krakenBccEurStockData, walutomatEurPlnData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+            if (lastAverageWalutomatEurPlnExchangeRate != null && bitBayBccPlnStockData != null && krakenBccEurStockData != null) {
+                new KrakenDataService().prepareEuroBuyBccSellOnBitBayRoi(bitBayBccPlnStockData, krakenBccEurStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
             }
 
             if (bitBayLtcPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
