@@ -29,6 +29,7 @@ public class Main {
     public static BigDecimal lastBitbayEthToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitbayBtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastBitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal lastBitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException {
 

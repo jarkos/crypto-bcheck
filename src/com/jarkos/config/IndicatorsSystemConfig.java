@@ -26,7 +26,7 @@ public class IndicatorsSystemConfig {
     public static final BigDecimal HUOBI_TRADE_PROVISION = BigDecimal.valueOf(0.002F);
     public static final BigDecimal HUOBI_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.0001F);
 
-    public static final BigDecimal KRAKEN_MAKER_TRADE_PROV = BigDecimal.valueOf(0.0016d);
+    public static final BigDecimal KRAKEN_MAKER_TRADE_PROV__PERCENTAGE = BigDecimal.valueOf(0.0016d);
     public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
     public static final BigDecimal KRAKEN_BCC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
     public static final BigDecimal KRAKEN_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.02F);

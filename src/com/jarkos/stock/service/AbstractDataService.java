@@ -183,7 +183,7 @@ public abstract class AbstractDataService {
             BigDecimal eurNumberAfterBtcSellAfterTradeProv = eurNumberAfterBtcSell.subtract(eurNumberAfterBtcSell.multiply(stockTradeProv));
             BigDecimal numberOfLtcBought = eurNumberAfterBtcSellAfterTradeProv.divide(ltcEurAbstractStockData.getLastLtcPrice(), 5, RoundingMode.HALF_DOWN);
             BigDecimal numberOfLtcBoughtAfterTradeProv = numberOfLtcBought.subtract(numberOfLtcBought.multiply(stockTradeProv));
-            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = getBccAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProv);
+            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = getLtcAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BCC
             BigDecimal numberOfMoneyFromBitBayLtcSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getBid()));
