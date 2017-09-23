@@ -34,20 +34,20 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-//        CandlestickChart.start();
+        CandlestickChart.start();
         while (true) {
             try {
 //
-//                new StockDataPreparer().fetchAndPrintStockData();
+                new StockDataPreparer().fetchAndPrintStockData();
                 new CoinmarketcapPriceCompare().compare();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("PREPARE DATA EXCEPTION! " + e.getMessage());
             }
-//            CandlestickChart.refresh();
+            CandlestickChart.refresh();
 
-//            goodIndicatorsMailNotify();
+            goodIndicatorsMailNotify();
 
             logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD);
             Thread.sleep(2 * HALF_MINUTE_IN_MILLIS);

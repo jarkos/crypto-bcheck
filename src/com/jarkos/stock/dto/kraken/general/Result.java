@@ -25,4 +25,8 @@ public class Result {
     @Expose
     private BCHEUR xBCHEUR;
 
+    @SerializedName("DASHEUR")
+    @Expose
+    private DASHEUR DASHEUR;
+
 }

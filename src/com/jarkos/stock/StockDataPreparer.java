@@ -1,14 +1,12 @@
 package com.jarkos.stock;
 
 import com.jarkos.Main;
-import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
-import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
-import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
-import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
+import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.kraken.KrakenBccStockData;
 import com.jarkos.stock.dto.kraken.KrakenBtcStockData;
+import com.jarkos.stock.dto.kraken.KrakenDashStockData;
 import com.jarkos.stock.dto.kraken.KrakenLtcStockData;
 import com.jarkos.stock.service.BitBayDataService;
 import com.jarkos.stock.service.BitstampDataService;
@@ -33,9 +31,11 @@ public class StockDataPreparer {
         BitBayBtcStockData bitBayBtcPlnStockData = new BitBayDataService().getBtcPlnStockData();
         BitBayLtcStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
         BitBayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
+        BitBayDashStockData bitBayDashPlnStockData = new BitBayDataService().getDashPlnStockData();
         KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
         KrakenBccStockData krakenBccEurStockData = new KrakenDataService().getKrakenBccEurStockData();
         KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();
+        KrakenDashStockData krakenDashEurStockData = new KrakenDataService().getKrakenDashEurStockData();
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampDataService().getBitstampLtcEurStockData();
         BitBayEthStockData bitBayEthPlnStockData = new BitBayDataService().getEthPlnStockData();
@@ -110,6 +110,13 @@ public class StockDataPreparer {
                     Main.lastBitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi = bitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi;
                 }
             }
+            if (bitBayEthPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
+                BigDecimal bitBayDashBuyAndBtcSellRoi = new KrakenDataService()
+                        .prepareBitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi(bitBayLtcPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData,
+                                                                             KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+            }
+
+
         }
     }
 

@@ -3,10 +3,7 @@ package com.jarkos.stock.service;
 import com.google.gson.Gson;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
-import com.jarkos.stock.dto.kraken.KrakenBccStockData;
-import com.jarkos.stock.dto.kraken.KrakenBtcStockData;
-import com.jarkos.stock.dto.kraken.KrakenEthStockData;
-import com.jarkos.stock.dto.kraken.KrakenLtcStockData;
+import com.jarkos.stock.dto.kraken.*;
 import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 
@@ -24,6 +21,7 @@ public class KrakenDataService extends AbstractDataService {
     private static String KrakenLtcEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=LTCEUR";
     private static String KrakenBccEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=BCHEUR";
     private static String KrakenEthEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=ETHEUR";
+    private static String KrakenDashEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=DASHEUR";
 
     public KrakenBtcStockData getKrakenBtcEurStockData() {
         String resKraken = null;
@@ -67,15 +65,6 @@ public class KrakenDataService extends AbstractDataService {
 
     @Override
     public EthStockDataInterface getEthEurStockData() {
-        return getKrakenEthEurStockData();
-    }
-
-    @Override
-    protected BtcStockDataInterface getBtcEurStockData() {
-        return getKrakenBtcEurStockData();
-    }
-
-    private EthStockDataInterface getKrakenEthEurStockData() {
         String resKraken = null;
         try {
             resKraken = sendRequest(KrakenEthEurApiUrl);
@@ -83,6 +72,21 @@ public class KrakenDataService extends AbstractDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return new KrakenEthStockData(getKrakenMarketData(resKraken));
+    }
+
+    @Override
+    protected BtcStockDataInterface getBtcEurStockData() {
+        return getKrakenBtcEurStockData();
+    }
+
+    public KrakenDashStockData getKrakenDashEurStockData() {
+        String resKraken = null;
+        try {
+            resKraken = sendRequest(KrakenDashEurApiUrl);
+        } catch (Exception e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        return new KrakenDashStockData(getKrakenMarketData(resKraken));
     }
 
     @Override
@@ -105,4 +109,8 @@ public class KrakenDataService extends AbstractDataService {
         return bccToSubtractWithdrawProv.subtract(KRAKEN_BCC_WITHDRAW_PROV);
     }
 
+    @Override
+    protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
+        return numberOfDashBoughtAfterTradeProv.subtract(KRAKEN_DASH_WITHDRAW_PROV);
+    }
 }
