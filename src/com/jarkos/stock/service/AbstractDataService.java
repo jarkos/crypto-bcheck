@@ -9,7 +9,6 @@ import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
 import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
 import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
 import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
-import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -38,8 +37,8 @@ public abstract class AbstractDataService {
 
     public abstract BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv);
 
-    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayStockData bitBayLtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData, BitBayStockData bitBayBtcPlnStockData,
-                                                       BigDecimal stockTradeProv) {
+    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayLtcStockData bitBayLtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData,
+                                                       BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -65,8 +64,8 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
-    public BigDecimal prepareBitBayLtcBuyAndBccSellRoi(BitBayStockData bitBayLtcPlnStockData, BccStockDataInterface bccEurAbstractStockData, BitBayStockData bitBayBccPlnStockData,
-                                                       BigDecimal stockTradeProv) {
+    public BigDecimal prepareBitBayLtcBuyAndBccSellRoi(BitBayLtcStockData bitBayLtcPlnStockData, BccStockDataInterface bccEurAbstractStockData,
+                                                       BitBayBccStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -97,7 +96,7 @@ public abstract class AbstractDataService {
     }
 
     public BigDecimal prepareBitBayEthBuyAndBccSellRoi(BitBayEthStockData bitBayEthPlnStockData, BccStockDataInterface bccEurAbstractStockData,
-                                                       BitBayStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
+                                                       BitBayBccStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
         EthStockDataInterface ethEurStockData = getEthEurStockData();
         if (ethEurStockData.getEthEurStockData() != null) {
             //BITBAY LTC
@@ -128,7 +127,7 @@ public abstract class AbstractDataService {
     }
 
     public BigDecimal prepareBitBayBtcBuyAndBccSellRoi(BitBayBtcStockData bitBayBtcPlnStockData, BccStockDataInterface bccEurAbstractStockData,
-                                                       BitBayStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
+                                                       BitBayBccStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
         BtcStockDataInterface btcEurStockData = getBtcEurStockData();
         if (btcEurStockData.getBtcEurStockData() != null) {
             //BITBAY BTC
@@ -158,7 +157,7 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
-    public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitBayStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData, BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
         BigDecimal numberOfEurExchangedAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
         //EXTERNAL STOCK
@@ -215,7 +214,7 @@ public abstract class AbstractDataService {
         }
     }
 
-    public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitBayStockData bitBayLtcPlnStockData, LtcStockDataInterface abstractLtcEurStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface abstractLtcEurStockData, BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
         BigDecimal numberOfEurExchangedAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
 
