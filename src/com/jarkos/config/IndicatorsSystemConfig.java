@@ -36,4 +36,8 @@ public class IndicatorsSystemConfig {
     public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);
     public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.3F);
 
+
+
+    public static final BigDecimal MARKET_MIN_VOLUME_TO_CONSIDER = BigDecimal.valueOf(88000);
+
 }

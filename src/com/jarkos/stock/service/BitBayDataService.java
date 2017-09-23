@@ -2,10 +2,7 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.file.FileUpdater;
-import com.jarkos.stock.dto.bitbay.BitBayBtcStockData;
-import com.jarkos.stock.dto.bitbay.BitBayBccStockData;
-import com.jarkos.stock.dto.bitbay.BitBayEthStockData;
-import com.jarkos.stock.dto.bitbay.BitBayLtcStockData;
+import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
@@ -30,6 +27,7 @@ public class BitBayDataService {
     private static String BitBayLtcPlnApiURL = "https://bitbay.net/API/Public/LTCPLN/all.json";
     private static String BitBayBccPlnApiURL = "https://bitbay.net/API/Public/BCCPLN/all.json";
     private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
+    private static String BitBayDashPlnApiURL = "https://bitbay.net/API/Public/DASHPLN/all.json";
 
     @Inject
     public BitBayDataService() {
@@ -74,6 +72,16 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return new BitBayEthStockData(getBitBayMarketData(resBitBay));
+    }
+
+    public BitBayDashStockData getDashPlnStockData() {
+        String resBitBay = null;
+        try {
+            resBitBay = sendRequest(BitBayDashPlnApiURL);
+        } catch (Exception e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        return new BitBayDashStockData(getBitBayMarketData(resBitBay));
     }
 
     public String getStockCodeName() {

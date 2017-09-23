@@ -37,11 +37,12 @@ public class Main {
 //        CandlestickChart.start();
         while (true) {
             try {
-
+//
 //                new StockDataPreparer().fetchAndPrintStockData();
                 new CoinmarketcapPriceCompare().compare();
 
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("PREPARE DATA EXCEPTION! " + e.getMessage());
             }
 //            CandlestickChart.refresh();
