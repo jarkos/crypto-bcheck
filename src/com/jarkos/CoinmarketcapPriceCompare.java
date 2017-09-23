@@ -150,7 +150,7 @@ public class CoinmarketcapPriceCompare {
     MarketTableRow getPriceInUsdByStockAndCurrencyPair(List<MarketTableRow> marketTableRows, String stockCode, String currencyPair) {
         MarketTableRow marketTableRow = null;
         if (currencyPair.equals("KURWA")) {
-            BigDecimal valueOfDashBitBay = BigDecimal.valueOf(new BitBayDataService().getDashPlnStockData().getLast()).divide(BigDecimal.valueOf(4.28d), 4, RoundingMode.HALF_DOWN);
+            BigDecimal valueOfDashBitBay = BigDecimal.valueOf(new BitBayDataService().getDashPlnStockData().getLast()).divide(BigDecimal.valueOf(3.57d), 4, RoundingMode.HALF_DOWN);
             return new MarketTableRow(stockCode, DashCurrencyPairEnum.DASHPLN.toString(), valueOfDashBitBay, BigDecimal.ZERO);
         }
         try {

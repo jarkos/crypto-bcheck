@@ -5,6 +5,7 @@ import com.jarkos.RequestSender;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampDashStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
@@ -93,6 +94,20 @@ public class BitstampDataService extends AbstractDataService {
 
     @Override
     public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
+        try {
+            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
+        return numberOfDashBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
+    }
+
+    public BitstampDashStockData getBitstampDashEurStockData() {
         try {
             throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
         } catch (NotSupportedOperationException e) {
