@@ -13,6 +13,7 @@ import static com.jarkos.config.IndicatorsSystemConfig.HALF_MINUTE_IN_MILLIS;
 public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class);
+    public static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
     public static Double lastMACD = 0d;
     public static BigDecimal marginMailNotificationCallForTransferRoi = BigDecimal.valueOf(1.045d);
@@ -33,20 +34,21 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        CandlestickChart.start();
+//        CandlestickChart.start();
         while (true) {
             try {
-                StockDataPreparer stockDataPreparer = new StockDataPreparer();
-                stockDataPreparer.fetchAndPrintStockData();
+
+//                new StockDataPreparer().fetchAndPrintStockData();
                 new CoinmarketcapPriceCompare().compare();
+
             } catch (Exception e) {
                 System.out.println("PREPARE DATA EXCEPTION! " + e.getMessage());
             }
-            CandlestickChart.refresh();
+//            CandlestickChart.refresh();
 
-            goodIndicatorsMailNotify();
+//            goodIndicatorsMailNotify();
 
-            logger.info("Last BB BTC MACD indicator: " + lastMACD);
+            logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD);
             Thread.sleep(2 * HALF_MINUTE_IN_MILLIS);
         }
     }
