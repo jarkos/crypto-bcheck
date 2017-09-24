@@ -17,6 +17,8 @@ import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.jarkos.config.IndicatorsSystemConfig.marginCompareWarnDisplayRoi;
+
 /**
  * Created by jkostrzewa on 2017-09-18.
  */
@@ -101,7 +103,7 @@ public class CoinmarketcapPriceCompare {
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +
                         " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff;
-                if (diff.compareTo(Main.marginCompareWarnDisplayRoi) > 0) {
+                if (diff.compareTo(marginCompareWarnDisplayRoi) > 0) {
                     logger.warn(resultToDisplay);
                 } else {
                     logger.error(resultToDisplay);

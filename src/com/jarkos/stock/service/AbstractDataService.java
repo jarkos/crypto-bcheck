@@ -37,11 +37,11 @@ public abstract class AbstractDataService {
                                                        BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
-            //BITBAY LTC
+            //BITBAY LTC -> EURO EXTERNAL STOCK
             BigDecimal eurNumberAfterLtcSellAfterTradeProv = getEuroFromBuyLtcBitbayAndSellForEuroOnExternalStock(bitBayLtcPlnStockData, stockTradeProv, ltcEurStockData);
-            BigDecimal numberOfBtcBought = eurNumberAfterLtcSellAfterTradeProv.divide(btcEurAbstractStockData.getLastBtcPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfBtcBoughtAfterTradeProv = numberOfBtcBought.subtract(numberOfBtcBought.multiply(stockTradeProv));
-            BigDecimal numberOfBtcBoughtWithdrawToBitBayAfterProv = getBtcAfterWithdrawalProv(numberOfBtcBoughtAfterTradeProv);
+            // EURO EXTERNAL STOCK -> BTC
+            BigDecimal numberOfBtcBoughtWithdrawToBitBayAfterProv = amountOfBtcBoughtFromEuroOnExternalStockAfterProvs(btcEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterLtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBtcPlnStockData.getLast()));
@@ -61,9 +61,9 @@ public abstract class AbstractDataService {
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
             BigDecimal eurNumberAfterLtcSellAfterTradeProv = getEuroFromBuyLtcBitbayAndSellForEuroOnExternalStock(bitBayLtcPlnStockData, stockTradeProv, ltcEurStockData);
-            BigDecimal numberOfBccBought = eurNumberAfterLtcSellAfterTradeProv.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfBccBoughtAfterTradeProv = numberOfBccBought.subtract(numberOfBccBought.multiply(stockTradeProv));
-            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = getBccAfterWithdrawalProv(numberOfBccBoughtAfterTradeProv);
+            // EURO - > BCC EXTERNAL STOCK
+            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = amountOfBccBoughtFromEuroOnExternalStockAfterProvs(bccEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterLtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBccBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getLast()));
@@ -87,9 +87,9 @@ public abstract class AbstractDataService {
         if (ethEurStockData.getEthEurStockData() != null) {
             //BITBAY LTC
             BigDecimal eurNumberAfterEthSellAfterTradeProv = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(bitBayEthPlnStockData, stockTradeProv, ethEurStockData);
-            BigDecimal numberOfBccBought = eurNumberAfterEthSellAfterTradeProv.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfBccBoughtAfterTradeProv = numberOfBccBought.subtract(numberOfBccBought.multiply(stockTradeProv));
-            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = getBccAfterWithdrawalProv(numberOfBccBoughtAfterTradeProv);
+            // EURO - > BCC EXTERNAL STOCK
+            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = amountOfBccBoughtFromEuroOnExternalStockAfterProvs(bccEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterEthSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBccBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getLast()));
@@ -114,9 +114,8 @@ public abstract class AbstractDataService {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             BigDecimal eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, stockTradeProv, btcEurStockData);
             // EURO - > BCC EXTERNAL STOCK
-            BigDecimal numberOfBccBought = eurNumberAfterBtcSellAfterTradeProv.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfBccBoughtAfterTradeProv = numberOfBccBought.subtract(numberOfBccBought.multiply(stockTradeProv));
-            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = getBccAfterWithdrawalProv(numberOfBccBoughtAfterTradeProv);
+            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = amountOfBccBoughtFromEuroOnExternalStockAfterProvs(bccEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterBtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BCC
             BigDecimal numberOfMoneyFromBitBayBccSell = numberOfBccBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getBid()));
@@ -136,11 +135,11 @@ public abstract class AbstractDataService {
 
     public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData, BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
-        BigDecimal numberOfEurExchangedAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
-        //EXTERNAL STOCK
-        BigDecimal numberOfBtcBoughtOnStock = numberOfEurExchangedAfterProv.divide(abstractBtcEurStockData.getLastBtcPrice(), 4, RoundingMode.HALF_DOWN);
-        BigDecimal numberOfBtcBoughtOnStockAfterProv = numberOfBtcBoughtOnStock.subtract(numberOfBtcBoughtOnStock.multiply(stockTradeProv));
-        BigDecimal numberOfBtcWithdrawAfterProv = getBtcAfterWithdrawalProv(numberOfBtcBoughtOnStockAfterProv);
+        BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
+        //EUR EXTERNAL STOCK -> BTC
+        BigDecimal numberOfBtcWithdrawAfterProv = amountOfBtcBoughtFromEuroOnExternalStockAfterProvs(abstractBtcEurStockData, stockTradeProv,
+                                                                                                     numberOfEurExchangedOnWalutomatAfterProv);
+
         // BITBAY
         BigDecimal plnMoneyAfterBtcExchange = numberOfBtcWithdrawAfterProv.multiply(BigDecimal.valueOf(bitBayBtcPlnStockData.getLast()));
         BigDecimal plnMoneyBtcExchangedAfterProv = plnMoneyAfterBtcExchange.subtract(plnMoneyAfterBtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
@@ -159,9 +158,8 @@ public abstract class AbstractDataService {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             BigDecimal eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, stockTradeProv, btcEurStockData);
             // EURO - > LTC EXTERNAL STOCK
-            BigDecimal numberOfLtcBought = eurNumberAfterBtcSellAfterTradeProv.divide(ltcEurAbstractStockData.getLastLtcPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfLtcBoughtAfterTradeProv = numberOfLtcBought.subtract(numberOfLtcBought.multiply(stockTradeProv));
-            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = getLtcAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProv);
+            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = amountOfLtcBoughtFromEuroOnExternalStockAfterProvs(ltcEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterBtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BCC
             BigDecimal numberOfMoneyFromBitBayLtcSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getBid()));
@@ -187,14 +185,13 @@ public abstract class AbstractDataService {
         }
     }
 
-    public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface abstractLtcEurStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface ltcEurAbstractStockData, BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
-        BigDecimal numberOfEurExchangedAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
+        BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
 
-        //EXTERNAL STOCK
-        BigDecimal numberOfLtcBoughtOnStock = numberOfEurExchangedAfterProv.divide(abstractLtcEurStockData.getLastLtcPrice(), 4, RoundingMode.HALF_DOWN);
-        BigDecimal numberOfLtcBoughtOnStockAfterProv = numberOfLtcBoughtOnStock.subtract(numberOfLtcBoughtOnStock.multiply(stockTradeProv));
-        BigDecimal numberOfLtcWithdrawAfterProv = getLtcAfterWithdrawalProv(numberOfLtcBoughtOnStockAfterProv);
+        //EURO EXTERNAL STOCK -> LTC
+        BigDecimal numberOfLtcWithdrawAfterProv = amountOfLtcBoughtFromEuroOnExternalStockAfterProvs(ltcEurAbstractStockData, stockTradeProv,
+                                                                                                     numberOfEurExchangedOnWalutomatAfterProv);
         // BITBAY
         BigDecimal plnMoneyAfterLtcExchange = numberOfLtcWithdrawAfterProv.multiply(BigDecimal.valueOf(bitBayLtcPlnStockData.getLast()));
         BigDecimal plnMoneyLtcExchangedAfterProv = plnMoneyAfterLtcExchange.subtract(plnMoneyAfterLtcExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
@@ -206,13 +203,12 @@ public abstract class AbstractDataService {
     }
 
     public BigDecimal prepareEuroBuyBccSellOnBitBayRoi(BitBayBccStockData bitBayBccPlnStockData, BccStockDataInterface abstractBccEurStockData, BigDecimal stockTradeProv) {
-        // WALUTOMAT & BANK
-        BigDecimal numberOfEurExchangedAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
+        // WALUTOMAT & BANK -> EUR
+        BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
 
-        //EXTERNAL STOCK
-        BigDecimal numberOfBccBoughtOnStock = numberOfEurExchangedAfterProv.divide(abstractBccEurStockData.getLastBccPrice(), 4, RoundingMode.HALF_DOWN);
-        BigDecimal numberOfBccBoughtOnStockAfterProv = numberOfBccBoughtOnStock.subtract(numberOfBccBoughtOnStock.multiply(stockTradeProv));
-        BigDecimal numberOfBccWithdrawAfterProv = getBccAfterWithdrawalProv(numberOfBccBoughtOnStockAfterProv);
+        //EUR EXTERNAL STOCK -> BCC
+        BigDecimal numberOfBccWithdrawAfterProv = amountOfBccBoughtFromEuroOnExternalStockAfterProvs(abstractBccEurStockData, stockTradeProv,
+                                                                                                     numberOfEurExchangedOnWalutomatAfterProv);
         // BITBAY
         BigDecimal plnMoneyAfterBccExchange = numberOfBccWithdrawAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getLast()));
         BigDecimal plnMoneyBccExchangedAfterProv = plnMoneyAfterBccExchange.subtract(plnMoneyAfterBccExchange.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
@@ -230,9 +226,9 @@ public abstract class AbstractDataService {
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
             BigDecimal eurNumberAfterLtcSellAfterTradeProv = getEuroFromBuyLtcBitbayAndSellForEuroOnExternalStock(bitBayLtcPlnStockData, stockTradeProv, ltcEurStockData);
-            BigDecimal numberOfDashBought = eurNumberAfterLtcSellAfterTradeProv.divide(dashEurAbstractStockData.getLastDashPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfDashBoughtAfterTradeProv = numberOfDashBought.subtract(numberOfDashBought.multiply(stockTradeProv));
-            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = getDashAfterWithdrawalProv(numberOfDashBoughtAfterTradeProv);
+            //EUR EXTERNAL STOCK -> Dash
+            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = amountOfDashBoughtFromEuroOnExternalStockAfterProvs(dashEurAbstractStockData, stockTradeProv,
+                                                                                                                         eurNumberAfterLtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayDashSell = numberOfDashBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayDashPlnStockData.getLast()));
@@ -250,15 +246,22 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
+    private BigDecimal amountOfDashBoughtFromEuroOnExternalStockAfterProvs(DashStockDataInterface dashEurAbstractStockData, BigDecimal stockTradeProv,
+                                                                           BigDecimal eurNumberAfterLtcSellAfterTradeProv) {
+        BigDecimal numberOfDashBought = eurNumberAfterLtcSellAfterTradeProv.divide(dashEurAbstractStockData.getLastDashPrice(), 5, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfDashBoughtAfterTradeProv = numberOfDashBought.subtract(numberOfDashBought.multiply(stockTradeProv));
+        return getDashAfterWithdrawalProv(numberOfDashBoughtAfterTradeProv);
+    }
+
     public BigDecimal prepareBitBayEthBuyToEuroToDashSellOnBitBayRoi(BitBayEthStockData bitBayEthPlnStockData, DashStockDataInterface dashEurAbstractStockData,
                                                                      BitBayDashStockData bitBayDashPlnStockData, BigDecimal stockTradeProv) {
         EthStockDataInterface ethEurStockData = getEthEurStockData();
         if (ethEurStockData.getEthEurStockData() != null) {
             //BITBAY LTC
             BigDecimal eurNumberAfterEthSellAfterTradeProv = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(bitBayEthPlnStockData, stockTradeProv, ethEurStockData);
-            BigDecimal numberOfDashBought = eurNumberAfterEthSellAfterTradeProv.divide(dashEurAbstractStockData.getLastDashPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfDashBoughtAfterTradeProv = numberOfDashBought.subtract(numberOfDashBought.multiply(stockTradeProv));
-            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = getDashAfterWithdrawalProv(numberOfDashBoughtAfterTradeProv);
+            //EUR EXTERNAL STOCK -> Dash
+            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = amountOfDashBoughtFromEuroOnExternalStockAfterProvs(dashEurAbstractStockData, stockTradeProv,
+                                                                                                                         eurNumberAfterEthSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY BTC
             BigDecimal numberOfMoneyFromBitBayDashSell = numberOfDashBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayDashPlnStockData.getLast()));
@@ -283,9 +286,8 @@ public abstract class AbstractDataService {
             //BITBAY ETH -> EUR EXTERNAL STOCK
             BigDecimal eurNumberAfterEthSellAfterTradeProv = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(bitBayEthPlnStockData, stockTradeProv, ethEurStockData);
             // EURO -> LTC
-            BigDecimal numberOfLtcBought = eurNumberAfterEthSellAfterTradeProv.divide(ltcEurAbstractStockData.getLastLtcPrice(), 5, RoundingMode.HALF_DOWN);
-            BigDecimal numberOfDashBoughtAfterTradeProv = numberOfLtcBought.subtract(numberOfLtcBought.multiply(stockTradeProv));
-            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = getLtcAfterWithdrawalProv(numberOfDashBoughtAfterTradeProv);
+            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = amountOfLtcBoughtFromEuroOnExternalStockAfterProvs(ltcEurAbstractStockData, stockTradeProv,
+                                                                                                                       eurNumberAfterEthSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
             //BITBAY LTC
             BigDecimal numberOfMoneyFromBitBayDashSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLtcPlnStockData.getLast()));
@@ -333,6 +335,29 @@ public abstract class AbstractDataService {
         //EXTERNAL STOCK LTC to EUR -> EUR to DASH
         BigDecimal eurNumberAfterLtcSell = ltcNumberAfterWithdrawFromBitBay.multiply(ltcEurStockData.getLastLtcPrice());
         return eurNumberAfterLtcSell.subtract(eurNumberAfterLtcSell.multiply(stockTradeProv));
+    }
+
+    private BigDecimal amountOfBtcBoughtFromEuroOnExternalStockAfterProvs(BtcStockDataInterface btcEurAbstractStockData, BigDecimal stockTradeProv,
+                                                                          BigDecimal eurNumberAfterLtcSellAfterTradeProv) {
+        BigDecimal numberOfBtcBought = eurNumberAfterLtcSellAfterTradeProv.divide(btcEurAbstractStockData.getLastBtcPrice(), 5, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfBtcBoughtAfterTradeProv = numberOfBtcBought.subtract(numberOfBtcBought.multiply(stockTradeProv));
+        return getBtcAfterWithdrawalProv(numberOfBtcBoughtAfterTradeProv);
+    }
+
+    private BigDecimal amountOfLtcBoughtFromEuroOnExternalStockAfterProvs(LtcStockDataInterface ltcEurAbstractStockData, BigDecimal stockTradeProv,
+                                                                          BigDecimal eurNumberAfterEthSellAfterTradeProv) {
+        BigDecimal numberOfLtcBought = eurNumberAfterEthSellAfterTradeProv.divide(ltcEurAbstractStockData.getLastLtcPrice(), 5, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfLtcBoughtAfterTradeProv = numberOfLtcBought.subtract(numberOfLtcBought.multiply(stockTradeProv));
+        return getLtcAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProv);
+    }
+
+
+    private BigDecimal amountOfBccBoughtFromEuroOnExternalStockAfterProvs(BccStockDataInterface bccEurAbstractStockData, BigDecimal stockTradeProv,
+                                                                          BigDecimal eurNumberAfterLtcSellAfterTradeProv) {
+        // EURO - > BCC EXTERNAL STOCK
+        BigDecimal numberOfBccBought = eurNumberAfterLtcSellAfterTradeProv.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfBccBoughtAfterTradeProv = numberOfBccBought.subtract(numberOfBccBought.multiply(stockTradeProv));
+        return getBccAfterWithdrawalProv(numberOfBccBoughtAfterTradeProv);
     }
 
     private BigDecimal getAmountOfEuroAfterExchangeAndSepaTransfer(BigDecimal amountOfMoney) {
