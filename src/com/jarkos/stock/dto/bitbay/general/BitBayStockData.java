@@ -105,7 +105,7 @@ public class BitBayStockData implements Serializable {
     }
 
     public Float getLast() {
-        return last;
+        return last > ask ? ask : last;
     }
 
     public void setLast(Float last) {

@@ -20,7 +20,7 @@ public class HuobiStockData {
     private Float amount;
     @SerializedName("p_last")
     @Expose
-    private Float pLast;
+    private Float last;
     @SerializedName("p_low")
     @Expose
     private Float pLow;
@@ -60,5 +60,9 @@ public class HuobiStockData {
     @SerializedName("trades")
     @Expose
     private List<Trade> trades = null;
+
+    public Float getPLast() {
+        return last > sells.get(0).getPrice() ? sells.get(0).getPrice() : last;
+    }
 
 }

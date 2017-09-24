@@ -18,7 +18,7 @@ public class BitstampStockData {
     private String high;
     @SerializedName("last")
     @Expose
-    private String last;
+    private String lastPrice;
     @SerializedName("timestamp")
     @Expose
     private String timestamp;
@@ -41,5 +41,8 @@ public class BitstampStockData {
     @Expose
     private String open;
 
+    public String getLast() {
+        return Float.valueOf(lastPrice) > Float.valueOf(ask) ? ask : lastPrice;
+    }
 
 }

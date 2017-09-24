@@ -16,10 +16,10 @@ public class GeneralKrakenData {
 
     @SerializedName("a")
     @Expose
-    private List<String> a = null;
+    private List<String> ask = null;
     @SerializedName("b")
     @Expose
-    private List<String> b = null;
+    private List<String> bid = null;
     @SerializedName("c")
     @Expose
     private List<String> lastTradePrice = null;
@@ -43,7 +43,7 @@ public class GeneralKrakenData {
     private String open;
 
     public List<String> getLastTradePrice() {
-        return lastTradePrice;
+        return Float.valueOf(lastTradePrice.get(0)) > Float.valueOf(ask.get(0)) ? ask : lastTradePrice;
     }
 
 }

@@ -15,6 +15,6 @@ public class KrakenBccStockData extends KrakenStockData implements BccStockDataI
 
     @Override
     public BigDecimal getLastBccPrice() {
-        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXBCHEUR().getLastTrade().get(0)));
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXBCHEUR().getLastTradePrice().get(0)));
     }
 }

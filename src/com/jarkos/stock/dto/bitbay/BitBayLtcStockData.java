@@ -14,10 +14,9 @@ public class BitBayLtcStockData extends BitBayStockData implements LtcStockDataI
         super(b.getMax(), b.getMin(), b.getLast(), b.getBid(), b.getAsk(), b.getVwap(), b.getAverage(), b.getVolume(), b.getBids(), b.getAsks(), b.getTransactions());
     }
 
-
     @Override
     public BigDecimal getLastLtcPrice() {
-        return BigDecimal.valueOf(this.getBid());
+        return BigDecimal.valueOf(this.getLast());
     }
 
     @Override
