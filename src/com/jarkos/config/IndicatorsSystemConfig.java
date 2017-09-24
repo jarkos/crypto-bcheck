@@ -9,6 +9,8 @@ public class IndicatorsSystemConfig {
 
     public static final String BIT_BAY_BTC_DATA_REPOSITORY_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";
     public static final int HALF_MINUTE_IN_MILLIS = 30000;
+    public static BigDecimal marginMailNotificationCallForTransferRoi = BigDecimal.valueOf(1.045d);
+    public static BigDecimal marginCompareWarnDisplayRoi = BigDecimal.valueOf(1.035d);
 
     public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
@@ -36,7 +38,6 @@ public class IndicatorsSystemConfig {
 
     public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);
     public static final BigDecimal ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT = BigDecimal.valueOf(5.3F);
-
 
     public static final BigDecimal MARKET_MIN_VOLUME_TO_CONSIDER = BigDecimal.valueOf(88000);
 

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.jarkos.config.IndicatorsSystemConfig.HALF_MINUTE_IN_MILLIS;
+import static com.jarkos.config.IndicatorsSystemConfig.marginMailNotificationCallForTransferRoi;
 
 public class Main {
 
@@ -16,8 +17,6 @@ public class Main {
     public static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
     public static Double lastMACD = 0d;
-    public static BigDecimal marginMailNotificationCallForTransferRoi = BigDecimal.valueOf(1.045d);
-    public static BigDecimal marginCompareWarnDisplayRoi = BigDecimal.valueOf(1.035d);
 
     public static BigDecimal lastHuobiLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal lastKrakenLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
