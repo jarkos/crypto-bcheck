@@ -11,7 +11,7 @@ out
 
 # User-specific stuff:
 .idea/**/workspace.xml
-log4j-application.log
+log4j-application.log*
 .idea/**/tasks.xml
 .idea/dictionaries
 
