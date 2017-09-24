@@ -118,7 +118,10 @@ public class StockDataPreparer {
                 new KrakenDataService()
                         .prepareBitBayEthBuyToEuroToDashSellOnBitBayRoi(bitBayEthPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
             }
-
+            if (bitBayEthPlnStockData != null && krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
+                new KrakenDataService()
+                        .prepareBitBayEthBuyToEuroToLtcSellOnBitBayRoi(bitBayEthPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+            }
         }
     }
 
