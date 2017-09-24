@@ -12,6 +12,11 @@ public enum BlackListCurrencies {
     STX,
     SAN,
     BITUSD,
-    BTS
+    BTS,
+    B3,
+    HSR,
+    XBL,
+    ADX,
+    TNT
 
 }

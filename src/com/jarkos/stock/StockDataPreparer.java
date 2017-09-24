@@ -96,26 +96,28 @@ public class StockDataPreparer {
                 }
             }
 
-            if (bitBayBtcPlnStockData != null && krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
+            if (krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
                 final BigDecimal bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi = new KrakenDataService()
                         .prepareBitBayBtcBuyAndLtcSellRoi(bitBayBtcPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
                 if (bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi.compareTo(BigDecimal.ZERO) > 0) {
                     Main.lastBitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi = bitBayBtcBuyKrakenEurSellLtcBuyToBitBayPlnRoi;
                 }
             }
-            if (bitBayBtcPlnStockData != null && bitstampLtcEurStockData != null && bitBayLtcPlnStockData != null) {
+            if (bitstampLtcEurStockData != null && bitBayLtcPlnStockData != null) {
                 final BigDecimal bitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi = new BitstampDataService()
                         .prepareBitBayBtcBuyAndLtcSellRoi(bitBayBtcPlnStockData, bitstampLtcEurStockData, bitBayLtcPlnStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
                 if (bitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi.compareTo(BigDecimal.ZERO) > 0) {
                     Main.lastBitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi = bitBayBtcBuyBitstampEurSellLtcBuyToBitBayPlnRoi;
                 }
             }
-            if (bitBayEthPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
-                BigDecimal bitBayDashBuyAndBtcSellRoi = new KrakenDataService()
-                        .prepareBitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi(bitBayLtcPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData,
-                                                                             KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+            if (bitBayLtcPlnStockData != null && krakenBccEurStockData != null && bitBayDashPlnStockData != null) {
+                new KrakenDataService().prepareBitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi(bitBayLtcPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData,
+                                                                                            KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
             }
-
+            if (bitBayEthPlnStockData != null && krakenDashEurStockData != null && bitBayDashPlnStockData != null) {
+                new KrakenDataService()
+                        .prepareBitBayEthBuyToEuroToDashSellOnBitBayRoi(bitBayEthPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData, KRAKEN_MAKER_TRADE_PROV__PERCENTAGE);
+            }
 
         }
     }

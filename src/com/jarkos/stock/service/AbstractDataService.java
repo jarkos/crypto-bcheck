@@ -279,6 +279,37 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
+    public BigDecimal prepareBitBayEthBuyToEuroToDashSellOnBitBayRoi(BitBayEthStockData bitBayEthPlnStockData, DashStockDataInterface dashEurAbstractStockData,
+                                                                     BitBayDashStockData bitBayDashPlnStockData, BigDecimal stockTradeProv) {
+        EthStockDataInterface ethEurStockData = getEthEurStockData();
+        if (ethEurStockData.getEthEurStockData() != null) {
+            //BITBAY LTC
+            BigDecimal numberOfEthBoughtOnBitBay = ETH_BUY_MONEY.divide(BigDecimal.valueOf(bitBayEthPlnStockData.getLast()), 4, RoundingMode.HALF_DOWN);
+            BigDecimal ethNumberAfterTradeProvision = numberOfEthBoughtOnBitBay.subtract(numberOfEthBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
+            BigDecimal ethNumberAfterWithdrawFromBitBay = ethNumberAfterTradeProvision.subtract(BITBAY_ETH_WITHDRAW_PROV_AMOUNT);
+            //EXTERNAL STOCK LTC to EUR -> EUR to DASH
+            BigDecimal eurNumberAfterEthSell = ethNumberAfterWithdrawFromBitBay.multiply(ethEurStockData.getLastEthPrice());
+            BigDecimal eurNumberAfterEthSellAfterTradeProv = eurNumberAfterEthSell.subtract(eurNumberAfterEthSell.multiply(stockTradeProv));
+            BigDecimal numberOfDashBought = eurNumberAfterEthSellAfterTradeProv.divide(dashEurAbstractStockData.getLastDashPrice(), 5, RoundingMode.HALF_DOWN);
+            BigDecimal numberOfDashBoughtAfterTradeProv = numberOfDashBought.subtract(numberOfDashBought.multiply(stockTradeProv));
+            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = getDashAfterWithdrawalProv(numberOfDashBoughtAfterTradeProv);
+            //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
+            //BITBAY BTC
+            BigDecimal numberOfMoneyFromBitBayDashSell = numberOfDashBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayDashPlnStockData.getLast()));
+            BigDecimal numberOfMoneyFromDashSellAfterProv = numberOfMoneyFromBitBayDashSell.subtract((numberOfMoneyFromBitBayDashSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
+            BigDecimal bitBayEthBuyAndBtcSellRoi = numberOfMoneyFromDashSellAfterProv.divide(ETH_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+            String resultToDisplay = "ROI ETH BitBay -> " + getStockCodeName() + " DASH -> Bitbay PLN : " + bitBayEthBuyAndBtcSellRoi;
+            displayDependOnRoi(bitBayEthBuyAndBtcSellRoi, resultToDisplay);
+            System.out.println("ETH BitBay -> " + bitBayEthPlnStockData.getLast() + " ETH " + getStockCodeName() + " -> " +
+                               ethEurStockData.getLastEthPrice().multiply(StockDataPreparer.lastAverageWalutomatEurPlnExchangeRate) + " # DASH " + getStockCodeName() + " ->" +
+                               dashEurAbstractStockData.getLastDashPrice().multiply(StockDataPreparer.lastAverageWalutomatEurPlnExchangeRate) + " DASH BitBay -> " +
+                               bitBayDashPlnStockData.getLast());
+            return bitBayEthBuyAndBtcSellRoi;
+        }
+        System.out.println("NO" + getStockCodeName() + " data");
+        return BigDecimal.ZERO;
+    }
+
     private BigDecimal getAmountOfEuroAfterExchangeAndSepaTransfer(BigDecimal amountOfMoney) {
         // WALUTOMAT
         BigDecimal eurPlnExchangeRate = StockDataPreparer.lastAverageWalutomatEurPlnExchangeRate;
