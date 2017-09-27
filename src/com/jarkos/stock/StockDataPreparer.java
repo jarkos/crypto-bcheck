@@ -15,8 +15,7 @@ import com.jarkos.stock.service.WalutomatDataService;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_TRADE_PROVISION_PERCENTAGE;
-import static com.jarkos.config.IndicatorsSystemConfig.KRAKEN_MAKER_TRADE_PROV_PERCENTAGE;
+import static com.jarkos.config.IndicatorsSystemConfig.*;
 
 /**
  * Created by jkostrzewa on 2017-09-02.
@@ -120,6 +119,8 @@ public class StockDataPreparer {
                                                                                             KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             }
             if (bitBayEthPlnStockData != null && krakenDashEurStockData != null && bitBayDashPlnStockData != null) {
+                new KrakenDataService()
+                        .prepareBitBayDashBuyToExternalStockSellToEuroWithdrawalRoi(bitBayDashPlnStockData, krakenDashEurStockData, KRAKEN_TAKER_TRADE_PROV_PERCENTAGE);
                 new KrakenDataService()
                         .prepareBitBayEthBuyToEuroToDashSellOnBitBayRoi(bitBayEthPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             }

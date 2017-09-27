@@ -321,9 +321,23 @@ public abstract class AbstractDataService {
         return bitBayBtcBuyAndEuroSellRoi;
     }
 
+    public BigDecimal prepareBitBayDashBuyToExternalStockSellToEuroWithdrawalRoi(BitBayDashStockData bitBayDashPlnStockData, DashStockDataInterface dashEurAbstractStockData,
+                                                                                 BigDecimal stockTradeProv) {
+        // DASH BITBAY -> EURO EXTERNAL STOCK
+        BigDecimal eurNumberAfterDashSellAfterTradeProv = getEuroFromBuyDashBitbayAndSellForEuroOnExternalStock(bitBayDashPlnStockData, stockTradeProv, dashEurAbstractStockData);
+        BigDecimal amountOfPlnAfterWithdrawalToBankAccountAndExchange = getAmountOfPlnAfterWithdrawalToBankAccountAndExchange(eurNumberAfterDashSellAfterTradeProv);
+        BigDecimal bitBayDashBuyAndEuroSellRoi = amountOfPlnAfterWithdrawalToBankAccountAndExchange.divide(DASH_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
+
+        String resultToDisplay = "ROI DASH BitBay -> " + getStockCodeName() + " EURO -> Bank EURO: " + bitBayDashBuyAndEuroSellRoi;
+        displayDependOnRoi(bitBayDashBuyAndEuroSellRoi, resultToDisplay);
+        System.out.println("DASH BitBay -> " + bitBayDashPlnStockData.getLast() + " DASH " + getStockCodeName() + " -> " +
+                           dashEurAbstractStockData.getLastDashPrice().multiply(StockDataPreparer.lastBuyWalutomatEurPlnExchangeRate));
+        return bitBayDashBuyAndEuroSellRoi;
+    }
+
     private BigDecimal getAmountOfPlnAfterWithdrawalToBankAccountAndExchange(BigDecimal eurNumberAfterBtcSellAfterTradeProv) {
         BigDecimal amountOfEuro = getEuroAfterWithdrawalProv(eurNumberAfterBtcSellAfterTradeProv);
-        BigDecimal eurPlnExchangeRate = StockDataPreparer.lastSellWalutomatEurPlnExchangeRate;
+        BigDecimal eurPlnExchangeRate = StockDataPreparer.lastBuyWalutomatEurPlnExchangeRate;
         BigDecimal numberOfEurAfterExchange = amountOfEuro.multiply(eurPlnExchangeRate);
         return (numberOfEurAfterExchange.multiply(WALUTOMAT_WITHDRAW_RATIO));
     }
@@ -360,6 +374,17 @@ public abstract class AbstractDataService {
         return eurNumberAfterLtcSell.subtract(eurNumberAfterLtcSell.multiply(stockTradeProv));
     }
 
+    private BigDecimal getEuroFromBuyDashBitbayAndSellForEuroOnExternalStock(BitBayDashStockData bitBayDashPlnStockData, BigDecimal stockTradeProv,
+                                                                             DashStockDataInterface dashEurStockData) {
+        BigDecimal amountOfDashBoughtOnBitBay = DASH_BUY_MONEY.divide(BigDecimal.valueOf(bitBayDashPlnStockData.getLast()), 4, RoundingMode.HALF_DOWN);
+        BigDecimal dashAmountAfterTradeProvision = amountOfDashBoughtOnBitBay.subtract(amountOfDashBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE));
+        BigDecimal dashNumberAfterWithdrawFromBitBay = dashAmountAfterTradeProvision.subtract(BITBAY_DASH_WITHDRAW_PROV_AMOUNT);
+        //EXTERNAL STOCK LTC to EUR -> EUR to DASH
+        BigDecimal eurNumberAfterDashSell = dashNumberAfterWithdrawFromBitBay.multiply(dashEurStockData.getLastDashPrice());
+        return eurNumberAfterDashSell.subtract(eurNumberAfterDashSell.multiply(stockTradeProv));
+    }
+
+
     private BigDecimal amountOfBtcBoughtFromEuroOnExternalStockAfterProvs(BtcStockDataInterface btcEurAbstractStockData, BigDecimal stockTradeProv,
                                                                           BigDecimal eurNumberAfterLtcSellAfterTradeProv) {
         BigDecimal numberOfBtcBought = eurNumberAfterLtcSellAfterTradeProv.divide(btcEurAbstractStockData.getLastBtcPrice(), 5, RoundingMode.HALF_DOWN);
@@ -384,7 +409,7 @@ public abstract class AbstractDataService {
 
     private BigDecimal getAmountOfEuroAfterExchangeAndSepaTransfer(BigDecimal amountOfMoney) {
         // WALUTOMAT
-        BigDecimal eurPlnExchangeRate = StockDataPreparer.lastBuyWalutomatEurPlnExchangeRate;
+        BigDecimal eurPlnExchangeRate = StockDataPreparer.lastSellWalutomatEurPlnExchangeRate;
         BigDecimal numberOfEurAfterExchange = amountOfMoney.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN);
         return (numberOfEurAfterExchange.multiply(WALUTOMAT_WITHDRAW_RATIO)).subtract(ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN));
     }
