@@ -43,7 +43,7 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
-        bigSpreadRecognizer(bitBayMarketData);
+        bigSpreadRecognizer(bitBayMarketData, "BTC");
         return new BitBayBtcStockData(bitBayMarketData);
     }
 
@@ -55,7 +55,7 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
-        bigSpreadRecognizer(bitBayMarketData);
+        bigSpreadRecognizer(bitBayMarketData, "LTC");
         return new BitBayLtcStockData(bitBayMarketData);
     }
 
@@ -67,7 +67,7 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
-        bigSpreadRecognizer(bitBayMarketData);
+        bigSpreadRecognizer(bitBayMarketData, "BCC");
         return new BitBayBccStockData(bitBayMarketData);
     }
 
@@ -79,7 +79,7 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
-        bigSpreadRecognizer(bitBayMarketData);
+        bigSpreadRecognizer(bitBayMarketData, "ETH");
         return new BitBayEthStockData(bitBayMarketData);
     }
 
@@ -91,7 +91,7 @@ public class BitBayDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
-        bigSpreadRecognizer(bitBayMarketData);
+        bigSpreadRecognizer(bitBayMarketData, "DASH");
         return new BitBayDashStockData(bitBayMarketData);
     }
 
@@ -139,10 +139,10 @@ public class BitBayDataService {
         return gson.fromJson(res, BitBayStockData.class);
     }
 
-    public void bigSpreadRecognizer(BitBayStockData bitBayStockData) {
+    public void bigSpreadRecognizer(BitBayStockData bitBayStockData, String currency) {
         if (BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN)
                       .compareTo(bigSpreadMarginNotificationCallForTransferRoi) > 0) {
-            logger.warn(">>> BIG SPREAD na " + getStockCodeName() + ": " +
+            logger.warn(">>> BIG SPREAD na " + getStockCodeName() + " " + currency + ": " +
                         BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN));
         }
     }
