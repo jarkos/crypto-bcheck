@@ -7,32 +7,33 @@ import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 import com.jarkos.stock.dto.bitbay.general.Transaction;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.commons.io.input.ReversedLinesFileReader;
+import org.apache.log4j.Logger;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Collections;
 
 import static com.jarkos.RequestSender.sendRequest;
 import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
+import static com.jarkos.config.IndicatorsSystemConfig.bigSpreadMarginNotificationCallForTransferRoi;
 import static com.jarkos.json.JsonFetcher.UTF_8;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
 public class BitBayDataService {
+
+    private static final Logger logger = Logger.getLogger(BitBayDataService.class);
+
     private static String BitBayBtcPlnApiURL = "https://bitbay.net/API/Public/BTCPLN/all.json";
     private static String BitBayLtcPlnApiURL = "https://bitbay.net/API/Public/LTCPLN/all.json";
     private static String BitBayBccPlnApiURL = "https://bitbay.net/API/Public/BCCPLN/all.json";
     private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
     private static String BitBayDashPlnApiURL = "https://bitbay.net/API/Public/DASHPLN/all.json";
-
-    @Inject
-    public BitBayDataService() {
-    }
-
 
     public BitBayBtcStockData getBtcPlnStockData() {
         String resBitBay = null;
@@ -41,7 +42,9 @@ public class BitBayDataService {
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitBayBtcStockData(getBitBayMarketData(resBitBay));
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData);
+        return new BitBayBtcStockData(bitBayMarketData);
     }
 
     public BitBayLtcStockData getLtcPlnStockData() {
@@ -51,7 +54,9 @@ public class BitBayDataService {
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitBayLtcStockData(getBitBayMarketData(resBitBay));
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData);
+        return new BitBayLtcStockData(bitBayMarketData);
     }
 
     public BitBayBccStockData getBccPlnStockData() {
@@ -61,7 +66,9 @@ public class BitBayDataService {
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitBayBccStockData(getBitBayMarketData(resBitBay));
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData);
+        return new BitBayBccStockData(bitBayMarketData);
     }
 
     public BitBayEthStockData getEthPlnStockData() {
@@ -71,7 +78,9 @@ public class BitBayDataService {
         } catch (DataFetchUnavailableException e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitBayEthStockData(getBitBayMarketData(resBitBay));
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData);
+        return new BitBayEthStockData(bitBayMarketData);
     }
 
     public BitBayDashStockData getDashPlnStockData() {
@@ -81,7 +90,9 @@ public class BitBayDataService {
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new BitBayDashStockData(getBitBayMarketData(resBitBay));
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData);
+        return new BitBayDashStockData(bitBayMarketData);
     }
 
     public String getStockCodeName() {
@@ -126,6 +137,14 @@ public class BitBayDataService {
     private static BitBayStockData getBitBayMarketData(String res) {
         Gson gson = new Gson();
         return gson.fromJson(res, BitBayStockData.class);
+    }
+
+    public void bigSpreadRecognizer(BitBayStockData bitBayStockData) {
+        if (BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN)
+                      .compareTo(bigSpreadMarginNotificationCallForTransferRoi) > 0) {
+            logger.warn(">>> BIG SPREAD na " + getStockCodeName() + ": " +
+                        BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN));
+        }
     }
 
 }
