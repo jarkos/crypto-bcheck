@@ -113,4 +113,9 @@ public class KrakenDataService extends AbstractDataService {
     protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
         return numberOfDashBoughtAfterTradeProv.subtract(KRAKEN_DASH_WITHDRAW_PROV);
     }
+
+    @Override
+    protected BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
+        return numberOfEuroToWithdraw.subtract(KRAKEN_EUR_WITHDRAW_PROV_AMOUNT);
+    }
 }

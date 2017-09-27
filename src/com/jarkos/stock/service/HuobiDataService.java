@@ -107,4 +107,14 @@ public class HuobiDataService extends AbstractDataService {
         }
         return null;
     }
+
+    @Override
+    protected BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
+        try {
+            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -14,6 +14,7 @@ import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT;
 import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_WITHDRAW_PROV;
 
 /**
@@ -105,6 +106,11 @@ public class BitstampDataService extends AbstractDataService {
     @Override
     protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
         return numberOfDashBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
+    }
+
+    @Override
+    protected BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
+        return numberOfEuroToWithdraw.subtract(BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT);
     }
 
     public BitstampDashStockData getBitstampDashEurStockData() {

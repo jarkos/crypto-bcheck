@@ -36,7 +36,11 @@ public class WalutomatData {
     @Expose
     private String avgOld;
 
-    public BigDecimal getAverageExchangeRate() {
-        return BigDecimal.valueOf(Float.valueOf(getAvg()));
+    public BigDecimal getBuyExchangeRate() {
+        return BigDecimal.valueOf(Float.valueOf(getBuy()));
+    }
+
+    public BigDecimal getSellExchangeRate() {
+        return BigDecimal.valueOf(Float.valueOf(getSell()));
     }
 }
