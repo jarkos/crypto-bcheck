@@ -35,8 +35,8 @@ public abstract class AbstractDataService {
 
     protected abstract BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw);
 
-    public BigDecimal prepareBitBayLtcBuyAndBtcSellRoi(BitBayLtcStockData bitBayLtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData,
-                                                       BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareBitBayLtcBuyToExternalStockSellToBtcWithdrawalRoi(BitBayLtcStockData bitBayLtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData,
+                                                                               BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC -> EURO EXTERNAL STOCK
@@ -57,8 +57,8 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
-    public BigDecimal prepareBitBayLtcBuyAndBccSellRoi(BitBayLtcStockData bitBayLtcPlnStockData, BccStockDataInterface bccEurAbstractStockData,
-                                                       BitBayBccStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareBitBayLtcBuyToExternalStockSellToEurToBccBitBaySellRoi(BitBayLtcStockData bitBayLtcPlnStockData, BccStockDataInterface bccEurAbstractStockData,
+                                                                                    BitBayBccStockData bitBayBccPlnStockData, BigDecimal stockTradeProv) {
         LtcStockDataInterface ltcEurStockData = getLtcEurStockData();
         if (ltcEurStockData.getLtcEurStockData() != null) {
             //BITBAY LTC
@@ -67,7 +67,7 @@ public abstract class AbstractDataService {
             BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = amountOfBccBoughtFromEuroOnExternalStockAfterProvs(bccEurAbstractStockData, stockTradeProv,
                                                                                                                        eurNumberAfterLtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
-            //BITBAY BTC
+            //BITBAY BVC
             BigDecimal numberOfMoneyFromBitBayBtcSell = numberOfBccBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayBccPlnStockData.getLast()));
             BigDecimal numberOfMoneyFromBtcSellAfterProv = numberOfMoneyFromBitBayBtcSell.subtract((numberOfMoneyFromBitBayBtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
             BigDecimal bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(LTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
@@ -135,7 +135,8 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
-    public BigDecimal prepareEuroBuyBtcSellOnBitBayRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyToExternalStockBtcSellOnBitBayRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface abstractBtcEurStockData,
+                                                                      BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
         BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
         //EUR EXTERNAL STOCK -> BTC
@@ -153,8 +154,9 @@ public abstract class AbstractDataService {
         return eurBuyAndBtcSellRoi;
     }
 
-    public BigDecimal prepareBitBayBtcBuyAndLtcSellRoi(BitBayBtcStockData bitBayBtcPlnStockData, LtcStockDataInterface ltcEurAbstractStockData,
-                                                       BitBayLtcStockData bitBayLctPlnStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareBitBayBtcBuyToExternalStockEurSellToLtcBuyWithdrawalToBitBayPlnRoi(BitBayBtcStockData bitBayBtcPlnStockData,
+                                                                                                LtcStockDataInterface ltcEurAbstractStockData,
+                                                                                                BitBayLtcStockData bitBayLctPlnStockData, BigDecimal stockTradeProv) {
         BtcStockDataInterface btcEurStockData = getBtcEurStockData();
         if (btcEurStockData.getBtcEurStockData() != null) {
             // BTC BITBAY -> EURO EXTERNAL STOCK
@@ -163,10 +165,11 @@ public abstract class AbstractDataService {
             BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = amountOfLtcBoughtFromEuroOnExternalStockAfterProvs(ltcEurAbstractStockData, stockTradeProv,
                                                                                                                        eurNumberAfterBtcSellAfterTradeProv);
             //DOLICZYC TRANSFER FEE POMIEDZY PORTFELAMI?
-            //BITBAY BCC
-            BigDecimal numberOfMoneyFromBitBayLtcSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getBid()));
-            BigDecimal numberOfMoneyFromLtcSellAfterProv = numberOfMoneyFromBitBayLtcSell.subtract((numberOfMoneyFromBitBayLtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
+
+            //BITBAY LTC SELL
+            BigDecimal numberOfMoneyFromLtcSellAfterProv = getPlnFromLtcSellAfterProv(bitBayLctPlnStockData, numberOfLtcBoughtWithdrawToBitBayAfterProv);
             BigDecimal bitBayBtcBuyAndLtcSellRoi = numberOfMoneyFromLtcSellAfterProv.divide(BTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+
             String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " LTC -> Bitbay PLN : " + bitBayBtcBuyAndLtcSellRoi;
             displayDependOnRoi(bitBayBtcBuyAndLtcSellRoi, resultToDisplay);
             System.out.println("BTC BitBay -> " + bitBayBtcPlnStockData.getLastBtcPrice() + " BTC " + getStockCodeName() + " -> " +
@@ -179,6 +182,11 @@ public abstract class AbstractDataService {
         return BigDecimal.ZERO;
     }
 
+    private BigDecimal getPlnFromLtcSellAfterProv(BitBayLtcStockData bitBayLctPlnStockData, BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv) {
+        BigDecimal numberOfMoneyFromBitBayLtcSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getBid()));
+        return numberOfMoneyFromBitBayLtcSell.subtract((numberOfMoneyFromBitBayLtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE)));
+    }
+
     private void displayDependOnRoi(BigDecimal eurBuyAndBtcSellRoi, String resultToDisplay) {
         if (eurBuyAndBtcSellRoi.compareTo(maxMarginCompareWarnDisplayRoi) > 0 || eurBuyAndBtcSellRoi.compareTo(minMarginCompareWarnDisplayRoi) < 0) {
             logger.warn(resultToDisplay);
@@ -187,7 +195,8 @@ public abstract class AbstractDataService {
         }
     }
 
-    public BigDecimal prepareEuroBuyLtcSellOnBitBayRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface ltcEurAbstractStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyToExternalStockLtcSellOnBitBayRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface ltcEurAbstractStockData,
+                                                                      BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK
         BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
 
@@ -204,7 +213,8 @@ public abstract class AbstractDataService {
         return eurBuyAndLtcSellRoi;
     }
 
-    public BigDecimal prepareEuroBuyBccSellOnBitBayRoi(BitBayBccStockData bitBayBccPlnStockData, BccStockDataInterface abstractBccEurStockData, BigDecimal stockTradeProv) {
+    public BigDecimal prepareEuroBuyToExternalStockBccSellOnBitBayRoi(BitBayBccStockData bitBayBccPlnStockData, BccStockDataInterface abstractBccEurStockData,
+                                                                      BigDecimal stockTradeProv) {
         // WALUTOMAT & BANK -> EUR
         BigDecimal numberOfEurExchangedOnWalutomatAfterProv = getAmountOfEuroAfterExchangeAndSepaTransfer(MONEY_TO_EUR_BUY);
 
