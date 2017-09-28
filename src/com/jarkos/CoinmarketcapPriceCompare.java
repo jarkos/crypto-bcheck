@@ -2,7 +2,6 @@ package com.jarkos;
 
 import com.jarkos.config.IndicatorsSystemConfig;
 import com.jarkos.stock.enums.*;
-import com.jarkos.stock.service.BitBayDataService;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -33,7 +32,7 @@ public class CoinmarketcapPriceCompare {
     private List<MarketTableRow> bccMarketsData;
     private List<MarketTableRow> liskMarketsData;
     private List<MarketTableRow> dashMarketsData;
-
+    private List<MarketTableRow> gameMarketsData;
 
     CoinmarketcapPriceCompare() {
         btcMarketsData = getMarketsData("https://coinmarketcap.com/currencies/bitcoin/#markets");
@@ -42,6 +41,7 @@ public class CoinmarketcapPriceCompare {
         bccMarketsData = getMarketsData("https://coinmarketcap.com/currencies/bitcoin-cash/#markets");
         liskMarketsData = getMarketsData("https://coinmarketcap.com/currencies/lisk/#markets");
         dashMarketsData = getMarketsData("https://coinmarketcap.com/currencies/dash/#markets");
+        gameMarketsData = getMarketsData("https://coinmarketcap.com/currencies/gamecredits/#markets");
     }
 
     public void compare() {
@@ -72,8 +72,13 @@ public class CoinmarketcapPriceCompare {
 
         logger.error("*** DASH");
         final Set<String> dashCurrencyParisToCompare = Arrays.stream(DashCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
-        compareStockPrice(dashMarketsData, StockNameEnum.BitBay, "KURWA", dashCurrencyParisToCompare);
+        compareStockPrice(dashMarketsData, StockNameEnum.BitBay, DashCurrencyPairEnum.DASHPLN.toString(), dashCurrencyParisToCompare);
         recognizeMaxRoi(dashMarketsData, "DASH MAX/MIN stocks:");
+
+        logger.error("*** GAME");
+        final Set<String> gameCurrencyParisToCompare = Arrays.stream(GameCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
+        compareStockPrice(gameMarketsData, StockNameEnum.BitBay, GameCurrencyPairEnum.GAMEPLN.toString(), gameCurrencyParisToCompare);
+//        recognizeMaxRoi(gameMarketsData, "GAME MAX/MIN stocks:");
 
     }
 
@@ -152,10 +157,6 @@ public class CoinmarketcapPriceCompare {
 
     MarketTableRow getPriceInUsdByStockAndCurrencyPair(List<MarketTableRow> marketTableRows, String stockCode, String currencyPair) {
         MarketTableRow marketTableRow = null;
-        if (currencyPair.equals("KURWA")) {
-            BigDecimal valueOfDashBitBay = BigDecimal.valueOf(new BitBayDataService().getDashPlnStockData().getLast()).divide(BigDecimal.valueOf(3.57d), 4, RoundingMode.HALF_DOWN);
-            return new MarketTableRow(stockCode, DashCurrencyPairEnum.DASHPLN.toString(), valueOfDashBitBay, BigDecimal.ZERO);
-        }
         try {
             marketTableRow = marketTableRows.stream().filter(m -> (stockCode.equals(m.getStockName()) && currencyPair.equals(m.getExchangePair()))).findFirst().get();
 

@@ -34,6 +34,7 @@ public class BitBayDataService {
     private static String BitBayBccPlnApiURL = "https://bitbay.net/API/Public/BCCPLN/all.json";
     private static String BitBayEthPlnApiURL = "https://bitbay.net/API/Public/ETHPLN/all.json";
     private static String BitBayDashPlnApiURL = "https://bitbay.net/API/Public/DASHPLN/all.json";
+    private static String BitBayLiskPlnApiURL = "https://bitbay.net/API/Public/LSKPLN/all.json";
 
     public BitBayBtcStockData getBtcPlnStockData() {
         String resBitBay = null;
@@ -95,6 +96,18 @@ public class BitBayDataService {
         return new BitBayDashStockData(bitBayMarketData);
     }
 
+    public BitBayStockData getLiskPlnStockData() {
+        String resBitBay = null;
+        try {
+            resBitBay = sendRequest(BitBayLiskPlnApiURL);
+        } catch (Exception e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        BitBayStockData bitBayMarketData = getBitBayMarketData(resBitBay);
+        bigSpreadRecognizer(bitBayMarketData, "LISK");
+        return bitBayMarketData;
+    }
+
     public String getStockCodeName() {
         return "Bitbay";
     }
@@ -143,7 +156,8 @@ public class BitBayDataService {
         if (BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN)
                       .compareTo(bigSpreadMarginNotificationCallForTransferRoi) > 0) {
             logger.warn(">>> BIG SPREAD na " + getStockCodeName() + " " + currency + ": " +
-                        BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN));
+                        BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN) + "  " +
+                        bitBayStockData.getAsk() + "/" + bitBayStockData.getBid());
         }
     }
 

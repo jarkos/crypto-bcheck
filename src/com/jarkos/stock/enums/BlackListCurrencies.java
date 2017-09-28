@@ -17,6 +17,15 @@ public enum BlackListCurrencies {
     HSR,
     XBL,
     ADX,
-    TNT
+    TNT,
+    KNC,
+    CNH,
+    ZAR,
+    ARDR,
+    AVT,
+    MTH,
+    VERI,
+    WTC,
+    LINK
 
 }

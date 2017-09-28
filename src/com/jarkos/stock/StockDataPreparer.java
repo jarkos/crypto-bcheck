@@ -2,6 +2,7 @@ package com.jarkos.stock;
 
 import com.jarkos.Main;
 import com.jarkos.stock.dto.bitbay.*;
+import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.kraken.KrakenBccStockData;
@@ -15,7 +16,8 @@ import com.jarkos.stock.service.WalutomatDataService;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.IndicatorsSystemConfig.*;
+import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_TRADE_PROVISION_PERCENTAGE;
+import static com.jarkos.config.IndicatorsSystemConfig.KRAKEN_MAKER_TRADE_PROV_PERCENTAGE;
 
 /**
  * Created by jkostrzewa on 2017-09-02.
@@ -33,6 +35,7 @@ public class StockDataPreparer {
         BitBayLtcStockData bitBayLtcPlnStockData = new BitBayDataService().getLtcPlnStockData();
         BitBayBccStockData bitBayBccPlnStockData = new BitBayDataService().getBccPlnStockData();
         BitBayDashStockData bitBayDashPlnStockData = new BitBayDataService().getDashPlnStockData();
+        BitBayStockData bitBayLiskPlnStockData = new BitBayDataService().getLiskPlnStockData();
         KrakenBtcStockData krakenBtcEurStockData = new KrakenDataService().getKrakenBtcEurStockData();
         KrakenBccStockData krakenBccEurStockData = new KrakenDataService().getKrakenBccEurStockData();
         KrakenLtcStockData krakenLtcEurStockData = new KrakenDataService().getKrakenLtcEurStockData();

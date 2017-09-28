@@ -12,6 +12,7 @@ public enum StockNameEnum {
     Kraken("Kraken"),
     Bittrex("Bittrex"),
     Gatecoin("Gatecoin"),
+    Poloniex("Poloniex"),
     LitBit("LiteBit.eu");
 
     private String value;

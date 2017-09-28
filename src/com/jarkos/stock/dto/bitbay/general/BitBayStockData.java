@@ -221,8 +221,5 @@ public class BitBayStockData implements Serializable {
         return this;
     }
 
-    public void sort(List<Transaction> transactions) {
-
-    }
 
 }
