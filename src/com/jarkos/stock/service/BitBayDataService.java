@@ -18,8 +18,8 @@ import java.text.NumberFormat;
 import java.util.Collections;
 
 import static com.jarkos.RequestSender.sendRequest;
-import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
-import static com.jarkos.config.IndicatorsSystemConfig.bigSpreadMarginNotificationCallForTransferRoi;
+import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
+import static com.jarkos.config.AppConfig.bigSpreadMarginNotificationCallForTransferRoi;
 import static com.jarkos.json.JsonFetcher.UTF_8;
 
 /**

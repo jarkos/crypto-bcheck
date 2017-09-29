@@ -45,7 +45,7 @@ import org.jfree.ui.RefineryUtilities;
 import java.awt.*;
 import java.util.Date;
 
-import static com.jarkos.config.IndicatorsSystemConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
+import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 
 /**
  * This class builds stockName traditional candlestick chart.

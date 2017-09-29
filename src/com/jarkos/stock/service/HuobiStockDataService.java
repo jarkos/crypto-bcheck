@@ -12,13 +12,13 @@ import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.IndicatorsSystemConfig.HUOBI_WITHDRAW_PROV_AMOUNT;
+import static com.jarkos.config.StockConfig.HUOBI_WITHDRAW_PROV_AMOUNT;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
-public class HuobiDataService extends AbstractDataService {
-    //public class HuobiDataService extends AbstractDataService {
+public class HuobiStockDataService extends AbstractStockDataService {
+    //public class HuobiStockDataService extends AbstractStockDataService {
 
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
     private static String HuobiLtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_ltc_json.js";

@@ -1,15 +1,17 @@
 package com.jarkos;
 
 import com.jarkos.mail.JavaMailSender;
-import com.jarkos.stock.StockDataPreparer;
+import com.jarkos.stock.StockRoiPreparer;
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.jarkos.config.IndicatorsSystemConfig.HALF_MINUTE_IN_MILLIS;
-import static com.jarkos.config.IndicatorsSystemConfig.marginMailNotificationCallForTransferRoi;
+import static com.jarkos.config.AppConfig.HALF_MINUTE_IN_MILLIS;
+import static com.jarkos.config.AppConfig.marginMailNotificationCallForTransferRoi;
 
 public class Main {
 
@@ -17,7 +19,6 @@ public class Main {
     public static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
     public static Double lastMACD = 0d;
-
     public static BigDecimal lastHuobiLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
@@ -25,22 +26,26 @@ public class Main {
     public static BigDecimal euroBuyToKrakenLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToBitstampBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToBitstampLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal lastBitbayLtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal lastBitbayEthToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal lastBitbayBtcToKrakenBccToBitbayPlnRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBtcBuyToKrakenSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBtcBuyToBitstampSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToExternalStockBccSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayDashBuyToKrakenSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
 
-    public static void main(String[] args) throws InterruptedException {
-
+    public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();
         while (true) {
             try {
                 //
-                new StockDataPreparer().fetchAndPrintStockData();
+                new StockRoiPreparer().fetchAndPrintStockData();
                 new CoinmarketcapPriceCompare().compare();
 
             } catch (Exception e) {
@@ -57,28 +62,30 @@ public class Main {
     }
 
     private static void goodIndicatorsMailNotify() {
-        List<BigDecimal> internalIndicators = innitInternalIndicatorsList();
-        if (lastMACD < -250.0d || internalIndicators.stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
-            JavaMailSender.sendMail(
-                    " MACD BitBay: " + lastMACD.toString() + " Huobi LTC ROI: " + lastHuobiLtcToBitbayBtcRoi + " Kraken LTC ROI: " + bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi +
-                    " Kraken EUR BTC ROI: " + euroBuyToKrakenBtcSellOnBitBayRoi + " Bitstamp EUR BTC ROI: " + euroBuyToBitstampBtcSellOnBitBayRoi +
-                    " Bitstamp LTC Bitbay BTC ROI: " + bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi + " Kraken EUR to Bitbay LTC ROI: " + euroBuyToKrakenLtcSellOnBitBayRoi +
-                    " Bitstamp Eur to Bitbay LTC ROI: " + euroBuyToBitstampLtcSellOnBitBayRoi + " Kraken Ltc to Bitbay BBC ROI: " + lastBitbayLtcToKrakenBccToBitbayPlnRoi +
-                    " Kraken Eth to Bitbay BBC ROI: " + lastBitbayEthToKrakenBccToBitbayPlnRoi + " Bitbay Btc to Kraken BBC ROI: " + lastBitbayBtcToKrakenBccToBitbayPlnRoi);
+        Map<String, BigDecimal> internalIndicators = innitInternalIndicatorsList();
+
+        if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
+            StringBuilder sb = new StringBuilder();
+            internalIndicators.forEach((k, v) -> sb.append(k + " " + v + System.getProperty("line.separator")));
+            JavaMailSender.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString());
         }
     }
 
-    private static List<BigDecimal> innitInternalIndicatorsList() {
-        return Arrays.asList(
-                //                lastHuobiLtcToBitbayBtcRoi,
-                bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi, bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi, lastBitbayLtcToKrakenBccToBitbayPlnRoi,
-                lastBitbayEthToKrakenBccToBitbayPlnRoi, lastBitbayBtcToKrakenBccToBitbayPlnRoi
-
-                //                , euroBuyToKrakenBtcSellOnBitBayRoi,
-                //                euroBuyToBitstampBtcSellOnBitBayRoi,
-                //                euroBuyToKrakenLtcSellOnBitBayRoi
-                //                euroBuyToBitstampLtcSellOnBitBayRoi
-                            );
+    private static Map<String, BigDecimal> innitInternalIndicatorsList() {
+        Map<String, BigDecimal> indicatorsMap = new HashMap<>();
+        Field[] allFields = Main.class.getDeclaredFields();
+        for (Field field : allFields) {
+            if (Modifier.isPublic(field.getModifiers()) && field.getType().equals(BigDecimal.class)) {
+                BigDecimal indicator;
+                try {
+                    indicator = (BigDecimal) field.get(BigDecimal.class);
+                    indicatorsMap.put(field.getName(), indicator);
+                } catch (IllegalAccessException e) {
+                    // DO NOTHING, GO AHEAD
+                }
+            }
+        }
+        return indicatorsMap;
     }
 
 }

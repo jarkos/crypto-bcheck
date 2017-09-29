@@ -1,6 +1,6 @@
 package com.jarkos;
 
-import com.jarkos.config.IndicatorsSystemConfig;
+import com.jarkos.config.StockConfig;
 import com.jarkos.stock.enums.*;
 import lombok.Getter;
 import org.apache.log4j.Logger;
@@ -16,8 +16,9 @@ import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.jarkos.config.IndicatorsSystemConfig.maxMarginCompareWarnDisplayRoi;
-import static com.jarkos.config.IndicatorsSystemConfig.minMarginCompareWarnDisplayRoi;
+import static com.jarkos.config.AppConfig.MARKET_MIN_VOLUME_TO_CONSIDER;
+import static com.jarkos.config.AppConfig.maxMarginCompareWarnDisplayRoi;
+import static com.jarkos.config.AppConfig.minMarginCompareWarnDisplayRoi;
 
 /**
  * Created by jkostrzewa on 2017-09-18.
@@ -48,43 +49,43 @@ public class CoinmarketcapPriceCompare {
         logger.error("*** BTC");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);
-        recognizeMaxRoi(btcMarketsData, "BTC MAX/MIN stocks:");
+        recognizeMinMaxExchange(btcMarketsData, "BTC MAX/MIN stocks:");
 
         logger.error("*** LTC");
         final Set<String> ltcCurrencyParisToCompare = Arrays.stream(LtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(ltcMarketsData, StockNameEnum.BitBay, LtcCurrencyPairEnum.LTCPLN.toString(), ltcCurrencyParisToCompare);
-        recognizeMaxRoi(ltcMarketsData, "LTC MAX/MIN stocks:");
+        recognizeMinMaxExchange(ltcMarketsData, "LTC MAX/MIN stocks:");
 
         logger.error("*** ETH");
         final Set<String> ethCurrencyParisToCompare = Arrays.stream(EthCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(ethMarketsData, StockNameEnum.BitBay, EthCurrencyPairEnum.ETHPLN.toString(), ethCurrencyParisToCompare);
-        recognizeMaxRoi(ethMarketsData, "ETH MAX/MIN stocks:");
+        recognizeMinMaxExchange(ethMarketsData, "ETH MAX/MIN stocks:");
 
         logger.error("*** BCC");
         final Set<String> bccCurrencyParisToCompare = Arrays.stream(BccCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(bccMarketsData, StockNameEnum.BitBay, BccCurrencyPairEnum.BCCPLN.toString(), bccCurrencyParisToCompare);
-        recognizeMaxRoi(bccMarketsData, "BCC MAX/MIN stocks:");
+        recognizeMinMaxExchange(bccMarketsData, "BCC MAX/MIN stocks:");
 
         logger.error("*** LISK");
         final Set<String> liskCurrencyParisToCompare = Arrays.stream(LiskCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(liskMarketsData, StockNameEnum.BitBay, LiskCurrencyPairEnum.LSKPLN.toString(), liskCurrencyParisToCompare);
-        recognizeMaxRoi(liskMarketsData, "LISK MAX/MIN stocks:");
+        recognizeMinMaxExchange(liskMarketsData, "LISK MAX/MIN stocks:");
 
         logger.error("*** DASH");
         final Set<String> dashCurrencyParisToCompare = Arrays.stream(DashCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(dashMarketsData, StockNameEnum.BitBay, DashCurrencyPairEnum.DASHPLN.toString(), dashCurrencyParisToCompare);
-        recognizeMaxRoi(dashMarketsData, "DASH MAX/MIN stocks:");
+        recognizeMinMaxExchange(dashMarketsData, "DASH MAX/MIN stocks:");
 
         logger.error("*** GAME");
         final Set<String> gameCurrencyParisToCompare = Arrays.stream(GameCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(gameMarketsData, StockNameEnum.BitBay, GameCurrencyPairEnum.GAMEPLN.toString(), gameCurrencyParisToCompare);
-//        recognizeMaxRoi(gameMarketsData, "GAME MAX/MIN stocks:");
+        //        recognizeMinMaxExchange(gameMarketsData, "GAME MAX/MIN stocks:");
 
     }
 
-    public void recognizeMaxRoi(List<MarketTableRow> marketList, String nameToDisplay) {
+    public void recognizeMinMaxExchange(List<MarketTableRow> marketList, String nameToDisplay) {
         System.out.println(nameToDisplay);
-        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(IndicatorsSystemConfig.MARKET_MIN_VOLUME_TO_CONSIDER) > 0)
+        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER) > 0)
                                                             .collect(Collectors.toList());
         final List<String> blackListCurrencies = Arrays.stream(BlackListCurrencies.values()).map(Enum::name).collect(Collectors.toList());
 
@@ -109,7 +110,7 @@ public class CoinmarketcapPriceCompare {
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +
                         " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff;
-                if (diff.compareTo(maxMarginCompareWarnDisplayRoi) > 0 && diff.compareTo(minMarginCompareWarnDisplayRoi) < 0 ) {
+                if (diff.compareTo(maxMarginCompareWarnDisplayRoi) > 0 && diff.compareTo(minMarginCompareWarnDisplayRoi) < 0) {
                     logger.warn(resultToDisplay);
                 } else {
                     logger.error(resultToDisplay);

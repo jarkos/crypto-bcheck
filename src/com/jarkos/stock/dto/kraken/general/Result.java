@@ -11,22 +11,22 @@ public class Result {
 
     @SerializedName("XXBTZEUR")
     @Expose
-    private XXBTZEUR xXBTZEUR;
+    private GeneralKrakenData xXBTZEUR;
 
     @SerializedName("XLTCZEUR")
     @Expose
-    private XLTCZEUR xLTCZEUR;
+    private GeneralKrakenData xLTCZEUR;
 
     @SerializedName("XETHZEUR")
     @Expose
-    private XETHZEUR xETHZEUR;
+    private GeneralKrakenData xETHZEUR;
 
     @SerializedName("BCHEUR")
     @Expose
-    private BCHEUR xBCHEUR;
+    private GeneralKrakenData xBCHEUR;
 
     @SerializedName("DASHEUR")
     @Expose
-    private DASHEUR DASHEUR;
+    private GeneralKrakenData DASHEUR;
 
 }

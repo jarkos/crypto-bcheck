@@ -10,12 +10,12 @@ import com.jarkos.stock.exception.DataFetchUnavailableException;
 import java.math.BigDecimal;
 
 import static com.jarkos.RequestSender.sendRequest;
-import static com.jarkos.config.IndicatorsSystemConfig.*;
+import static com.jarkos.config.StockConfig.*;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
-public class KrakenDataService extends AbstractDataService {
+public class KrakenStockDataService extends AbstractStockDataService {
 
     private static String KrakenBtcEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
     private static String KrakenLtcEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=LTCEUR";

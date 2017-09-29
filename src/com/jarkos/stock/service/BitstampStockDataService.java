@@ -14,13 +14,13 @@ import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT;
-import static com.jarkos.config.IndicatorsSystemConfig.BITSTAMP_WITHDRAW_PROV;
+import static com.jarkos.config.StockConfig.BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT;
+import static com.jarkos.config.StockConfig.BITSTAMP_WITHDRAW_PROV;
 
 /**
  * Created by jkostrzewa on 2017-09-09.
  */
-public class BitstampDataService extends AbstractDataService {
+public class BitstampStockDataService extends AbstractStockDataService {
 
     private static String BitstampLtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
     private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
