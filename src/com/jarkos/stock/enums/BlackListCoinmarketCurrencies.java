@@ -3,7 +3,7 @@ package com.jarkos.stock.enums;
 /**
  * Created by jkostrzewa on 2017-09-23.
  */
-public enum BlackListCurrencies {
+public enum BlackListCoinmarketCurrencies {
 
     CNY,
     PPT,

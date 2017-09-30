@@ -1,4 +1,4 @@
-package com.jarkos.stock.enums;
+package com.jarkos.stock.enums.currencies;
 
 /**
  * Created by jkostrzewa on 2017-09-19.

@@ -1,6 +1,9 @@
 package com.jarkos;
 
-import com.jarkos.stock.enums.*;
+import com.jarkos.stock.enums.BlackListCoinmarketCurrencies;
+import com.jarkos.stock.enums.BlackListCoinmarketStocks;
+import com.jarkos.stock.enums.StockNameEnum;
+import com.jarkos.stock.enums.currencies.*;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -20,7 +23,7 @@ import static com.jarkos.config.AppConfig.*;
 /**
  * Created by jkostrzewa on 2017-09-18.
  */
-public class CoinmarketcapPriceCompare {
+class CoinmarketcapPriceCompare {
 
     private static final Logger logger = Logger.getLogger(CoinmarketcapPriceCompare.class);
 
@@ -42,7 +45,7 @@ public class CoinmarketcapPriceCompare {
         gameMarketsData = getMarketsData("https://coinmarketcap.com/currencies/gamecredits/#markets");
     }
 
-    public void compare() {
+    void compare() {
         logger.error("*** BTC");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);
@@ -80,11 +83,10 @@ public class CoinmarketcapPriceCompare {
 
     }
 
-    public void recognizeMinMaxExchange(List<MarketTableRow> marketList, String nameToDisplay) {
+    private void recognizeMinMaxExchange(List<MarketTableRow> marketList, String nameToDisplay) {
         System.out.println(nameToDisplay);
-        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER) > 0)
-                                                            .collect(Collectors.toList());
-        final List<String> blackListCurrencies = Arrays.stream(BlackListCurrencies.values()).map(Enum::name).collect(Collectors.toList());
+        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER) > 0).collect(Collectors.toList());
+        final List<String> blackListCurrencies = Arrays.stream(BlackListCoinmarketCurrencies.values()).map(Enum::name).collect(Collectors.toList());
 
         final List<MarketTableRow> filteredMarkets = marketsToRecognize.stream().filter(m -> blackListCurrencies.stream().noneMatch(c -> m.getExchangePair().contains(c)))
                                                                        .collect(Collectors.toList());
@@ -125,7 +127,7 @@ public class CoinmarketcapPriceCompare {
             Elements tableRows = marketsTable.getElementsByTag("tr");
             tableRows.stream().forEach(element -> {
                 Elements allTdElements = element.getElementsByTag("td");
-                if (!allTdElements.isEmpty() && (allTdElements.get(4).text().indexOf(',') < 0)) {
+                if (!allTdElements.isEmpty() && (allTdElements.get(4).text().indexOf(',') < 0) && !isOnBlackList(allTdElements.get(1).text())) {
                     //                    System.err.println(allTdElements.get(4).text());
                     marketTableRows.add(new MarketTableRow(allTdElements.get(1).text(), allTdElements.get(2).text(), new BigDecimal(parseValue(allTdElements.get(4).text())),
                                                            new BigDecimal(parseVolume(allTdElements.get(3).text()))));
@@ -143,6 +145,10 @@ public class CoinmarketcapPriceCompare {
         }
 
         return marketTableRows;
+    }
+
+    private boolean isOnBlackList(String stockName) {
+        return Arrays.stream(BlackListCoinmarketStocks.values()).anyMatch(s -> s.name().equals(stockName));
     }
 
     String parseValue(String s) {
