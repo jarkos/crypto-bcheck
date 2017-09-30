@@ -1,6 +1,5 @@
 package com.jarkos;
 
-import com.jarkos.config.StockConfig;
 import com.jarkos.stock.enums.*;
 import lombok.Getter;
 import org.apache.log4j.Logger;
@@ -16,9 +15,7 @@ import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.jarkos.config.AppConfig.MARKET_MIN_VOLUME_TO_CONSIDER;
-import static com.jarkos.config.AppConfig.maxMarginCompareWarnDisplayRoi;
-import static com.jarkos.config.AppConfig.minMarginCompareWarnDisplayRoi;
+import static com.jarkos.config.AppConfig.*;
 
 /**
  * Created by jkostrzewa on 2017-09-18.

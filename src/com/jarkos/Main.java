@@ -19,7 +19,6 @@ public class Main {
     public static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
     public static Double lastMACD = 0d;
-    public static BigDecimal lastHuobiLtcToBitbayBtcRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToKrakenBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
@@ -38,7 +37,8 @@ public class Main {
     public static BigDecimal bitBayDashBuyToKrakenSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();

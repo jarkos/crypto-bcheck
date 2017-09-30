@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
-import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
-import com.jarkos.stock.dto.bitstamp.BitstampDashStockData;
-import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
-import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
+import com.jarkos.stock.dto.bitstamp.*;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import com.jarkos.stock.exception.NotSupportedOperationException;
@@ -25,6 +22,7 @@ public class BitstampStockDataService extends AbstractStockDataService {
     private static String BitstampLtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
     private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
     private static String BitstampEthEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/etheur";
+//    private static String BitstampBccEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/bcceur";
 
     @Override
     public BitstampLtcStockData getLtcEurStockData() {
@@ -59,6 +57,18 @@ public class BitstampStockDataService extends AbstractStockDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return new BitstampLtcStockData(getBitstampMarketData(resBitstamp));
+    }
+
+    public BitstampBccStockData getBitstampBccEurStockData() {
+//        UNLOCK WHEN BCC API FROM BITSTAMP WILL BE AVAILABLE
+//        String resBitstamp = null;
+//        try {
+//            resBitstamp = RequestSender.sendRequest(BitstampBccEurApiUrl);
+//        } catch (DataFetchUnavailableException e) {
+//            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+//        }
+//        return new BitstampBccStockData(getBitstampMarketData(resBitstamp));
+        return null;
     }
 
     private static BitstampStockData getBitstampMarketData(String res) {

@@ -26,6 +26,19 @@ public enum BlackListCurrencies {
     MTH,
     VERI,
     WTC,
-    LINK
+    LINK,
+    SALT,
+    FRGC,
+    SNM,
+    CTR,
+    KRW,
+    FUN,
+    MCO,
+    LRC,
+    EOS,
+    INPAY,
+    NAMO,
+    PPC,
+    ORME
 
 }

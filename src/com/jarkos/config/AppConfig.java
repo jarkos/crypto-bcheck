@@ -12,7 +12,7 @@ public class AppConfig {
     public static final BigDecimal marginMailNotificationCallForTransferRoi = BigDecimal.valueOf(1.05d);
     public static final BigDecimal bigSpreadMarginNotificationCallForTransferRoi = BigDecimal.valueOf(1.01d);
     public static final BigDecimal maxMarginCompareWarnDisplayRoi = BigDecimal.valueOf(1.025d);
-    public static final BigDecimal minMarginCompareWarnDisplayRoi = BigDecimal.valueOf(0.96d);
+    public static final BigDecimal minMarginCompareWarnDisplayRoi = BigDecimal.valueOf(0.965d);
 
     public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
     public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);

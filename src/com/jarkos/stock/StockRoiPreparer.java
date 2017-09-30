@@ -3,6 +3,7 @@ package com.jarkos.stock;
 import com.jarkos.Main;
 import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampBccStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.kraken.KrakenBccStockData;
@@ -150,13 +151,15 @@ public class StockRoiPreparer {
             if (bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
                 Main.bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi;
             }
+            Main.bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = new KrakenStockDataService()
+                    .prepareBitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
         if (bitBayEthPlnStockData != null && bitstampLtcEurStockData != null && bitBayLtcPlnStockData != null) {
-            BigDecimal bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi = new BitstampStockDataService()
+            BigDecimal bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = new BitstampStockDataService()
                     .prepareBitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi(bitBayEthPlnStockData, bitstampLtcEurStockData, bitBayLtcPlnStockData,
                                                                                     BITSTAMP_TRADE_PROVISION_PERCENTAGE);
-            if (bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi;
+            if (bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
+                Main.bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi;
             }
         }
     }

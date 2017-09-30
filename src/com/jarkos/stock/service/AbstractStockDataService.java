@@ -309,6 +309,21 @@ public abstract class AbstractStockDataService {
         return bitBayDashBuyAndEuroSellRoi;
     }
 
+    public BigDecimal prepareBitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface ltcEurAbstractStockData,
+                                                                                BigDecimal stockTradeProv) {
+        // LTC BITBAY -> EURO EXTERNAL STOCK
+        BigDecimal eurNumberAfterLtcSellAfterTradeProv = getEuroFromBuyLtcBitbayAndSellForEuroOnExternalStock(bitBayLtcPlnStockData, stockTradeProv, ltcEurAbstractStockData);
+        //  EURO EXTERNAL STOCK -> BANK
+        BigDecimal amountOfPlnAfterWithdrawalToBankAccountAndExchange = getAmountOfPlnAfterWithdrawalToBankAccountAndExchange(eurNumberAfterLtcSellAfterTradeProv);
+        BigDecimal bitBayLtcBuyAndEuroSellRoi = amountOfPlnAfterWithdrawalToBankAccountAndExchange.divide(LTC_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
+
+        String resultToDisplay = "ROI LTC BitBay -> " + getStockCodeName() + " EURO -> Bank EURO: " + bitBayLtcBuyAndEuroSellRoi;
+        displayDependOnRoi(bitBayLtcBuyAndEuroSellRoi, resultToDisplay);
+        System.out.println("LTC BitBay -> " + bitBayLtcPlnStockData.getLast() + " DASH " + getStockCodeName() + " -> " +
+                           ltcEurAbstractStockData.getLastLtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate));
+        return bitBayLtcBuyAndEuroSellRoi;
+    }
+
     //  ##########################################################################################################################
     //  ##################################################### HELPER METHODS #####################################################
     //  ##########################################################################################################################
@@ -393,7 +408,7 @@ public abstract class AbstractStockDataService {
 
     private BigDecimal getAmountOfEuroAfterExchangeAndSepaTransfer() {
         BigDecimal eurPlnExchangeRate = StockRoiPreparer.lastSellWalutomatEurPlnExchangeRate;
-        BigDecimal numberOfEurAfterExchange = MONEY_TO_EUR_BUY.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfEurAfterExchange = MONEY_TO_EUR_BUY.divide(eurPlnExchangeRate, 4, RoundingMode.HALF_DOWN);
         return (numberOfEurAfterExchange.multiply(WALUTOMAT_WITHDRAW_RATIO)).subtract(ALIOR_SEPA_WITHDRAW_PLN_PROV_AMOUNT.divide(eurPlnExchangeRate, 2, RoundingMode.HALF_DOWN));
     }
 
