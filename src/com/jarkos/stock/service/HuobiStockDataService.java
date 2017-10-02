@@ -14,10 +14,7 @@ import java.math.BigDecimal;
 
 import static com.jarkos.config.StockConfig.HUOBI_WITHDRAW_PROV_AMOUNT;
 
-/**
- * Created by jkostrzewa on 2017-09-09.
- */
-public class HuobiStockDataService extends AbstractStockDataService {
+public abstract class HuobiStockDataService extends AbstractStockDataService {
     //public class HuobiStockDataService extends AbstractStockDataService {
 
     private static String HuobiBtcCnyApiUrl = "http://api.huobi.com/staticmarket/detail_btc_json.js";
@@ -33,7 +30,7 @@ public class HuobiStockDataService extends AbstractStockDataService {
         return new HuobiBtcStockData(getHuobiMarketData(resHuobi));
     }
 
-    public HuobiLtcStockData getHuobiLtcCnyStockData() {
+    private HuobiLtcStockData getHuobiLtcCnyStockData() {
         String resHuobi = null;
         try {
             resHuobi = RequestSender.sendRequest(HuobiLtcCnyApiUrl);

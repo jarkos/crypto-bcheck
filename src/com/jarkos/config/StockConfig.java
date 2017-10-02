@@ -2,9 +2,6 @@ package com.jarkos.config;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-10.
- */
 public class StockConfig {
 
     public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0035F);
@@ -26,6 +23,7 @@ public class StockConfig {
     public static final BigDecimal KRAKEN_BCC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);
     public static final BigDecimal KRAKEN_DASH_WITHDRAW_PROV = BigDecimal.valueOf(0.005F);
     public static final BigDecimal KRAKEN_LTC_WITHDRAW_PROV = BigDecimal.valueOf(0.02F);
+    public static final BigDecimal KRAKEN_ETH_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.005F);
     public static final BigDecimal KRAKEN_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
 
     public static final BigDecimal WALUTOMAT_WITHDRAW_RATIO = BigDecimal.valueOf(0.998F);

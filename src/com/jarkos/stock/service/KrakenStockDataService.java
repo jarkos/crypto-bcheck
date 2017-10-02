@@ -2,7 +2,6 @@ package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
-import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.kraken.*;
 import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
@@ -12,9 +11,6 @@ import java.math.BigDecimal;
 import static com.jarkos.RequestSender.sendRequest;
 import static com.jarkos.config.StockConfig.*;
 
-/**
- * Created by jkostrzewa on 2017-09-09.
- */
 public class KrakenStockDataService extends AbstractStockDataService {
 
     private static String KrakenBtcEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
@@ -64,7 +60,7 @@ public class KrakenStockDataService extends AbstractStockDataService {
     }
 
     @Override
-    public EthStockDataInterface getEthEurStockData() {
+    public KrakenEthStockData getEthEurStockData() {
         String resKraken = null;
         try {
             resKraken = sendRequest(KrakenEthEurApiUrl);
@@ -112,6 +108,11 @@ public class KrakenStockDataService extends AbstractStockDataService {
     @Override
     protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
         return numberOfDashBoughtAfterTradeProv.subtract(KRAKEN_DASH_WITHDRAW_PROV);
+    }
+
+    @Override
+    protected BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
+        return numberOfEthBoughtAfterTradeProv.subtract(KRAKEN_ETH_WITHDRAW_PROV_AMOUNT);
     }
 
     @Override

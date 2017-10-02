@@ -16,9 +16,9 @@ import static com.jarkos.config.AppConfig.marginMailNotificationCallForTransferR
 public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class);
-    public static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
+    private static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
-    public static Double lastMACD = 0d;
+    static Double lastMACD = 0d;
     public static BigDecimal bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToKrakenBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
@@ -39,6 +39,8 @@ public class Main {
     public static BigDecimal bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal euroBuyToKrakenEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal euroBuyToBitstampEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();
@@ -66,7 +68,7 @@ public class Main {
 
         if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
             StringBuilder sb = new StringBuilder();
-            internalIndicators.forEach((k, v) -> sb.append(k + " " + v + System.getProperty("line.separator")));
+            internalIndicators.forEach((k, v) -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")));
             JavaMailSender.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString());
         }
     }
