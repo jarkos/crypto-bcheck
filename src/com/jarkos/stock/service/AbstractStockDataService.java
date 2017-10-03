@@ -276,8 +276,9 @@ public abstract class AbstractStockDataService {
         BigDecimal plnMoneyBccExchangedAfterProvPessimistic = getPlnFromBitBayBccSellPessimistic(bitBayBccPlnStockData, numberOfBccWithdrawAfterProvPessimistic);
 
         BigDecimal eurBuyAndBccSellRoi = plnMoneyBccExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
+        BigDecimal eurBuyAndBccSellRoiPessimistic = plnMoneyBccExchangedAfterProvPessimistic.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
         String resultToDisplay = "ROI EUR Walutomat -> BCC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBccSellRoi + " {" +
-                                 plnMoneyBccExchangedAfterProvPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
+                                 eurBuyAndBccSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
         displayDependOnRoi(eurBuyAndBccSellRoi, resultToDisplay);
         return eurBuyAndBccSellRoi;
     }
