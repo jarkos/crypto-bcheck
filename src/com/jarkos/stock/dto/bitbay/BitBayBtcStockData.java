@@ -26,6 +26,11 @@ public class BitBayBtcStockData extends BitBayStockData implements BtcStockDataI
     }
 
     @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(this.getBid());
+    }
+
+    @Override
     public Object getBtcEurStockData() {
         return this;
     }

@@ -11,5 +11,7 @@ public interface BtcStockDataInterface {
 
     BigDecimal getAskPrice();
 
+    BigDecimal getBidPrice();
+
     Object getBtcEurStockData();
 }

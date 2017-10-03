@@ -137,19 +137,27 @@ public abstract class AbstractStockDataService {
         if (btcEurStockData.getBtcEurStockData() != null) {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             BigDecimal eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, stockTradeProv, btcEurStockData);
+            BigDecimal eurNumberAfterBtcSellAfterTradeProvPessimistic = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(bitBayBtcPlnStockData, stockTradeProv,
+                                                                                                                                        btcEurStockData);
             // EURO - > BCC EXTERNAL STOCK
             BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProv = amountOfBccBoughtFromEuroOnExternalStock(bccEurAbstractStockData, stockTradeProv,
                                                                                                              eurNumberAfterBtcSellAfterTradeProv);
+            BigDecimal numberOfBccBoughtWithdrawToBitBayAfterProvPessimistic = amountOfBccBoughtFromEuroOnExternalStockPessimistic(bccEurAbstractStockData, stockTradeProv,
+                                                                                                                                   eurNumberAfterBtcSellAfterTradeProvPessimistic);
             //BITBAY BCC -> PLN
             BigDecimal numberOfMoneyFromBccSellAfterProv = getPlnFromBitBayBccSell(bitBayBccPlnStockData, numberOfBccBoughtWithdrawToBitBayAfterProv);
+            BigDecimal numberOfMoneyFromBccSellAfterProvPessimistic = getPlnFromBitBayBccSellPessimistic(bitBayBccPlnStockData,
+                                                                                                         numberOfBccBoughtWithdrawToBitBayAfterProvPessimistic);
 
             BigDecimal bitBayBtcBuyAndBccSellRoi = numberOfMoneyFromBccSellAfterProv.divide(BTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
-            String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " BCC -> Bitbay PLN : " + bitBayBtcBuyAndBccSellRoi;
+            BigDecimal bitBayBtcBuyAndBccSellRoiPessimistic = numberOfMoneyFromBccSellAfterProvPessimistic.divide(BTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+            String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " BCC -> Bitbay PLN : " + bitBayBtcBuyAndBccSellRoi + " {" +
+                                     bitBayBtcBuyAndBccSellRoiPessimistic.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "}";
             displayDependOnRoi(bitBayBtcBuyAndBccSellRoi, resultToDisplay);
-            System.out.println("BTC BitBay -> " + bitBayBtcPlnStockData.getLastBtcPrice() + " BTC " + getStockCodeName() + " -> " +
+            System.out.println("BTC BitBay -> " + bitBayBtcPlnStockData.getLastBtcPrice() + " {" + bitBayBtcPlnStockData.getAskPrice() + "} BTC " + getStockCodeName() + " -> " +
                                btcEurStockData.getLastBtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " # BCC " + getStockCodeName() + " ->" +
                                bccEurAbstractStockData.getLastBccPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " BCC BitBay -> " +
-                               bitBayBccPlnStockData.getBid());
+                               bitBayBccPlnStockData.getLastBccPrice() + " {" + bitBayBtcPlnStockData.getBidPrice().setScale(2, BigDecimal.ROUND_HALF_DOWN) + "}");
             return bitBayBtcBuyAndBccSellRoi;
         }
         System.out.println("NO" + getStockCodeName() + " data");
@@ -386,6 +394,18 @@ public abstract class AbstractStockDataService {
         //EXTERNAL STOCK BTC -> EUR
         BigDecimal eurNumberAfterBtcSell = btcNumberAfterWithdrawFromBitBay.multiply(btcEurStockData.getLastBtcPrice());
         return eurNumberAfterBtcSell.subtract(eurNumberAfterBtcSell.multiply(stockTradeProv));
+    }
+
+    private BigDecimal getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv,
+                                                                                       BtcStockDataInterface btcEurStockData) {
+        //BITBAY BTC
+        BigDecimal numberOfBtcBoughtOnBitBayPessimistic = BTC_BUY_MONEY.divide(bitBayBtcPlnStockData.getAskPrice(), 4, RoundingMode.HALF_DOWN);
+        BigDecimal btcNumberAfterTradeProvisionPessimistic = numberOfBtcBoughtOnBitBayPessimistic
+                .subtract(numberOfBtcBoughtOnBitBayPessimistic.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_TAKER));
+        BigDecimal btcNumberAfterWithdrawFromBitBayPessimistic = btcNumberAfterTradeProvisionPessimistic.subtract(BITBAY_BTC_WITHDRAW_PROV_AMOUNT);
+        //EXTERNAL STOCK BTC -> EUR
+        BigDecimal eurNumberAfterBtcSellPessimistic = btcNumberAfterWithdrawFromBitBayPessimistic.multiply(btcEurStockData.getBidPrice());
+        return eurNumberAfterBtcSellPessimistic.subtract(eurNumberAfterBtcSellPessimistic.multiply(stockTradeProv));
     }
 
     private BigDecimal getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(BitBayEthStockData bitBayEthPlnStockData, BigDecimal stockTradeProv,

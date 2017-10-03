@@ -5,9 +5,6 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-10.
- */
 public class KrakenBtcStockData extends KrakenStockData implements BtcStockDataInterface {
 
     public KrakenBtcStockData(KrakenStockData k) {
@@ -22,6 +19,11 @@ public class KrakenBtcStockData extends KrakenStockData implements BtcStockDataI
     @Override
     public BigDecimal getAskPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXXBTZEUR().getAsk().get(0)));
+    }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXXBTZEUR().getBid().get(0)));
     }
 
     @Override
