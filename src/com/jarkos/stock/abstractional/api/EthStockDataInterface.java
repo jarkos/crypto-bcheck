@@ -9,6 +9,8 @@ public interface EthStockDataInterface {
 
     BigDecimal getLastEthPrice();
 
+    BigDecimal getAskEthPrice();
+
     Object getEthEurStockData();
 
 }

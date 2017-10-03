@@ -20,6 +20,11 @@ public class BitstampEthStockData extends BitstampStockData implements EthStockD
     }
 
     @Override
+    public BigDecimal getAskEthPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getAsk()));
+    }
+
+    @Override
     public Object getEthEurStockData() {
         return this;
     }

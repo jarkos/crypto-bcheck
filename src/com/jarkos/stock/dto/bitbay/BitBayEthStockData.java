@@ -20,6 +20,11 @@ public class BitBayEthStockData extends BitBayStockData implements EthStockDataI
     }
 
     @Override
+    public BigDecimal getAskEthPrice() {
+        return BigDecimal.valueOf(this.getAsk());
+    }
+
+    @Override
     public Object getEthEurStockData() {
         return this;
     }
