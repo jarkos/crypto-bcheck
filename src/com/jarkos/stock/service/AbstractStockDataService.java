@@ -178,7 +178,8 @@ public abstract class AbstractStockDataService {
 
         BigDecimal eurBuyAndBtcSellRoi = plnMoneyBtcExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
         BigDecimal eurBuyAndBtcSellRoiPessimistic = plnMoneyBtcExchangedAfterProvPessimistic.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        String resultToDisplay = "ROI EUR Walutomat -> BTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi + " {" + eurBuyAndBtcSellRoiPessimistic + "}";
+        String resultToDisplay = "ROI EUR Walutomat -> BTC " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndBtcSellRoi + " {" +
+                                 eurBuyAndBtcSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
         displayDependOnRoi(eurBuyAndBtcSellRoi, resultToDisplay);
 
         return eurBuyAndBtcSellRoi;
@@ -198,7 +199,8 @@ public abstract class AbstractStockDataService {
 
         BigDecimal eurBuyAndEthSellRoi = plnMoneyEthExchangedAfterProv.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
         BigDecimal eurBuyAndEthSellRoiPessimistic = plnMoneyEthExchangedAfterProvPessimistic.divide(MONEY_TO_EUR_BUY, 4, RoundingMode.HALF_DOWN);
-        String resultToDisplay = "ROI EUR Walutomat -> ETH " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndEthSellRoi + " {" + eurBuyAndEthSellRoiPessimistic + "}";
+        String resultToDisplay = "ROI EUR Walutomat -> ETH " + getStockCodeName() + " -> Bitbay PLN: " + eurBuyAndEthSellRoi + " {" +
+                                 eurBuyAndEthSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
         displayDependOnRoi(eurBuyAndEthSellRoi, resultToDisplay);
 
         return eurBuyAndEthSellRoi;
@@ -211,19 +213,28 @@ public abstract class AbstractStockDataService {
         if (btcEurStockData.getBtcEurStockData() != null) {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             BigDecimal eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, stockTradeProv, btcEurStockData);
+            BigDecimal eurNumberAfterBtcSellAfterTradeProvPessimistic = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(bitBayBtcPlnStockData, stockTradeProv,
+                                                                                                                                        btcEurStockData);
             // EURO - > LTC EXTERNAL STOCK
             BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv = amountOfLtcBoughtFromEuroOnExternalStock(ltcEurAbstractStockData, stockTradeProv,
                                                                                                              eurNumberAfterBtcSellAfterTradeProv);
+            BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProvPessimistic = amountOfLtcBoughtFromEuroOnExternalStockPessimistic(ltcEurAbstractStockData, stockTradeProv,
+                                                                                                                                   eurNumberAfterBtcSellAfterTradeProvPessimistic);
             //BITBAY LTC -> PLN
             BigDecimal numberOfMoneyFromLtcSellAfterProv = getPlnFromBitBayLtcSell(bitBayLctPlnStockData, numberOfLtcBoughtWithdrawToBitBayAfterProv);
+            BigDecimal numberOfMoneyFromLtcSellAfterProvPessimistic = getPlnFromBitBayLtcSellPessimistic(bitBayLctPlnStockData,
+                                                                                                         numberOfLtcBoughtWithdrawToBitBayAfterProvPessimistic);
 
             BigDecimal bitBayBtcBuyAndLtcSellRoi = numberOfMoneyFromLtcSellAfterProv.divide(BTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
-            String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " LTC -> Bitbay PLN : " + bitBayBtcBuyAndLtcSellRoi;
+            BigDecimal bitBayBtcBuyAndLtcSellRoiPessimistic = numberOfMoneyFromLtcSellAfterProvPessimistic.divide(BTC_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+            String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " LTC -> Bitbay PLN : " + bitBayBtcBuyAndLtcSellRoi + " {" +
+                                     bitBayBtcBuyAndLtcSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
             displayDependOnRoi(bitBayBtcBuyAndLtcSellRoi, resultToDisplay);
-            System.out.println("BTC BitBay -> " + bitBayBtcPlnStockData.getLastBtcPrice() + " BTC " + getStockCodeName() + " -> " +
-                               btcEurStockData.getLastBtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " # LTC " + getStockCodeName() + " ->" +
-                               ltcEurAbstractStockData.getLastLtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " LTC BitBay -> " +
-                               bitBayLctPlnStockData.getBid());
+            System.out.println(
+                    "BTC BitBay -> " + bitBayBtcPlnStockData.getLastBtcPrice() + " {" + bitBayBtcPlnStockData.getAskPrice().setScale(2, RoundingMode.HALF_DOWN) + "} BTC " +
+                    getStockCodeName() + " -> " + btcEurStockData.getLastBtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " # LTC " + getStockCodeName() +
+                    " ->" + ltcEurAbstractStockData.getLastLtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " LTC BitBay -> " +
+                    bitBayLctPlnStockData.getLastLtcPrice() + " {" + bitBayBtcPlnStockData.getBidPrice() + "}");
             return bitBayBtcBuyAndLtcSellRoi;
         }
         System.out.println("NO" + getStockCodeName() + " data");
@@ -494,6 +505,13 @@ public abstract class AbstractStockDataService {
         return getLtcAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProv);
     }
 
+    private BigDecimal amountOfLtcBoughtFromEuroOnExternalStockPessimistic(LtcStockDataInterface ltcEurAbstractStockData, BigDecimal stockTradeProv,
+                                                                           BigDecimal eurNumberAfterEthSellAfterTradeProv) {
+        BigDecimal numberOfLtcBoughtPessimistic = eurNumberAfterEthSellAfterTradeProv.divide(ltcEurAbstractStockData.getAskPrice(), 5, RoundingMode.HALF_DOWN);
+        BigDecimal numberOfLtcBoughtAfterTradeProvPessimistic = numberOfLtcBoughtPessimistic.subtract(numberOfLtcBoughtPessimistic.multiply(stockTradeProv));
+        return getLtcAfterWithdrawalProv(numberOfLtcBoughtAfterTradeProvPessimistic);
+    }
+
     private BigDecimal amountOfBccBoughtFromEuroOnExternalStock(BccStockDataInterface bccEurAbstractStockData, BigDecimal stockTradeProv, BigDecimal euroAmount) {
         // EURO - > BCC EXTERNAL STOCK
         BigDecimal numberOfBccBought = euroAmount.divide(bccEurAbstractStockData.getLastBccPrice(), 5, RoundingMode.HALF_DOWN);
@@ -558,6 +576,11 @@ public abstract class AbstractStockDataService {
     private BigDecimal getPlnFromBitBayLtcSell(BitBayLtcStockData bitBayLctPlnStockData, BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv) {
         BigDecimal numberOfMoneyFromBitBayLtcSell = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getLast()));
         return numberOfMoneyFromBitBayLtcSell.subtract((numberOfMoneyFromBitBayLtcSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER)));
+    }
+
+    private BigDecimal getPlnFromBitBayLtcSellPessimistic(BitBayLtcStockData bitBayLctPlnStockData, BigDecimal numberOfLtcBoughtWithdrawToBitBayAfterProv) {
+        BigDecimal numberOfMoneyFromBitBayLtcSellPessimistic = numberOfLtcBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayLctPlnStockData.getBid()));
+        return numberOfMoneyFromBitBayLtcSellPessimistic.subtract((numberOfMoneyFromBitBayLtcSellPessimistic.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_TAKER)));
     }
 
     private BigDecimal getPlnFromBitBayEthSell(BitBayEthStockData bitBayEthPlnStockData, BigDecimal numberOfEthBoughtWithdrawToBitBayAfterProv) {
