@@ -18,4 +18,9 @@ public class BitstampBccStockData extends BitstampStockData implements BccStockD
     public BigDecimal getLastBccPrice() {
         return BigDecimal.valueOf(Float.valueOf(getLast()));
     }
+
+    @Override
+    public BigDecimal getAskBccPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getAsk()));
+    }
 }

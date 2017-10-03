@@ -9,4 +9,6 @@ public interface BccStockDataInterface {
 
     BigDecimal getLastBccPrice();
 
+    BigDecimal getAskBccPrice();
+
 }
