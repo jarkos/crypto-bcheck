@@ -19,7 +19,7 @@ import java.util.Collections;
 
 import static com.jarkos.RequestSender.sendRequest;
 import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
-import static com.jarkos.config.AppConfig.bigSpreadMarginNotificationCallForTransferRoi;
+import static com.jarkos.config.AppConfig.bigSpreadMarginDisplayWarnForComapareRoi;
 import static com.jarkos.json.JsonFetcher.UTF_8;
 
 /**
@@ -154,7 +154,7 @@ public class BitBayDataService {
 
     public void bigSpreadRecognizer(BitBayStockData bitBayStockData, String currency) {
         if (BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN)
-                      .compareTo(bigSpreadMarginNotificationCallForTransferRoi) > 0) {
+                      .compareTo(bigSpreadMarginDisplayWarnForComapareRoi) > 0) {
             logger.warn(">>> BIG SPREAD na " + getStockCodeName() + " " + currency + ": " +
                         BigDecimal.valueOf(bitBayStockData.getAsk()).divide(BigDecimal.valueOf(bitBayStockData.getBid()), 4, RoundingMode.HALF_DOWN) + "  " +
                         bitBayStockData.getAsk() + "/" + bitBayStockData.getBid());

@@ -25,7 +25,7 @@ import static com.jarkos.config.AppConfig.*;
  */
 class CoinmarketcapPriceCompare {
 
-    private static final Logger logger = Logger.getLogger(CoinmarketcapPriceCompare.class);
+    private static final Logger log = Logger.getLogger(CoinmarketcapPriceCompare.class);
 
     private List<MarketTableRow> btcMarketsData;
     private List<MarketTableRow> ltcMarketsData;
@@ -46,37 +46,37 @@ class CoinmarketcapPriceCompare {
     }
 
     void compare() {
-        logger.error("*** BTC");
+        log.error("*** BTC");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);
         recognizeMinMaxExchange(btcMarketsData, "BTC MAX/MIN stocks:");
 
-        logger.error("*** LTC");
+        log.error("*** LTC");
         final Set<String> ltcCurrencyParisToCompare = Arrays.stream(LtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(ltcMarketsData, StockNameEnum.BitBay, LtcCurrencyPairEnum.LTCPLN.toString(), ltcCurrencyParisToCompare);
         recognizeMinMaxExchange(ltcMarketsData, "LTC MAX/MIN stocks:");
 
-        logger.error("*** ETH");
+        log.error("*** ETH");
         final Set<String> ethCurrencyParisToCompare = Arrays.stream(EthCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(ethMarketsData, StockNameEnum.BitBay, EthCurrencyPairEnum.ETHPLN.toString(), ethCurrencyParisToCompare);
         recognizeMinMaxExchange(ethMarketsData, "ETH MAX/MIN stocks:");
 
-        logger.error("*** BCC");
+        log.error("*** BCC");
         final Set<String> bccCurrencyParisToCompare = Arrays.stream(BccCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(bccMarketsData, StockNameEnum.BitBay, BccCurrencyPairEnum.BCCPLN.toString(), bccCurrencyParisToCompare);
         recognizeMinMaxExchange(bccMarketsData, "BCC MAX/MIN stocks:");
 
-        logger.error("*** LISK");
+        log.error("*** LISK");
         final Set<String> liskCurrencyParisToCompare = Arrays.stream(LiskCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(liskMarketsData, StockNameEnum.BitBay, LiskCurrencyPairEnum.LSKPLN.toString(), liskCurrencyParisToCompare);
         recognizeMinMaxExchange(liskMarketsData, "LISK MAX/MIN stocks:");
 
-        logger.error("*** DASH");
+        log.error("*** DASH");
         final Set<String> dashCurrencyParisToCompare = Arrays.stream(DashCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(dashMarketsData, StockNameEnum.BitBay, DashCurrencyPairEnum.DASHPLN.toString(), dashCurrencyParisToCompare);
         recognizeMinMaxExchange(dashMarketsData, "DASH MAX/MIN stocks:");
 
-        logger.error("*** GAME");
+        log.error("*** GAME");
         final Set<String> gameCurrencyParisToCompare = Arrays.stream(GameCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(gameMarketsData, StockNameEnum.BitBay, GameCurrencyPairEnum.GAMEPLN.toString(), gameCurrencyParisToCompare);
         //        recognizeMinMaxExchange(gameMarketsData, "GAME MAX/MIN stocks:");
@@ -106,17 +106,21 @@ class CoinmarketcapPriceCompare {
             MarketTableRow priceInUsdByStockAndCurrencyPair = getPriceInUsdByStockAndCurrencyPair(marketsData, s.toString(), c);
             if (priceInUsdByStockAndCurrencyPair != null && !Objects.equals(mainStockName.name(), s.name())) {
                 BigDecimal diff = mainStockAndCurrencyData.getPrice().divide(priceInUsdByStockAndCurrencyPair.getPrice(), 3, RoundingMode.HALF_DOWN);
+                boolean reversedRoi = false;
+                if (diff.compareTo(BigDecimal.ONE) < 1) {
+                    diff = priceInUsdByStockAndCurrencyPair.getPrice().divide(mainStockAndCurrencyData.getPrice(), 3, RoundingMode.HALF_DOWN);
+                    reversedRoi = true;
+                }
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +
-                        " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff;
-                if (diff.compareTo(maxMarginCompareWarnDisplayRoi) > 0 && diff.compareTo(minMarginCompareWarnDisplayRoi) < 0) {
-                    logger.warn(resultToDisplay);
+                        " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff + " " + (reversedRoi ? " %REVERSED" : "");
+                if (diff.compareTo(maxMarginCompareWarnDisplayRoi) > 0 || diff.compareTo(minMarginCompareWarnDisplayRoi) < 0) {
+                    log.warn(resultToDisplay);
                 } else {
-                    logger.error(resultToDisplay);
+                    log.error(resultToDisplay);
                 }
             }
         }));
-
     }
 
     List<MarketTableRow> getMarketsData(String url) {

@@ -20,6 +20,11 @@ public class BitstampLtcStockData extends BitstampStockData implements LtcStockD
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getAsk() ));
+    }
+
+    @Override
     public Object getLtcEurStockData() {
         return this;
     }

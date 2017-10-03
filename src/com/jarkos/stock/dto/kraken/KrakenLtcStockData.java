@@ -20,6 +20,11 @@ public class KrakenLtcStockData extends KrakenStockData implements LtcStockDataI
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXLTCZEUR().getAsk().get(0)));
+    }
+
+    @Override
     public Object getLtcEurStockData() {
         return this.getResult().getXLTCZEUR();
     }

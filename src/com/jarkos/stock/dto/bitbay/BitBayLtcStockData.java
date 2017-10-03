@@ -20,6 +20,11 @@ public class BitBayLtcStockData extends BitBayStockData implements LtcStockDataI
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(this.getAsk());
+    }
+
+    @Override
     public Object getLtcEurStockData() {
         return this;
     }

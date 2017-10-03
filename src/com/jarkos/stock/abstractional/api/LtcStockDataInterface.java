@@ -9,6 +9,8 @@ public interface LtcStockDataInterface {
 
     BigDecimal getLastLtcPrice();
 
+    BigDecimal getAskPrice();
+
     Object getLtcEurStockData();
 
 }

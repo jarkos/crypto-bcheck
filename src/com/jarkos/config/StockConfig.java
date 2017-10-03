@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 public class StockConfig {
 
-    public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0035F);
+    public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE_TAKER = BigDecimal.valueOf(0.0035F);
+    public static final BigDecimal BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER = BigDecimal.valueOf(0.0024F);
     public static final BigDecimal BITBAY_BTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00045F);
     public static final BigDecimal BITBAY_LTC_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.005F);
     public static final BigDecimal BITBAY_ETH_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.00126F);

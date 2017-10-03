@@ -45,10 +45,10 @@ public abstract class HuobiStockDataService extends AbstractStockDataService {
         return gson.fromJson(res, HuobiStockData.class);
     }
 
-    @Override
-    public HuobiLtcStockData getLtcEurStockData() {
-        return getHuobiLtcCnyStockData();
-    }
+//    @Override
+//    public HuobiLtcStockData getLtcEurStockData() {
+//        return getHuobiLtcCnyStockData();
+//    }
 
     @Override
     public EthStockDataInterface getEthEurStockData() {
