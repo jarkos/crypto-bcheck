@@ -20,6 +20,12 @@ public class BitBayDashStockData extends BitBayStockData implements DashStockDat
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(getAsk());
+
+    }
+
+    @Override
     public Object getDashEurStockData() {
         return this;
     }

@@ -9,6 +9,8 @@ public interface DashStockDataInterface {
 
     BigDecimal getLastDashPrice();
 
+    BigDecimal getAskPrice();
+
     Object getDashEurStockData();
 
 }

@@ -20,6 +20,11 @@ public class KrakenDashStockData extends KrakenStockData implements DashStockDat
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getDASHEUR().getAsk().get(0)));
+    }
+
+    @Override
     public Object getDashEurStockData() {
         return getResult().getDASHEUR();
     }

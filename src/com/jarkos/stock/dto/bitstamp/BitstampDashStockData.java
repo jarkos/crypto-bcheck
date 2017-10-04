@@ -15,6 +15,12 @@ public class BitstampDashStockData extends BitstampStockData implements DashStoc
     }
 
     @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getAsk()));
+
+    }
+
+    @Override
     public Object getDashEurStockData() {
         return this;
     }
