@@ -324,19 +324,29 @@ public abstract class AbstractStockDataService {
         if (ethEurStockData.getEthEurStockData() != null) {
             //BITBAY LTC
             BigDecimal eurNumberAfterEthSellAfterTradeProv = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(bitBayEthPlnStockData, stockTradeProv, ethEurStockData);
+            BigDecimal eurNumberAfterEthSellAfterTradeProvPessimistic = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStockPessimistic(bitBayEthPlnStockData, stockTradeProv,
+                                                                                                                                        ethEurStockData);
             //EUR EXTERNAL STOCK -> Dash
             BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv = amountOfDashBoughtFromEuroOnExternalStockAfterProv(dashEurAbstractStockData, stockTradeProv,
                                                                                                                         eurNumberAfterEthSellAfterTradeProv);
+            BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProvPessimistic = amountOfDashBoughtFromEuroOnExternalStockAfterProvPessimistic(dashEurAbstractStockData,
+                                                                                                                                              stockTradeProv,
+                                                                                                                                              eurNumberAfterEthSellAfterTradeProvPessimistic);
             //BITBAY DASH -> PLN
             BigDecimal numberOfMoneyFromDashSellAfterProv = getPlnFromBitBayDashSell(bitBayDashPlnStockData, numberOfDashBoughtWithdrawToBitBayAfterProv);
+            BigDecimal numberOfMoneyFromDashSellAfterProvPessimistic = getPlnFromBitBayDashSellPessimistic(bitBayDashPlnStockData,
+                                                                                                           numberOfDashBoughtWithdrawToBitBayAfterProvPessimistic);
 
             BigDecimal bitBayEthBuyAndBtcSellRoi = numberOfMoneyFromDashSellAfterProv.divide(ETH_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
-            String resultToDisplay = "ROI ETH BitBay -> " + getStockCodeName() + " DASH -> Bitbay PLN : " + bitBayEthBuyAndBtcSellRoi;
+            BigDecimal bitBayEthBuyAndBtcSellRoiPessimistic = numberOfMoneyFromDashSellAfterProvPessimistic.divide(ETH_BUY_MONEY, 4, RoundingMode.HALF_DOWN);
+            String resultToDisplay = "ROI ETH BitBay -> " + getStockCodeName() + " DASH -> Bitbay PLN : " + bitBayEthBuyAndBtcSellRoi + " {" +
+                                     bitBayEthBuyAndBtcSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
             displayDependOnRoi(bitBayEthBuyAndBtcSellRoi, resultToDisplay);
-            System.out.println("ETH BitBay -> " + bitBayEthPlnStockData.getLast() + " ETH " + getStockCodeName() + " -> " +
-                               ethEurStockData.getLastEthPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " # DASH " + getStockCodeName() + " ->" +
-                               dashEurAbstractStockData.getLastDashPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " DASH BitBay -> " +
-                               bitBayDashPlnStockData.getLast());
+            System.out.println(
+                    "ETH BitBay -> " + bitBayEthPlnStockData.getLast() + " {" + bitBayEthPlnStockData.getAskEthPrice().setScale(2, RoundingMode.HALF_DOWN) + "}" + " ETH " +
+                    getStockCodeName() + " -> " + ethEurStockData.getLastEthPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " # DASH " +
+                    getStockCodeName() + " ->" + dashEurAbstractStockData.getLastDashPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " DASH BitBay -> " +
+                    bitBayDashPlnStockData.getLast() + " {" + bitBayEthPlnStockData.getBid() + "}");
             return bitBayEthBuyAndBtcSellRoi;
         }
         System.out.println("NO" + getStockCodeName() + " data");
