@@ -389,13 +389,20 @@ public abstract class AbstractStockDataService {
                                                                                 BigDecimal stockTradeProv) {
         // BTC BITBAY -> EURO EXTERNAL STOCK
         BigDecimal eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, stockTradeProv, btcEurAbstractStockData);
+        BigDecimal eurNumberAfterBtcSellAfterTradeProvPessimistic = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(bitBayBtcPlnStockData, stockTradeProv,
+                                                                                                                                    btcEurAbstractStockData);
         BigDecimal amountOfPlnAfterWithdrawalToBankAccountAndExchange = getAmountOfPlnAfterWithdrawalToBankAccountAndExchange(eurNumberAfterBtcSellAfterTradeProv);
+        BigDecimal amountOfPlnAfterWithdrawalToBankAccountAndExchangePessimistic = getAmountOfPlnAfterWithdrawalToBankAccountAndExchange(
+                eurNumberAfterBtcSellAfterTradeProvPessimistic);
         BigDecimal bitBayBtcBuyAndEuroSellRoi = amountOfPlnAfterWithdrawalToBankAccountAndExchange.divide(BTC_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
+        BigDecimal bitBayBtcBuyAndEuroSellRoiPessimistic = amountOfPlnAfterWithdrawalToBankAccountAndExchangePessimistic.divide(BTC_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
 
-        String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " EURO -> Bank EURO: " + bitBayBtcBuyAndEuroSellRoi;
+        String resultToDisplay = "ROI BTC BitBay -> " + getStockCodeName() + " EURO -> Bank EURO: " + bitBayBtcBuyAndEuroSellRoi + " {" +
+                                 bitBayBtcBuyAndEuroSellRoiPessimistic.setScale(2, RoundingMode.HALF_DOWN) + "}";
         displayDependOnRoi(bitBayBtcBuyAndEuroSellRoi, resultToDisplay);
         System.out.println("BTC BitBay -> " + bitBayBtcPlnStockData.getLast() + " {" + bitBayBtcPlnStockData.getAskPrice().setScale(2, RoundingMode.HALF_DOWN) + "}" + " BTC " +
-                           getStockCodeName() + " -> " + btcEurAbstractStockData.getLastBtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate));
+                           getStockCodeName() + " -> " + btcEurAbstractStockData.getLastBtcPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + " {" +
+                           btcEurAbstractStockData.getBidPrice().multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate) + "}");
         return bitBayBtcBuyAndEuroSellRoi;
     }
 

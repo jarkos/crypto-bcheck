@@ -13,6 +13,10 @@ public enum StockNameEnum {
     Bittrex("Bittrex"),
     Gatecoin("Gatecoin"),
     Poloniex("Poloniex"),
+    Coinroom("Coinroom"),
+    GetBTC("GetBTC"),
+    CoinsBank("CoinsBank"),
+    TheRockTrading("The Rock Trading"),
     LitBit("LiteBit.eu");
 
     private String value;
