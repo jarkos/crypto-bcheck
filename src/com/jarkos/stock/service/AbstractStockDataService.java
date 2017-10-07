@@ -405,12 +405,21 @@ public abstract class AbstractStockDataService {
     }
 
     public BigDecimal prepareBitBayLtcBuyToExternalStockPlnSellRoi(BitBayLtcStockData bitBayLtcPlnStockData, LtcStockDataInterface ltcPlnStockDataInterface) {
-        BigDecimal amountOfBtcBoughtOnBitBay = getAmountOfLtcBoughtOnBitBay(bitBayLtcPlnStockData);
-        BigDecimal plnFromCoinroomLtcSell = getPlnFromExternalStockLtcSell(ltcPlnStockDataInterface, amountOfBtcBoughtOnBitBay, COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER);
+        BigDecimal amountOfLtcBoughtOnBitBay = getAmountOfLtcBoughtOnBitBay(bitBayLtcPlnStockData);
+        BigDecimal plnFromCoinroomLtcSell = getPlnFromExternalStockLtcSell(ltcPlnStockDataInterface, amountOfLtcBoughtOnBitBay, COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER);
         BigDecimal bitBayLtcBuyAndExternalStockPlnSellRoi = plnFromCoinroomLtcSell.divide(LTC_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
         String resultToDisplay = "ROI LTC BitBay -> " + getStockCodeName() + " PLN -> Bank PLN: " + bitBayLtcBuyAndExternalStockPlnSellRoi;
         displayDependOnRoi(bitBayLtcBuyAndExternalStockPlnSellRoi, resultToDisplay);
         return bitBayLtcBuyAndExternalStockPlnSellRoi;
+    }
+
+    public BigDecimal prepareBitBayDashBuyToExternalStockPlnSellRoi(BitBayDashStockData bitBayDashPlnStockData, DashStockDataInterface dashPlnStockDataInterface) {
+        BigDecimal amountOfDashBoughtOnBitBay = getAmountOfDashBoughtOnBitBay(bitBayDashPlnStockData);
+        BigDecimal plnFromExternalStockDashSell = getPlnFromExternalStockDashSell(dashPlnStockDataInterface, amountOfDashBoughtOnBitBay, COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER);
+        BigDecimal bitBayDashBuyAndExternalStockPlnSellRoi = plnFromExternalStockDashSell.divide(DASH_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
+        String resultToDisplay = "ROI DASH BitBay -> " + getStockCodeName() + " PLN -> Bank PLN: " + bitBayDashBuyAndExternalStockPlnSellRoi;
+        displayDependOnRoi(bitBayDashBuyAndExternalStockPlnSellRoi, resultToDisplay);
+        return bitBayDashBuyAndExternalStockPlnSellRoi;
     }
 
     public BigDecimal prepareBitBayBtcBuyToExternalStockSellToEuroWithdrawalRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData,
@@ -500,6 +509,12 @@ public abstract class AbstractStockDataService {
         BigDecimal numberOfLtcBoughtOnBitBay = LTC_BUY_MONEY.divide(bitBayLtcPlnStockData.getLastLtcPrice(), 4, RoundingMode.HALF_DOWN);
         BigDecimal ltcNumberAfterTradeProvision = numberOfLtcBoughtOnBitBay.subtract(numberOfLtcBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER));
         return ltcNumberAfterTradeProvision.subtract(BITBAY_LTC_WITHDRAW_PROV_AMOUNT);
+    }
+
+    private BigDecimal getAmountOfDashBoughtOnBitBay(BitBayDashStockData bitBayDashPlnStockData) {
+        BigDecimal numberOfDashBoughtOnBitBay = DASH_BUY_MONEY.divide(bitBayDashPlnStockData.getLastDashPrice(), 4, RoundingMode.HALF_DOWN);
+        BigDecimal dashNumberAfterTradeProvision = numberOfDashBoughtOnBitBay.subtract(numberOfDashBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER));
+        return dashNumberAfterTradeProvision.subtract(BITBAY_LTC_WITHDRAW_PROV_AMOUNT);
     }
 
     private BigDecimal getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(BitBayBtcStockData bitBayBtcPlnStockData, BigDecimal stockTradeProv,
@@ -692,6 +707,11 @@ public abstract class AbstractStockDataService {
 
     private BigDecimal getPlnFromExternalStockLtcSell(LtcStockDataInterface btcPlnStockData, BigDecimal numberOfLtcBoughtWithdrawToExternalStock, BigDecimal makerProvision) {
         BigDecimal numberOfMoneyFromLtcSell = numberOfLtcBoughtWithdrawToExternalStock.multiply(btcPlnStockData.getLastLtcPrice());
+        return numberOfMoneyFromLtcSell.subtract((numberOfMoneyFromLtcSell.multiply(makerProvision)));
+    }
+
+    private BigDecimal getPlnFromExternalStockDashSell(DashStockDataInterface dashPlnStockData, BigDecimal numberOfDashBoughtWithdrawToExternalStock, BigDecimal makerProvision) {
+        BigDecimal numberOfMoneyFromLtcSell = numberOfDashBoughtWithdrawToExternalStock.multiply(dashPlnStockData.getLastDashPrice());
         return numberOfMoneyFromLtcSell.subtract((numberOfMoneyFromLtcSell.multiply(makerProvision)));
     }
 

@@ -3,11 +3,7 @@ package com.jarkos.stock.service;
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
-import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
-import com.jarkos.stock.dto.coinroom.CoinroomBtcStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomLtcStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomStockData;
+import com.jarkos.stock.dto.coinroom.*;
 import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
@@ -19,6 +15,7 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     private static String CoinroomBtcPlnApiUrl = "https://coinroom.com/api/ticker/BTC/PLN";
     private static String CoinroomLtcPlnApiUrl = "https://coinroom.com/api/ticker/LTC/PLN";
     private static String CoinroomEthPlnApiUrl = "https://coinroom.com/api/ticker/ETH/PLN";
+    private static String CoinroomDashPlnApiUrl = "https://coinroom.com/api/ticker/DASH/PLN";
 
     @Override
     public String getStockCodeName() {
@@ -77,6 +74,16 @@ public class CoinroomStockDataService extends AbstractStockDataService {
         return new CoinroomBtcStockStockData(getCoinroomMarketData(res));
     }
 
+    public CoinroomDashStockStockData getDashPlnStockData() {
+        String res = null;
+        try {
+            res = RequestSender.sendRequest(CoinroomDashPlnApiUrl);
+        } catch (Exception e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        return new CoinroomDashStockStockData(getCoinroomMarketData(res));
+    }
+
     @Override
     public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
         return btcToSubtractWithdrawProv.subtract(COINROOM_BTC_WITHDRAW_PROV_AMOUNT);
@@ -111,5 +118,9 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     private static CoinroomStockData getCoinroomMarketData(String res) {
         Gson gson = new Gson();
         return gson.fromJson(res, CoinroomStockData.class);
+    }
+
+    public CoinroomDashStockStockData getDashEurStockData() {
+        return null;
     }
 }
