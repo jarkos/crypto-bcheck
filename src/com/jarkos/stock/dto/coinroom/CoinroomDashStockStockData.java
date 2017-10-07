@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 public class CoinroomDashStockStockData extends CoinroomStockData implements DashStockDataInterface {
 
-
     public CoinroomDashStockStockData(CoinroomStockData c) {
         super(c.getLow(), c.getHigh(), c.getVwap(), c.getVolume(), c.getLast(), c.getAsk(), c.getBid());
     }

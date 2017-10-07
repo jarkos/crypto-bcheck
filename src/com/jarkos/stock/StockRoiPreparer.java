@@ -5,10 +5,7 @@ import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomBtcStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomDashStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
-import com.jarkos.stock.dto.coinroom.CoinroomLtcStockStockData;
+import com.jarkos.stock.dto.coinroom.*;
 import com.jarkos.stock.dto.kraken.*;
 import com.jarkos.stock.service.*;
 
@@ -43,6 +40,7 @@ public class StockRoiPreparer {
         CoinroomBtcStockStockData coinroomBtcPlnStockData = new CoinroomStockDataService().getBtcPlnStockData();
         CoinroomLtcStockStockData coinroomLtcPlnStockData = new CoinroomStockDataService().getLtcEurStockData();
         CoinroomDashStockStockData coinroomDashPlnStockData = new CoinroomStockDataService().getDashPlnStockData();
+        CoinroomBccStockStockData coinroomBccPlnStockData = new CoinroomStockDataService().getBccPlnStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
@@ -181,6 +179,9 @@ public class StockRoiPreparer {
         }
         if (bitBayDashPlnStockData != null && coinroomDashPlnStockData != null) {
             Main.bitBayDashBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayDashBuyToExternalStockPlnSellRoi(bitBayDashPlnStockData, coinroomDashPlnStockData);
+        }
+        if (bitBayDashPlnStockData != null && coinroomBccPlnStockData != null) {
+            Main.bitBayBccBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBccBuyToExternalStockPlnSellRoi(bitBayBccPlnStockData, coinroomBccPlnStockData);
         }
     }
 

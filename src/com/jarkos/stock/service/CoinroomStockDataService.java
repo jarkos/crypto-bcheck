@@ -16,6 +16,7 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     private static String CoinroomLtcPlnApiUrl = "https://coinroom.com/api/ticker/LTC/PLN";
     private static String CoinroomEthPlnApiUrl = "https://coinroom.com/api/ticker/ETH/PLN";
     private static String CoinroomDashPlnApiUrl = "https://coinroom.com/api/ticker/DASH/PLN";
+    private static String CoinroomBccPlnApiUrl = "https://coinroom.com/api/ticker/BCC/PLN";
 
     @Override
     public String getStockCodeName() {
@@ -52,6 +53,17 @@ public class CoinroomStockDataService extends AbstractStockDataService {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
         return new CoinroomEthStockStockData(getCoinroomMarketData(res));
+    }
+
+    public CoinroomBccStockStockData getBccPlnStockData() {
+        String res = null;
+        try {
+            res = RequestSender.sendRequest(CoinroomBccPlnApiUrl);
+        } catch (Exception e) {
+            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
+        }
+        CoinroomStockData coinroomMarketData = getCoinroomMarketData(res);
+        return new CoinroomBccStockStockData(coinroomMarketData);
     }
 
     @Override

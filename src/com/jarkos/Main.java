@@ -45,6 +45,7 @@ public class Main {
     public static BigDecimal bitBayBtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToCoinroomPlnSell;
     public static BigDecimal bitBayDashBuyToCoinroomPlnSell;
+    public static BigDecimal bitBayBccBuyToCoinroomPlnSell;
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();
