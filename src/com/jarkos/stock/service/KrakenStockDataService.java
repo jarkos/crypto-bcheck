@@ -8,7 +8,7 @@ import com.jarkos.stock.exception.DataFetchUnavailableException;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.RequestSender.sendRequest;
+import static com.jarkos.communication.RequestSender.sendRequest;
 import static com.jarkos.config.StockConfig.*;
 
 public class KrakenStockDataService extends AbstractStockDataService {

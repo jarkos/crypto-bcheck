@@ -1,5 +1,7 @@
 package com.jarkos;
 
+import com.jarkos.chart.CandlestickChart;
+import com.jarkos.coinmarket.CoinmarketcapPriceCompare;
 import com.jarkos.mail.JavaMailSender;
 import com.jarkos.stock.Indicators;
 import com.jarkos.stock.StockRoiPreparer;
@@ -19,7 +21,7 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class);
     private static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
-    static Double lastMACD = 0d;
+    public static Double lastMACD = 0d;
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();

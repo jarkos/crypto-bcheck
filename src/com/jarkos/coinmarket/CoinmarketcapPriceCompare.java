@@ -1,4 +1,4 @@
-package com.jarkos;
+package com.jarkos.coinmarket;
 
 import com.jarkos.stock.enums.BlackListCoinmarketCurrencies;
 import com.jarkos.stock.enums.BlackListCoinmarketStocks;
@@ -23,7 +23,7 @@ import static com.jarkos.config.AppConfig.*;
 /**
  * Created by jkostrzewa on 2017-09-18.
  */
-class CoinmarketcapPriceCompare {
+public class CoinmarketcapPriceCompare {
 
     private static final Logger log = Logger.getLogger(CoinmarketcapPriceCompare.class);
 
@@ -35,7 +35,7 @@ class CoinmarketcapPriceCompare {
     private List<MarketTableRow> dashMarketsData;
     private List<MarketTableRow> gameMarketsData;
 
-    CoinmarketcapPriceCompare() {
+    public CoinmarketcapPriceCompare() {
         btcMarketsData = getMarketsData("https://coinmarketcap.com/currencies/bitcoin/#markets");
         ltcMarketsData = getMarketsData("https://coinmarketcap.com/currencies/litecoin/#markets");
         ethMarketsData = getMarketsData("https://coinmarketcap.com/currencies/ethereum/#markets");
@@ -45,7 +45,7 @@ class CoinmarketcapPriceCompare {
         gameMarketsData = getMarketsData("https://coinmarketcap.com/currencies/gamecredits/#markets");
     }
 
-    void compare() {
+    public  void compare() {
         log.error("*** BTC");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);

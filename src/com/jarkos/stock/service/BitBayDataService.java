@@ -17,10 +17,10 @@ import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Collections;
 
-import static com.jarkos.RequestSender.sendRequest;
+import static com.jarkos.communication.RequestSender.sendRequest;
 import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 import static com.jarkos.config.AppConfig.bigSpreadMarginDisplayWarnForCompareRoi;
-import static com.jarkos.json.JsonFetcher.UTF_8;
+import static com.jarkos.communication.JsonFetcher.UTF_8;
 
 /**
  * Created by jkostrzewa on 2017-09-09.

@@ -1,4 +1,4 @@
-package com.jarkos;
+package com.jarkos.chart;
 /**
  * The MIT License (MIT)
  * <p>
@@ -22,6 +22,7 @@ package com.jarkos;
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import com.jarkos.Main;
 import com.jarkos.file.CsvTradesLoaderCustom;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
@@ -106,7 +107,7 @@ public class CandlestickChart {
         return dataset;
     }
 
-    private static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries, TimeSeries series) {
+    public static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries, TimeSeries series) {
         Main.lastMACD = chartTimeSeries.getDataItem(series.getEnd()).getValue().doubleValue();
     }
 

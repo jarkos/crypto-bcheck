@@ -1,6 +1,5 @@
-package com.jarkos;
+package com.jarkos.communication;
 
-import com.jarkos.json.JsonFetcher;
 import com.jarkos.stock.exception.DataFetchUnavailableException;
 import org.apache.http.conn.ConnectTimeoutException;
 

@@ -1,4 +1,4 @@
-package com.jarkos.json;
+package com.jarkos.communication;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

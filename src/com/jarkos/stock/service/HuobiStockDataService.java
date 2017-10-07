@@ -1,7 +1,7 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
-import com.jarkos.RequestSender;
+import com.jarkos.communication.RequestSender;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
 import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.dto.huobi.HuobiBtcStockData;
