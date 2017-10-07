@@ -85,7 +85,7 @@ class CoinmarketcapPriceCompare {
 
     private void recognizeMinMaxExchange(List<MarketTableRow> marketList, String nameToDisplay) {
         System.out.println(nameToDisplay);
-        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER) > 0).collect(Collectors.toList());
+        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER_COMPARING) > 0).collect(Collectors.toList());
         final List<String> blackListCurrencies = Arrays.stream(BlackListCoinmarketCurrencies.values()).map(Enum::name).collect(Collectors.toList());
 
         final List<MarketTableRow> filteredMarkets = marketsToRecognize.stream().filter(m -> blackListCurrencies.stream().noneMatch(c -> m.getExchangePair().contains(c)))
@@ -114,7 +114,7 @@ class CoinmarketcapPriceCompare {
                 String resultToDisplay =
                         mainStockAndCurrencyData.getStockName() + " " + mainStockAndCurrencyData.getExchangePair() + " diff " + priceInUsdByStockAndCurrencyPair.getStockName() +
                         " " + priceInUsdByStockAndCurrencyPair.getExchangePair() + ":" + diff + " " + (reversedRoi ? " %REVERSED" : "");
-                if (diff.compareTo(maxMarginCompareWarnDisplayRoi) > 0 || diff.compareTo(minMarginCompareWarnDisplayRoi) < 0) {
+                if (diff.compareTo(maxRoiValueForWarnDisplay) > 0 || diff.compareTo(minRoiValueForWarnDisplay) < 0) {
                     log.warn(resultToDisplay);
                 } else {
                     log.error(resultToDisplay);

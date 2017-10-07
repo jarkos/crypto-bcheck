@@ -1,6 +1,5 @@
 package com.jarkos.stock;
 
-import com.jarkos.Main;
 import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
@@ -47,34 +46,34 @@ public class StockRoiPreparer {
 
             // LTC on Bitbay -> External LTC to BTC -> BTC sell on Bitbay
             if (krakenBtcEurStockData != null && bitBayLtcPlnStockData != null) {
-                Main.bitBayBtcBuyToKrakenSellToEuroWithdrawalRoi = new KrakenStockDataService()
+                Indicators.bitBayBtcBuyToKrakenSellToEuroWithdrawalRoi = new KrakenStockDataService()
                         .prepareBitBayBtcBuyToExternalStockSellToEuroWithdrawalRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
 
-                Main.bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = new KrakenStockDataService()
+                Indicators.bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = new KrakenStockDataService()
                         .prepareBitBayLtcBuyToExternalStockSellToBtcWithdrawalRoi(bitBayLtcPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData,
                                                                                   KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             }
             if (bitstampBtcEurStockData != null && bitBayLtcPlnStockData != null) {
-                Main.bitBayBtcBuyToBitstampSellToEuroWithdrawalRoi = new BitstampStockDataService()
+                Indicators.bitBayBtcBuyToBitstampSellToEuroWithdrawalRoi = new BitstampStockDataService()
                         .prepareBitBayBtcBuyToExternalStockSellToEuroWithdrawalRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
 
 
-                Main.bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = new BitstampStockDataService()
+                Indicators.bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = new BitstampStockDataService()
                         .prepareBitBayLtcBuyToExternalStockSellToBtcWithdrawalRoi(bitBayLtcPlnStockData, bitstampBtcEurStockData, bitBayBtcPlnStockData,
                                                                                   BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             }
             // Eur on Walutomat -> External to BTC/LTC -> BTC/LTC sell on Bitbay
             if (lastBuyWalutomatEurPlnExchangeRate != null) {
                 if (krakenBtcEurStockData != null) {
-                    Main.euroBuyToKrakenBtcSellOnBitBayRoi = new KrakenStockDataService()
+                    Indicators.euroBuyToKrakenBtcSellOnBitBayRoi = new KrakenStockDataService()
                             .prepareEuroBuyToExternalStockBtcSellOnBitBayRoi(bitBayBtcPlnStockData, krakenBtcEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
-                    Main.euroBuyToKrakenLtcSellOnBitBayRoi = new KrakenStockDataService()
+                    Indicators.euroBuyToKrakenLtcSellOnBitBayRoi = new KrakenStockDataService()
                             .prepareEuroBuyToExternalStockLtcSellOnBitBayRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
                 }
                 if (bitstampBtcEurStockData != null) {
-                    Main.euroBuyToBitstampBtcSellOnBitBayRoi = new BitstampStockDataService()
+                    Indicators.euroBuyToBitstampBtcSellOnBitBayRoi = new BitstampStockDataService()
                             .prepareEuroBuyToExternalStockBtcSellOnBitBayRoi(bitBayBtcPlnStockData, bitstampBtcEurStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
-                    Main.euroBuyToBitstampLtcSellOnBitBayRoi = new BitstampStockDataService()
+                    Indicators.euroBuyToBitstampLtcSellOnBitBayRoi = new BitstampStockDataService()
                             .prepareEuroBuyToExternalStockLtcSellOnBitBayRoi(bitBayLtcPlnStockData, bitstampLtcEurStockData, BITSTAMP_TRADE_PROVISION_PERCENTAGE);
                 }
             }
@@ -83,7 +82,7 @@ public class StockRoiPreparer {
                         .prepareBitBayBtcBuyToExternalStockEurSellToLtcBuyWithdrawalToBitBayPlnRoi(bitBayBtcPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData,
                                                                                                    KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
                 if (bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi.compareTo(BigDecimal.ZERO) > 0) {
-                    Main.bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi = bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi;
+                    Indicators.bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi = bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi;
                 }
             }
             if (bitstampLtcEurStockData != null && bitBayLtcPlnStockData != null) {
@@ -91,12 +90,12 @@ public class StockRoiPreparer {
                         .prepareBitBayBtcBuyToExternalStockEurSellToLtcBuyWithdrawalToBitBayPlnRoi(bitBayBtcPlnStockData, bitstampLtcEurStockData, bitBayLtcPlnStockData,
                                                                                                    BITSTAMP_TRADE_PROVISION_PERCENTAGE);
                 if (bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi.compareTo(BigDecimal.ZERO) > 0) {
-                    Main.bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi = bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi;
+                    Indicators.bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi = bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi;
                 }
             }
         }
         if (lastBuyWalutomatEurPlnExchangeRate != null && bitBayBccPlnStockData != null && krakenBccEurStockData != null) {
-            Main.euroBuyToExternalStockBccSellOnBitBayRoi = new KrakenStockDataService()
+            Indicators.euroBuyToExternalStockBccSellOnBitBayRoi = new KrakenStockDataService()
                     .prepareEuroBuyToExternalStockBccSellOnBitBayRoi(bitBayBccPlnStockData, krakenBccEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
 
@@ -105,7 +104,7 @@ public class StockRoiPreparer {
                     .prepareBitBayLtcBuyToExternalStockSellToEurToBccBitBaySellRoi(bitBayLtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData,
                                                                                    KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi = bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi;
+                Indicators.bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi = bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi;
             }
         }
         if (bitBayEthPlnStockData != null && krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
@@ -113,7 +112,7 @@ public class StockRoiPreparer {
                     .prepareBitBayEthBuyToExternalStockSellAndBccSellOnBitBayRoi(bitBayEthPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData,
                                                                                  KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi = bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi;
+                Indicators.bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi = bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi;
             }
         }
         if (krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
@@ -121,7 +120,7 @@ public class StockRoiPreparer {
                     .prepareBitBayBtcBuyToExternalStockSellToEurToBccBitBaySellRoi(bitBayBtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData,
                                                                                    KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi = bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi;
+                Indicators.bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi = bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi;
             }
         }
 
@@ -129,17 +128,17 @@ public class StockRoiPreparer {
             BigDecimal bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi = new KrakenStockDataService()
                     .prepareBitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi(bitBayLtcPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi = bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi;
+                Indicators.bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi = bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi;
             }
         }
         if (bitBayEthPlnStockData != null && krakenDashEurStockData != null && bitBayDashPlnStockData != null) {
-            Main.bitBayDashBuyToKrakenSellToEuroWithdrawalRoi = new KrakenStockDataService()
+            Indicators.bitBayDashBuyToKrakenSellToEuroWithdrawalRoi = new KrakenStockDataService()
                     .prepareBitBayDashBuyToExternalStockSellToEuroWithdrawalRoi(bitBayDashPlnStockData, krakenDashEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             BigDecimal bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = new KrakenStockDataService()
                     .prepareBitBayEthBuyToExternalStockSellEuroToDashSellOnBitBayRoi(bitBayEthPlnStockData, krakenDashEurStockData, bitBayDashPlnStockData,
                                                                                      KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi;
+                Indicators.bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi;
             }
         }
         if (bitBayEthPlnStockData != null && krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
@@ -147,9 +146,9 @@ public class StockRoiPreparer {
                     .prepareBitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi(bitBayEthPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData,
                                                                                     KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi;
+                Indicators.bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi;
             }
-            Main.bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = new KrakenStockDataService()
+            Indicators.bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = new KrakenStockDataService()
                     .prepareBitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi(bitBayLtcPlnStockData, krakenLtcEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
         if (bitBayEthPlnStockData != null && bitstampLtcEurStockData != null && bitBayLtcPlnStockData != null) {
@@ -157,31 +156,31 @@ public class StockRoiPreparer {
                     .prepareBitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi(bitBayEthPlnStockData, bitstampLtcEurStockData, bitBayLtcPlnStockData,
                                                                                     BITSTAMP_TRADE_PROVISION_PERCENTAGE);
             if (bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
-                Main.bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi;
+                Indicators.bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi;
             }
         }
         if (bitBayEthPlnStockData != null && krakenEthEurStockData != null) {
-            Main.euroBuyToKrakenEthSellOnBitBayRoi = new KrakenStockDataService()
+            Indicators.euroBuyToKrakenEthSellOnBitBayRoi = new KrakenStockDataService()
                     .prepareEuroBuyToExternalStockEthSellOnBitBayRoi(bitBayEthPlnStockData, krakenEthEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
         if (bitBayEthPlnStockData != null && bitstampEthEurStockData != null) {
-            Main.euroBuyToBitstampEthSellOnBitBayRoi = new BitstampStockDataService()
+            Indicators.euroBuyToBitstampEthSellOnBitBayRoi = new BitstampStockDataService()
                     .prepareEuroBuyToExternalStockEthSellOnBitBayRoi(bitBayEthPlnStockData, bitstampEthEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
         if (bitBayEthPlnStockData != null && coinroomEthPlnStockData != null) {
-            Main.bitBayEthBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayEthBuyToExternalStockPlnSellRoi(bitBayEthPlnStockData, coinroomEthPlnStockData);
+            Indicators.bitBayEthBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayEthBuyToExternalStockPlnSellRoi(bitBayEthPlnStockData, coinroomEthPlnStockData);
         }
         if (bitBayBtcPlnStockData != null && coinroomBtcPlnStockData != null) {
-            Main.bitBayBtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBtcBuyToExternalStockPlnSellRoi(bitBayBtcPlnStockData, coinroomBtcPlnStockData);
+            Indicators.bitBayBtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBtcBuyToExternalStockPlnSellRoi(bitBayBtcPlnStockData, coinroomBtcPlnStockData);
         }
         if (bitBayLtcPlnStockData != null && coinroomLtcPlnStockData != null) {
-            Main.bitBayLtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayLtcBuyToExternalStockPlnSellRoi(bitBayLtcPlnStockData, coinroomLtcPlnStockData);
+            Indicators.bitBayLtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayLtcBuyToExternalStockPlnSellRoi(bitBayLtcPlnStockData, coinroomLtcPlnStockData);
         }
         if (bitBayDashPlnStockData != null && coinroomDashPlnStockData != null) {
-            Main.bitBayDashBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayDashBuyToExternalStockPlnSellRoi(bitBayDashPlnStockData, coinroomDashPlnStockData);
+            Indicators.bitBayDashBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayDashBuyToExternalStockPlnSellRoi(bitBayDashPlnStockData, coinroomDashPlnStockData);
         }
         if (bitBayDashPlnStockData != null && coinroomBccPlnStockData != null) {
-            Main.bitBayBccBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBccBuyToExternalStockPlnSellRoi(bitBayBccPlnStockData, coinroomBccPlnStockData);
+            Indicators.bitBayBccBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBccBuyToExternalStockPlnSellRoi(bitBayBccPlnStockData, coinroomBccPlnStockData);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.jarkos;
 
 import com.jarkos.mail.JavaMailSender;
+import com.jarkos.stock.Indicators;
 import com.jarkos.stock.StockRoiPreparer;
 import org.apache.log4j.Logger;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.jarkos.config.AppConfig.HALF_MINUTE_IN_MILLIS;
-import static com.jarkos.config.AppConfig.marginMailNotificationCallForTransferRoi;
+import static com.jarkos.config.AppConfig.marginTransferRoiValueForMailNotification;
 
 public class Main {
 
@@ -19,33 +20,6 @@ public class Main {
     private static final String LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: ";
 
     static Double lastMACD = 0d;
-    public static BigDecimal bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToKrakenBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToKrakenLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToBitstampBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToBitstampLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToKrakenSellToEurToBccBitBaySellRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToKrakenEurSellToLtcBuyWithdrawalToBitBayPlnRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToBitstampEurSellToLtcBuyWithdrawalToBitBayPlnRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToKrakenSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToBitstampSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToExternalStockBccSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToEuroSellAndDashSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayDashBuyToKrakenSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToKrakenSellEuroToDashSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToBitstampEuroSellToLtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToKrakenEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal euroBuyToBitstampEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayEthBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayBtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToCoinroomPlnSell;
-    public static BigDecimal bitBayDashBuyToCoinroomPlnSell;
-    public static BigDecimal bitBayBccBuyToCoinroomPlnSell;
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();
@@ -70,7 +44,7 @@ public class Main {
     private static void goodIndicatorsMailNotify() {
         Map<String, BigDecimal> internalIndicators = innitInternalIndicatorsList();
 
-        if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginMailNotificationCallForTransferRoi) > 0)) {
+        if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginTransferRoiValueForMailNotification) > 0)) {
             StringBuilder sb = new StringBuilder();
             internalIndicators.forEach((k, v) -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")));
             JavaMailSender.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString());
@@ -79,7 +53,7 @@ public class Main {
 
     private static Map<String, BigDecimal> innitInternalIndicatorsList() {
         Map<String, BigDecimal> indicatorsMap = new HashMap<>();
-        Field[] allFields = Main.class.getDeclaredFields();
+        Field[] allFields = Indicators.class.getDeclaredFields();
         for (Field field : allFields) {
             if (Modifier.isPublic(field.getModifiers()) && field.getType().equals(BigDecimal.class)) {
                 BigDecimal indicator;
