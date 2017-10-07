@@ -5,11 +5,9 @@ import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
+import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
 import com.jarkos.stock.dto.kraken.*;
-import com.jarkos.stock.service.BitBayDataService;
-import com.jarkos.stock.service.BitstampStockDataService;
-import com.jarkos.stock.service.KrakenStockDataService;
-import com.jarkos.stock.service.WalutomatDataService;
+import com.jarkos.stock.service.*;
 
 import java.math.BigDecimal;
 
@@ -38,6 +36,7 @@ public class StockRoiPreparer {
         BitstampBtcStockData bitstampBtcEurStockData = new BitstampStockDataService().getBitstampBtcEurStockData();
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampStockDataService().getBitstampLtcEurStockData();
         BitstampEthStockData bitstampEthEurStockData = new BitstampStockDataService().getBitstampEthEurStockData();
+        CoinroomEthStockStockData coinroomEthPlnStockData = new CoinroomStockDataService().getEthPlnStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
@@ -141,7 +140,8 @@ public class StockRoiPreparer {
         }
         if (bitBayEthPlnStockData != null && krakenLtcEurStockData != null && bitBayLtcPlnStockData != null) {
             BigDecimal bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi = new KrakenStockDataService()
-                    .prepareBitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi(bitBayEthPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
+                    .prepareBitBayEthBuyToExternalStockEuroSellToLtcSellOnBitBayRoi(bitBayEthPlnStockData, krakenLtcEurStockData, bitBayLtcPlnStockData,
+                                                                                    KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
             if (bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi.compareTo(BigDecimal.ZERO) > 0) {
                 Main.bitBayEthBuyToToKrakenEuroSellToLtcSellOnBitBayRoi = bitBayEthBuyToKrakenEuroSellToLtcSellOnBitBayRoi;
             }
@@ -160,9 +160,12 @@ public class StockRoiPreparer {
             Main.euroBuyToKrakenEthSellOnBitBayRoi = new KrakenStockDataService()
                     .prepareEuroBuyToExternalStockEthSellOnBitBayRoi(bitBayEthPlnStockData, krakenEthEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
         }
-        if (bitBayEthPlnStockData != null && bitstampEthEurStockData != null ) {
+        if (bitBayEthPlnStockData != null && bitstampEthEurStockData != null) {
             Main.euroBuyToBitstampEthSellOnBitBayRoi = new BitstampStockDataService()
                     .prepareEuroBuyToExternalStockEthSellOnBitBayRoi(bitBayEthPlnStockData, bitstampEthEurStockData, KRAKEN_MAKER_TRADE_PROV_PERCENTAGE);
+        }
+        if (bitBayEthPlnStockData != null && coinroomEthPlnStockData != null) {
+            Main.bitBayEthBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayEthBuyToExternalStockPlnSellRoi(bitBayEthPlnStockData, coinroomEthPlnStockData);
         }
     }
 

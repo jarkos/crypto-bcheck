@@ -41,6 +41,7 @@ public class Main {
     public static BigDecimal bitBayLtcBuyToExternalStockSellToEuroWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToKrakenEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToBitstampEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();

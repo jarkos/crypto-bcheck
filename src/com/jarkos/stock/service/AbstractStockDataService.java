@@ -3,6 +3,7 @@ package com.jarkos.stock.service;
 import com.jarkos.stock.StockRoiPreparer;
 import com.jarkos.stock.abstractional.api.*;
 import com.jarkos.stock.dto.bitbay.*;
+import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -385,6 +386,16 @@ public abstract class AbstractStockDataService {
         return BigDecimal.ZERO;
     }
 
+    public BigDecimal prepareBitBayEthBuyToExternalStockPlnSellRoi(BitBayEthStockData bitBayEthPlnStockData, CoinroomEthStockStockData ethStockDataInterface) {
+
+        BigDecimal amountOfEthBoughtOnBitBay = getAmountOfEthBoughtOnBitBay(bitBayEthPlnStockData);
+        BigDecimal plnFromCoinroomEthSell = getPlnFromCoinroomEthSell(ethStockDataInterface, amountOfEthBoughtOnBitBay);
+        BigDecimal bitBayEthBuyAndCoinroomPlnSellRoi = plnFromCoinroomEthSell.divide(ETH_BUY_MONEY, 3, RoundingMode.HALF_DOWN);
+        String resultToDisplay = "ROI ETH BitBay -> " + getStockCodeName() + " PLN -> Bank PLN: " + bitBayEthBuyAndCoinroomPlnSellRoi;
+        displayDependOnRoi(bitBayEthBuyAndCoinroomPlnSellRoi, resultToDisplay);
+        return bitBayEthBuyAndCoinroomPlnSellRoi;
+    }
+
     public BigDecimal prepareBitBayBtcBuyToExternalStockSellToEuroWithdrawalRoi(BitBayBtcStockData bitBayBtcPlnStockData, BtcStockDataInterface btcEurAbstractStockData,
                                                                                 BigDecimal stockTradeProv) {
         // BTC BITBAY -> EURO EXTERNAL STOCK
@@ -473,12 +484,16 @@ public abstract class AbstractStockDataService {
     private BigDecimal getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(BitBayEthStockData bitBayEthPlnStockData, BigDecimal stockTradeProv,
                                                                             EthStockDataInterface ethEurStockData) {
         //BITBAY ETH
-        BigDecimal numberOfEthBoughtOnBitBay = ETH_BUY_MONEY.divide(BigDecimal.valueOf(bitBayEthPlnStockData.getLast()), 4, RoundingMode.HALF_DOWN);
-        BigDecimal ethNumberAfterTradeProvision = numberOfEthBoughtOnBitBay.subtract(numberOfEthBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER));
-        BigDecimal ethNumberAfterWithdrawFromBitBay = ethNumberAfterTradeProvision.subtract(BITBAY_ETH_WITHDRAW_PROV_AMOUNT);
+        BigDecimal ethNumberAfterWithdrawFromBitBay = getAmountOfEthBoughtOnBitBay(bitBayEthPlnStockData);
         //EXTERNAL STOCK ETH -> EURO
         BigDecimal eurNumberAfterEthSell = ethNumberAfterWithdrawFromBitBay.multiply(ethEurStockData.getLastEthPrice());
         return eurNumberAfterEthSell.subtract(eurNumberAfterEthSell.multiply(stockTradeProv));
+    }
+
+    private BigDecimal getAmountOfEthBoughtOnBitBay(BitBayEthStockData bitBayEthPlnStockData) {
+        BigDecimal numberOfEthBoughtOnBitBay = ETH_BUY_MONEY.divide(BigDecimal.valueOf(bitBayEthPlnStockData.getLast()), 4, RoundingMode.HALF_DOWN);
+        BigDecimal ethNumberAfterTradeProvision = numberOfEthBoughtOnBitBay.subtract(numberOfEthBoughtOnBitBay.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER));
+        return ethNumberAfterTradeProvision.subtract(BITBAY_ETH_WITHDRAW_PROV_AMOUNT);
     }
 
     private BigDecimal getEuroFromBuyEthBitbayAndSellForEuroOnExternalStockPessimistic(BitBayEthStockData bitBayEthPlnStockData, BigDecimal stockTradeProv,
@@ -636,6 +651,11 @@ public abstract class AbstractStockDataService {
     private BigDecimal getPlnFromBitBayEthSell(BitBayEthStockData bitBayEthPlnStockData, BigDecimal numberOfEthBoughtWithdrawToBitBayAfterProv) {
         BigDecimal numberOfMoneyFromBitBayEthSell = numberOfEthBoughtWithdrawToBitBayAfterProv.multiply(BigDecimal.valueOf(bitBayEthPlnStockData.getLast()));
         return numberOfMoneyFromBitBayEthSell.subtract((numberOfMoneyFromBitBayEthSell.multiply(BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER)));
+    }
+
+    private BigDecimal getPlnFromCoinroomEthSell(CoinroomEthStockStockData coinroomEthPlnStockData, BigDecimal numberOfEthBoughtWithdrawToCoinroomAfterProv) {
+        BigDecimal numberOfMoneyFromCoinroomEthSell = numberOfEthBoughtWithdrawToCoinroomAfterProv.multiply(BigDecimal.valueOf(coinroomEthPlnStockData.getLast()));
+        return numberOfMoneyFromCoinroomEthSell.subtract((numberOfMoneyFromCoinroomEthSell.multiply(COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER)));
     }
 
     private BigDecimal getPlnFromBitBayDashSell(BitBayDashStockData bitBayDashPlnStockData, BigDecimal numberOfDashBoughtWithdrawToBitBayAfterProv) {

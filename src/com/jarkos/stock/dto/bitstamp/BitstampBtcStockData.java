@@ -5,9 +5,6 @@ import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-10.
- */
 public class BitstampBtcStockData extends BitstampStockData implements BtcStockDataInterface {
 
     public BitstampBtcStockData(BitstampStockData b) {
@@ -30,7 +27,7 @@ public class BitstampBtcStockData extends BitstampStockData implements BtcStockD
     }
 
     @Override
-    public Object getBtcEurStockData() {
+    public BtcStockDataInterface getBtcEurStockData() {
         return this;
     }
 }
