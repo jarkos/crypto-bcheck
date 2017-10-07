@@ -3,12 +3,12 @@ package com.jarkos.stock.service;
 import com.google.gson.Gson;
 import com.jarkos.RequestSender;
 import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
-import com.jarkos.stock.abstractional.api.EthStockDataInterface;
 import com.jarkos.stock.abstractional.api.LtcStockDataInterface;
 import com.jarkos.stock.dto.coinroom.CoinroomBtcStockStockData;
 import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
 import com.jarkos.stock.dto.coinroom.CoinroomLtcStockStockData;
 import com.jarkos.stock.dto.coinroom.CoinroomStockData;
+import com.jarkos.stock.exception.NotSupportedOperationException;
 
 import java.math.BigDecimal;
 
@@ -26,7 +26,7 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     }
 
     @Override
-    public LtcStockDataInterface getLtcEurStockData() {
+    public CoinroomLtcStockStockData getLtcEurStockData() {
         String res = null;
         try {
             res = RequestSender.sendRequest(CoinroomLtcPlnApiUrl);
@@ -59,6 +59,15 @@ public class CoinroomStockDataService extends AbstractStockDataService {
 
     @Override
     protected BtcStockDataInterface getBtcEurStockData() {
+        try {
+            throw new NotSupportedOperationException("Exception for fetching btc eur data from " + getStockCodeName());
+        } catch (NotSupportedOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public CoinroomBtcStockStockData getBtcPlnStockData() {
         String res = null;
         try {
             res = RequestSender.sendRequest(CoinroomBtcPlnApiUrl);

@@ -5,7 +5,9 @@ import com.jarkos.stock.dto.bitbay.*;
 import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
+import com.jarkos.stock.dto.coinroom.CoinroomBtcStockStockData;
 import com.jarkos.stock.dto.coinroom.CoinroomEthStockStockData;
+import com.jarkos.stock.dto.coinroom.CoinroomLtcStockStockData;
 import com.jarkos.stock.dto.kraken.*;
 import com.jarkos.stock.service.*;
 
@@ -37,6 +39,8 @@ public class StockRoiPreparer {
         BitstampLtcStockData bitstampLtcEurStockData = new BitstampStockDataService().getBitstampLtcEurStockData();
         BitstampEthStockData bitstampEthEurStockData = new BitstampStockDataService().getBitstampEthEurStockData();
         CoinroomEthStockStockData coinroomEthPlnStockData = new CoinroomStockDataService().getEthPlnStockData();
+        CoinroomBtcStockStockData coinroomBtcPlnStockData = new CoinroomStockDataService().getBtcPlnStockData();
+        CoinroomLtcStockStockData coinroomLtcPlnStockData = new CoinroomStockDataService().getLtcEurStockData();
 
         if (bitBayBtcPlnStockData != null) {
             BitBayDataService.addNewBitBayTransactionsToCSV(bitBayBtcPlnStockData);
@@ -166,6 +170,12 @@ public class StockRoiPreparer {
         }
         if (bitBayEthPlnStockData != null && coinroomEthPlnStockData != null) {
             Main.bitBayEthBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayEthBuyToExternalStockPlnSellRoi(bitBayEthPlnStockData, coinroomEthPlnStockData);
+        }
+        if (bitBayBtcPlnStockData != null && coinroomBtcPlnStockData != null) {
+            Main.bitBayBtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayBtcBuyToExternalStockPlnSellRoi(bitBayBtcPlnStockData, coinroomBtcPlnStockData);
+        }
+        if (bitBayLtcPlnStockData != null && coinroomLtcPlnStockData != null) {
+            Main.bitBayLtcBuyToCoinroomPlnSell = new CoinroomStockDataService().prepareBitBayLtcBuyToExternalStockPlnSellRoi(bitBayLtcPlnStockData, coinroomLtcPlnStockData);
         }
     }
 

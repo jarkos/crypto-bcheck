@@ -42,12 +42,13 @@ public class Main {
     public static BigDecimal euroBuyToKrakenEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToBitstampEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayEthBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayBtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayLtcBuyToCoinroomPlnSell;
 
     public static void main(String[] args) throws InterruptedException, IllegalAccessException {
         CandlestickChart.start();
         while (true) {
             try {
-                //
                 new StockRoiPreparer().fetchAndPrintStockData();
                 new CoinmarketcapPriceCompare().compare();
 

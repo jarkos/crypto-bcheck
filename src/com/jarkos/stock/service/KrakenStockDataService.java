@@ -37,7 +37,8 @@ public class KrakenStockDataService extends AbstractStockDataService {
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new KrakenLtcStockData(getKrakenMarketData(resKraken));
+        KrakenStockData krakenMarketData = getKrakenMarketData(resKraken);
+        return krakenMarketData != null ? new KrakenLtcStockData(krakenMarketData) : null;
     }
 
     public KrakenBccStockData getKrakenBccEurStockData() {
@@ -84,7 +85,8 @@ public class KrakenStockDataService extends AbstractStockDataService {
         } catch (Exception e) {
             System.out.println(e.getMessage().concat(" " + getStockCodeName()));
         }
-        return new KrakenDashStockData(getKrakenMarketData(resKraken));
+        KrakenStockData krakenMarketData = getKrakenMarketData(resKraken);
+        return krakenMarketData != null ? new KrakenDashStockData(krakenMarketData) : null;
     }
 
     @Override
