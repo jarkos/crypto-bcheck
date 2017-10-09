@@ -7,9 +7,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * Created by jkostrzewa on 2017-09-22.
- */
 @Getter
 @Setter
 public class GeneralKrakenData {

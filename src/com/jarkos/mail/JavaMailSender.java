@@ -48,7 +48,7 @@ public class JavaMailSender {
                 }
             });
 
-//            session.setDebug(debug);
+            //            session.setDebug(debug);
 
             MimeMessage msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(from));
@@ -99,7 +99,7 @@ public class JavaMailSender {
         // sender.addProxy("10.10.10.10", "8080");
 
         /** Activate this line if you need to see more details */
-//        sender.setDebug(true);
+        //        sender.setDebug(true);
 
         String from = "kostrzewa.jaroslaw@gmail.com";
         String password = "(led)Orf";

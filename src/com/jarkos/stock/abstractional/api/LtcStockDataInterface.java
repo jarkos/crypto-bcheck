@@ -1,15 +1,10 @@
 package com.jarkos.stock.abstractional.api;
 
-import java.math.BigDecimal;
+public interface LtcStockDataInterface extends GeneralStockDataInterface {
 
-/**
- * Created by jkostrzewa on 2017-09-10.
- */
-public interface LtcStockDataInterface {
-
-    BigDecimal getLastLtcPrice();
-
-    BigDecimal getAskPrice();
+    default String getType() {
+        return "LTC";
+    }
 
     Object getLtcEurStockData();
 

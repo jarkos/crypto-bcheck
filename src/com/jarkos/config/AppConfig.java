@@ -2,9 +2,6 @@ package com.jarkos.config;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-28.
- */
 public class AppConfig {
 
     public static final String BIT_BAY_BTC_DATA_REPOSITORY_CSV = "C:\\Repositories\\BCHECK\\bitbayPLN.csv";

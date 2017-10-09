@@ -1,8 +1,5 @@
-package com.jarkos.stock.enums;
+package com.jarkos.coinmarket.enums;
 
-/**
- * Created by jkostrzewa on 2017-09-23.
- */
 public enum BlackListCoinmarketCurrencies {
 
     CNY,

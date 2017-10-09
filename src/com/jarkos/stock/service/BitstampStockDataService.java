@@ -1,91 +1,93 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
-import com.jarkos.communication.RequestSender;
-import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
-import com.jarkos.stock.abstractional.api.EthStockDataInterface;
-import com.jarkos.stock.dto.bitstamp.*;
+import com.jarkos.stock.abstractional.api.*;
+import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
+import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
-import com.jarkos.stock.exception.DataFetchUnavailableException;
 import com.jarkos.stock.exception.NotSupportedOperationException;
+import com.jarkos.stock.service.abstractional.AbstractStockDataService;
+import com.jarkos.stock.service.abstractional.EurStockDataService;
 
 import java.math.BigDecimal;
 
 import static com.jarkos.config.StockConfig.BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT;
 import static com.jarkos.config.StockConfig.BITSTAMP_WITHDRAW_PROV;
 
-public class BitstampStockDataService extends AbstractStockDataService {
-
-    private static String BitstampLtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/ltceur";
-    private static String BitstampBtcEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/btceur";
-    private static String BitstampEthEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/etheur";
-//    private static String BitstampBccEurApiUrl = "https://www.bitstamp.net/api/v2/ticker/bcceur";
-
-    @Override
-    public BitstampLtcStockData getLtcEurStockData() {
-        return getBitstampLtcEurStockData();
-    }
-
-    @Override
-    public EthStockDataInterface getEthEurStockData() {
-        return getBitstampEthEurStockData();
-    }
-
-    @Override
-    protected BtcStockDataInterface getBtcEurStockData() {
-        return getBitstampBtcEurStockData();
-    }
-
-    public BitstampEthStockData getBitstampEthEurStockData() {
-        String resBitstamp = null;
-        try {
-            resBitstamp = RequestSender.sendRequest(BitstampEthEurApiUrl);
-        } catch (DataFetchUnavailableException e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new BitstampEthStockData(getBitstampMarketData(resBitstamp));
-    }
-
-    public BitstampLtcStockData getBitstampLtcEurStockData() {
-        String resBitstamp = null;
-        try {
-            resBitstamp = RequestSender.sendRequest(BitstampLtcEurApiUrl);
-        } catch (DataFetchUnavailableException e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new BitstampLtcStockData(getBitstampMarketData(resBitstamp));
-    }
-
-    public BitstampBccStockData getBitstampBccEurStockData() {
-//        UNLOCK WHEN BCC API FROM BITSTAMP WILL BE AVAILABLE
-//        String resBitstamp = null;
-//        try {
-//            resBitstamp = RequestSender.sendRequest(BitstampBccEurApiUrl);
-//        } catch (DataFetchUnavailableException e) {
-//            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-//        }
-//        return new BitstampBccStockData(getBitstampMarketData(resBitstamp));
-        return null;
-    }
-
-    private static BitstampStockData getBitstampMarketData(String res) {
-        Gson gson = new Gson();
-        return gson.fromJson(res, BitstampStockData.class);
-    }
-
-    public BitstampBtcStockData getBitstampBtcEurStockData() {
-        String resBitstamp = null;
-        try {
-            resBitstamp = RequestSender.sendRequest(BitstampBtcEurApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new BitstampBtcStockData(getBitstampMarketData(resBitstamp));
-    }
+public class BitstampStockDataService extends AbstractStockDataService implements EurStockDataService {
 
     @Override
     public String getStockCodeName() {
         return "Bitstamp";
+    }
+
+    @Override
+    public String getBtcEurApiUrl() {
+        return "https://www.bitstamp.net/api/v2/ticker/btceur";
+    }
+
+    @Override
+    public String getBccEurApiUrl() {
+        return (String) throwNotSupportedOperationAndReturnNull();
+    }
+
+    @Override
+    public String getEthEurApiUrl() {
+        return "https://www.bitstamp.net/api/v2/ticker/etheur";
+    }
+
+    @Override
+    public String getLtcEurApiUrl() {
+        return "https://www.bitstamp.net/api/v2/ticker/ltceur";
+    }
+
+    @Override
+    public String getDashEurApiUrl() {
+        return (String) throwNotSupportedOperationAndReturnNull();
+    }
+
+    @Override
+    public BtcStockDataInterface getBtcEurStockData() {
+        return EurStockDataService.super.getBtcEurStockData();
+    }
+
+    @Override
+    public EthStockDataInterface getEthEurStockData() {
+        return EurStockDataService.super.getEthEurStockData();
+    }
+
+    @Override
+    public LtcStockDataInterface getLtcEurStockData() {
+        return EurStockDataService.super.getLtcEurStockData();
+    }
+
+    @Override
+    public BtcStockDataInterface getBtcStockData(String response) {
+        BitstampStockData bitstampMarketData = getMarketDataFromJson(response);
+        return bitstampMarketData != null ? new BitstampBtcStockData(bitstampMarketData) : null;
+    }
+
+    @Override
+    public BccStockDataInterface getBccStockData(String response) {
+        return (BccStockDataInterface) throwNotSupportedOperationAndReturnNull();
+    }
+
+    @Override
+    public EthStockDataInterface getEthStockData(String response) {
+        BitstampStockData bitstampMarketData = getMarketDataFromJson(response);
+        return bitstampMarketData != null ? new BitstampEthStockData(bitstampMarketData) : null;
+    }
+
+    @Override
+    public LtcStockDataInterface getLtcStockData(String response) {
+        BitstampStockData bitstampMarketData = getMarketDataFromJson(response);
+        return bitstampMarketData != null ? new BitstampLtcStockData(bitstampMarketData) : null;
+    }
+
+    @Override
+    public DashStockDataInterface getDashStockData(String response) {
+        return (DashStockDataInterface) throwNotSupportedOperationAndReturnNull();
     }
 
     @Override
@@ -111,26 +113,23 @@ public class BitstampStockDataService extends AbstractStockDataService {
     }
 
     @Override
-    protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
+    public BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
         return numberOfDashBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
     }
 
     @Override
-    protected BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
+    public BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
         return numberOfEthBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
     }
 
     @Override
-    protected BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
+    public BigDecimal getEuroAfterMoneyWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
         return numberOfEuroToWithdraw.subtract(BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT);
     }
 
-    public BitstampDashStockData getBitstampDashEurStockData() {
-        try {
-            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
-        } catch (NotSupportedOperationException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static BitstampStockData getMarketDataFromJson(String response) {
+        Gson gson = new Gson();
+        return gson.fromJson(response, BitstampStockData.class);
     }
+
 }

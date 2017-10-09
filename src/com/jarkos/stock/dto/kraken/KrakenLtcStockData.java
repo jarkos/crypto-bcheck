@@ -5,9 +5,6 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-10.
- */
 public class KrakenLtcStockData extends KrakenStockData implements LtcStockDataInterface {
 
     public KrakenLtcStockData(KrakenStockData k) {
@@ -15,13 +12,18 @@ public class KrakenLtcStockData extends KrakenStockData implements LtcStockDataI
     }
 
     @Override
-    public BigDecimal getLastLtcPrice() {
+    public BigDecimal getLastPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXLTCZEUR().getLastTradePrice().get(0)));
     }
 
     @Override
     public BigDecimal getAskPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXLTCZEUR().getAsk().get(0)));
+    }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXLTCZEUR().getBid().get(0)));
     }
 
     @Override

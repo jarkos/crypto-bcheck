@@ -7,9 +7,6 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-/**
- * Created by jkostrzewa on 2017-09-09.
- */
 public class RequestSender {
 
     public static String sendRequest(String url) throws DataFetchUnavailableException {

@@ -1,8 +1,5 @@
-package com.jarkos.stock.enums.currencies;
+package com.jarkos.coinmarket.enums.currencies;
 
-/**
- * Created by jkostrzewa on 2017-09-28.
- */
 public enum GameCurrencyPairEnum {
 
     GAMEPLN("GAME/PLN"),

@@ -2,11 +2,21 @@ package com.jarkos.stock.dto.bitbay.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
-public class BitBayStockData implements Serializable {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class BitBayStockData implements Serializable, GeneralStockDataInterface {
 
     @SerializedName("max")
     @Expose
@@ -43,183 +53,32 @@ public class BitBayStockData implements Serializable {
     private List<Transaction> transactions = null;
     private final static long serialVersionUID = 4485884411538419890L;
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public BitBayStockData() {
-    }
-
-    /**
-     * @param max
-     * @param min
-     * @param last
-     * @param bid
-     * @param ask
-     * @param vwap
-     * @param average
-     * @param volume
-     * @param bids
-     * @param asks
-     * @param transactions
-     */
-    public BitBayStockData(Float max, Float min, Float last, Float bid, Float ask, Float vwap, Float average, Float volume, List<List<Float>> bids, List<List<Float>> asks,
-                           List<Transaction> transactions) {
-        super();
-        this.max = max;
-        this.min = min;
-        this.last = last;
-        this.bid = bid;
-        this.ask = ask;
-        this.vwap = vwap;
-        this.average = average;
-        this.volume = volume;
-        this.bids = bids;
-        this.asks = asks;
-        this.transactions = transactions;
-    }
-
-    public Float getMax() {
-        return max;
-    }
-
-    public void setMax(Float max) {
-        this.max = max;
-    }
-
-    public BitBayStockData withMax(Float max) {
-        this.max = max;
-        return this;
-    }
-
-    public Float getMin() {
-        return min;
-    }
-
-    public void setMin(Float min) {
-        this.min = min;
-    }
-
-    public BitBayStockData withMin(Float min) {
-        this.min = min;
-        return this;
-    }
-
     public Float getLast() {
         return last > ask ? ask : last;
     }
 
-    public void setLast(Float last) {
-        this.last = last;
+    @Override
+    public BigDecimal getLastPrice() {
+        return BigDecimal.valueOf(this.getLast());
     }
 
-    public BitBayStockData withLast(Float last) {
-        this.last = last;
-        return this;
+    @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(this.getAsk());
     }
 
-    public Float getBid() {
-        return bid;
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(this.getBid());
     }
 
-    public void setBid(Float bid) {
-        this.bid = bid;
+
+    public BigDecimal getMakerTradeProvision() {
+        return null;
     }
 
-    public BitBayStockData withBid(Float bid) {
-        this.bid = bid;
-        return this;
+    public BigDecimal getTakerTradeProvision() {
+        return null;
     }
-
-    public Float getAsk() {
-        return ask;
-    }
-
-    public void setAsk(Float ask) {
-        this.ask = ask;
-    }
-
-    public BitBayStockData withAsk(Float ask) {
-        this.ask = ask;
-        return this;
-    }
-
-    public Float getVwap() {
-        return vwap;
-    }
-
-    public void setVwap(Float vwap) {
-        this.vwap = vwap;
-    }
-
-    public BitBayStockData withVwap(Float vwap) {
-        this.vwap = vwap;
-        return this;
-    }
-
-    public Float getAverage() {
-        return average;
-    }
-
-    public void setAverage(Float average) {
-        this.average = average;
-    }
-
-    public BitBayStockData withAverage(Float average) {
-        this.average = average;
-        return this;
-    }
-
-    public Float getVolume() {
-        return volume;
-    }
-
-    public void setVolume(Float volume) {
-        this.volume = volume;
-    }
-
-    public BitBayStockData withVolume(Float volume) {
-        this.volume = volume;
-        return this;
-    }
-
-    public List<List<Float>> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<List<Float>> bids) {
-        this.bids = bids;
-    }
-
-    public BitBayStockData withBids(List<List<Float>> bids) {
-        this.bids = bids;
-        return this;
-    }
-
-    public List<List<Float>> getAsks() {
-        return asks;
-    }
-
-    public void setAsks(List<List<Float>> asks) {
-        this.asks = asks;
-    }
-
-    public BitBayStockData withAsks(List<List<Float>> asks) {
-        this.asks = asks;
-        return this;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    public BitBayStockData withTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-        return this;
-    }
-
 
 }

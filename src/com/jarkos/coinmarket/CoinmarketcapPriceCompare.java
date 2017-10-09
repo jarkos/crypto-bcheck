@@ -1,9 +1,9 @@
 package com.jarkos.coinmarket;
 
-import com.jarkos.stock.enums.BlackListCoinmarketCurrencies;
-import com.jarkos.stock.enums.BlackListCoinmarketStocks;
-import com.jarkos.stock.enums.StockNameEnum;
-import com.jarkos.stock.enums.currencies.*;
+import com.jarkos.coinmarket.enums.BlackListCoinmarketCurrencies;
+import com.jarkos.coinmarket.enums.BlackListCoinmarketStocks;
+import com.jarkos.coinmarket.enums.StockNameEnum;
+import com.jarkos.coinmarket.enums.currencies.*;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 
 import static com.jarkos.config.AppConfig.*;
 
-/**
- * Created by jkostrzewa on 2017-09-18.
- */
 public class CoinmarketcapPriceCompare {
 
     private static final Logger log = Logger.getLogger(CoinmarketcapPriceCompare.class);
@@ -45,7 +42,7 @@ public class CoinmarketcapPriceCompare {
         gameMarketsData = getMarketsData("https://coinmarketcap.com/currencies/gamecredits/#markets");
     }
 
-    public  void compare() {
+    public void compare() {
         log.error("*** BTC");
         final Set<String> btcCurrencyPairEnums = Arrays.stream(BtcCurrencyPairEnum.values()).map(Enum::toString).collect(Collectors.toSet());
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums);
@@ -85,7 +82,8 @@ public class CoinmarketcapPriceCompare {
 
     private void recognizeMinMaxExchange(List<MarketTableRow> marketList, String nameToDisplay) {
         System.out.println(nameToDisplay);
-        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER_COMPARING) > 0).collect(Collectors.toList());
+        List<MarketTableRow> marketsToRecognize = marketList.stream().filter(s -> s.getVolume().compareTo(MARKET_MIN_VOLUME_TO_CONSIDER_COMPARING) > 0)
+                                                            .collect(Collectors.toList());
         final List<String> blackListCurrencies = Arrays.stream(BlackListCoinmarketCurrencies.values()).map(Enum::name).collect(Collectors.toList());
 
         final List<MarketTableRow> filteredMarkets = marketsToRecognize.stream().filter(m -> blackListCurrencies.stream().noneMatch(c -> m.getExchangePair().contains(c)))

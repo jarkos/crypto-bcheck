@@ -12,13 +12,18 @@ public class KrakenEthStockData extends KrakenStockData implements EthStockDataI
     }
 
     @Override
-    public BigDecimal getLastEthPrice() {
+    public BigDecimal getLastPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXETHZEUR().getLastTradePrice().get(0)));
     }
 
     @Override
-    public BigDecimal getAskEthPrice() {
+    public BigDecimal getAskPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXETHZEUR().getAsk().get(0)));
+    }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getXETHZEUR().getBid().get(0)));
     }
 
     @Override

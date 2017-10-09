@@ -2,23 +2,26 @@ package com.jarkos.stock.dto.bitstamp.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BitstampStockData {
+public class BitstampStockData implements GeneralStockDataInterface {
 
     @SerializedName("high")
     @Expose
     private String high;
     @SerializedName("last")
     @Expose
-    private String lastPrice;
+    private String last;
     @SerializedName("timestamp")
     @Expose
     private String timestamp;
@@ -42,7 +45,31 @@ public class BitstampStockData {
     private String open;
 
     public String getLast() {
-        return Float.valueOf(lastPrice) > Float.valueOf(ask) ? ask : lastPrice;
+        return Float.valueOf(last) > Float.valueOf(ask) ? ask : last;
     }
 
+    @Override
+    public BigDecimal getLastPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getLast()));
+    }
+
+    @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getAsk()));
+    }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(Float.valueOf(getBid()));
+    }
+
+    @Override
+    public BigDecimal getMakerTradeProvision() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getTakerTradeProvision() {
+        return null;
+    }
 }

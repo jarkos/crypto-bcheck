@@ -62,7 +62,7 @@ public class Main {
                 try {
                     indicator = (BigDecimal) field.get(BigDecimal.class);
                     indicatorsMap.put(field.getName(), indicator);
-                } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException ignored) {
                     // DO NOTHING, GO AHEAD
                 }
             }

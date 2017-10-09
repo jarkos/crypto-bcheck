@@ -1,7 +1,6 @@
-package com.jarkos.stock.service;
+package com.jarkos.walutomat;
 
 import com.google.gson.Gson;
-import com.jarkos.walutomat.WalutomatData;
 
 import static com.jarkos.communication.RequestSender.sendRequest;
 

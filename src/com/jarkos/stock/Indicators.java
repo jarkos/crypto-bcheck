@@ -27,7 +27,8 @@ public class Indicators {
     public static BigDecimal euroBuyToBitstampEthSellOnBitBayRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayEthBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
-    public static BigDecimal bitBayLtcBuyToCoinroomPlnSell;
-    public static BigDecimal bitBayDashBuyToCoinroomPlnSell;
-    public static BigDecimal bitBayBccBuyToCoinroomPlnSell;
+    public static BigDecimal bitBayLtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayDashBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayBccBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
+    public static BigDecimal prepareBitBayEthBuyToExternalStockSellToEuroWithdrawal = BigDecimal.valueOf(0d);
 }

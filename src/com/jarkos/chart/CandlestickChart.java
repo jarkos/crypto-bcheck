@@ -81,9 +81,7 @@ public class CandlestickChart {
             volumes[i] = tick.getVolume().toDouble();
         }
 
-        OHLCDataset dataset = new DefaultHighLowDataset("btc", dates, highs, lows, opens, closes, volumes);
-
-        return dataset;
+        return new DefaultHighLowDataset("btc", dates, highs, lows, opens, closes, volumes);
     }
 
     /**

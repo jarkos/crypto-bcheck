@@ -10,14 +10,6 @@ out
 /lib
 
 # User-specific stuff:
-.idea/**/workspace.xml
 log4j-application.log*
-.idea/**/tasks.xml
-.idea/dictionaries
-
 # Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
-
 # IntelliJ
-/out/

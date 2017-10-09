@@ -2,14 +2,17 @@ package com.jarkos.stock.dto.coinroom;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class CoinroomStockData {
+public class CoinroomStockData implements GeneralStockDataInterface {
 
     @SerializedName("low")
     @Expose
@@ -37,4 +40,28 @@ public class CoinroomStockData {
         return last > ask ? ask : last;
     }
 
+    @Override
+    public BigDecimal getLastPrice() {
+        return BigDecimal.valueOf(getLast());
+    }
+
+    @Override
+    public BigDecimal getAskPrice() {
+        return BigDecimal.valueOf(getAsk());
+    }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(getBid());
+    }
+
+    @Override
+    public BigDecimal getMakerTradeProvision() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getTakerTradeProvision() {
+        return null;
+    }
 }

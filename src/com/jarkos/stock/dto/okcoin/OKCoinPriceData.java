@@ -1,4 +1,3 @@
-
 package com.jarkos.stock.dto.okcoin;
 
 import com.google.gson.annotations.Expose;

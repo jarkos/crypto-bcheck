@@ -1,15 +1,10 @@
 package com.jarkos.stock.abstractional.api;
 
-import java.math.BigDecimal;
+public interface DashStockDataInterface extends GeneralStockDataInterface {
 
-/**
- * Created by jkostrzewa on 2017-09-23.
- */
-public interface DashStockDataInterface {
-
-    BigDecimal getLastDashPrice();
-
-    BigDecimal getAskPrice();
+    default String getType() {
+        return "DASH";
+    }
 
     Object getDashEurStockData();
 

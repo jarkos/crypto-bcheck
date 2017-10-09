@@ -3,8 +3,6 @@ package com.jarkos.stock.dto.bitbay;
 import com.jarkos.stock.abstractional.api.BccStockDataInterface;
 import com.jarkos.stock.dto.bitbay.general.BitBayStockData;
 
-import java.math.BigDecimal;
-
 public class BitBayBccStockData extends BitBayStockData implements BccStockDataInterface {
 
     public BitBayBccStockData(BitBayStockData b) {
@@ -12,12 +10,7 @@ public class BitBayBccStockData extends BitBayStockData implements BccStockDataI
     }
 
     @Override
-    public BigDecimal getLastBccPrice() {
-        return BigDecimal.valueOf(getLast());
-    }
-
-    @Override
-    public BigDecimal getAskBccPrice() {
-        return BigDecimal.valueOf(getAsk());
+    public Object getBccStockData() {
+        return this;
     }
 }

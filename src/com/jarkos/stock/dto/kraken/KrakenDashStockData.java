@@ -5,9 +5,6 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jkostrzewa on 2017-09-23.
- */
 public class KrakenDashStockData extends KrakenStockData implements DashStockDataInterface {
 
     public KrakenDashStockData(KrakenStockData k) {
@@ -15,7 +12,7 @@ public class KrakenDashStockData extends KrakenStockData implements DashStockDat
     }
 
     @Override
-    public BigDecimal getLastDashPrice() {
+    public BigDecimal getLastPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getDASHEUR().getLastTradePrice().get(0)));
     }
 
@@ -23,6 +20,12 @@ public class KrakenDashStockData extends KrakenStockData implements DashStockDat
     public BigDecimal getAskPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getDASHEUR().getAsk().get(0)));
     }
+
+    @Override
+    public BigDecimal getBidPrice() {
+        return BigDecimal.valueOf(Float.valueOf(this.getResult().getDASHEUR().getBid().get(0)));
+    }
+
 
     @Override
     public Object getDashEurStockData() {

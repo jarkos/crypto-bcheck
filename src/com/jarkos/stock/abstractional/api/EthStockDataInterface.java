@@ -1,15 +1,10 @@
 package com.jarkos.stock.abstractional.api;
 
-import java.math.BigDecimal;
+public interface EthStockDataInterface extends GeneralStockDataInterface {
 
-/**
- * Created by jkostrzewa on 2017-09-22.
- */
-public interface EthStockDataInterface {
-
-    BigDecimal getLastEthPrice();
-
-    BigDecimal getAskEthPrice();
+    default String getType() {
+        return "ETH";
+    }
 
     Object getEthEurStockData();
 

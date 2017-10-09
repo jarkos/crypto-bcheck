@@ -14,14 +14,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * Created by jkostrzewa on 2017-08-09.
- */
 public class JsonFetcher {
 
     public static final String UTF_8 = "UTF-8";
 
-    public static String fetchJsonData(String url) throws URISyntaxException, IOException{
+    public static String fetchJsonData(String url) throws URISyntaxException, IOException {
         HttpClient client = new DefaultHttpClient();
         HttpParams httpParameters = client.getParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
@@ -43,7 +40,6 @@ public class JsonFetcher {
         }
         buf.close();
         ips.close();
-        String result = sb.toString();
-        return result;
+        return sb.toString();
     }
 }

@@ -1,22 +1,17 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
-import com.jarkos.communication.RequestSender;
-import com.jarkos.stock.abstractional.api.BtcStockDataInterface;
+import com.jarkos.stock.abstractional.api.*;
 import com.jarkos.stock.dto.coinroom.*;
-import com.jarkos.stock.exception.NotSupportedOperationException;
+import com.jarkos.stock.service.abstractional.AbstractStockDataService;
+import com.jarkos.stock.service.abstractional.EurStockDataService;
+import com.jarkos.stock.service.abstractional.PlnStockDataService;
 
 import java.math.BigDecimal;
 
 import static com.jarkos.config.StockConfig.*;
 
-public class CoinroomStockDataService extends AbstractStockDataService {
-
-    private static String CoinroomBtcPlnApiUrl = "https://coinroom.com/api/ticker/BTC/PLN";
-    private static String CoinroomLtcPlnApiUrl = "https://coinroom.com/api/ticker/LTC/PLN";
-    private static String CoinroomEthPlnApiUrl = "https://coinroom.com/api/ticker/ETH/PLN";
-    private static String CoinroomDashPlnApiUrl = "https://coinroom.com/api/ticker/DASH/PLN";
-    private static String CoinroomBccPlnApiUrl = "https://coinroom.com/api/ticker/BCC/PLN";
+public class CoinroomStockDataService extends AbstractStockDataService implements PlnStockDataService, EurStockDataService {
 
     @Override
     public String getStockCodeName() {
@@ -24,76 +19,78 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     }
 
     @Override
-    public CoinroomLtcStockStockData getLtcEurStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomLtcPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new CoinroomLtcStockStockData(getCoinroomMarketData(res));
+    public String getDashPlnApiUrl() {
+        return "https://coinroom.com/api/ticker/DASH/PLN";
     }
 
     @Override
-    public CoinroomEthStockStockData getEthEurStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomEthPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new CoinroomEthStockStockData(getCoinroomMarketData(res));
-    }
-
-    public CoinroomEthStockStockData getEthPlnStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomEthPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new CoinroomEthStockStockData(getCoinroomMarketData(res));
-    }
-
-    public CoinroomBccStockStockData getBccPlnStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomBccPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        CoinroomStockData coinroomMarketData = getCoinroomMarketData(res);
-        return new CoinroomBccStockStockData(coinroomMarketData);
+    public String getBtcPlnApiUrl() {
+        return "https://coinroom.com/api/ticker/BTC/PLN";
     }
 
     @Override
-    protected BtcStockDataInterface getBtcEurStockData() {
-        try {
-            throw new NotSupportedOperationException("Exception for fetching btc eur data from " + getStockCodeName());
-        } catch (NotSupportedOperationException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getBccPlnApiUrl() {
+        return "https://coinroom.com/api/ticker/BCC/PLN";
     }
 
-    public CoinroomBtcStockStockData getBtcPlnStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomBtcPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new CoinroomBtcStockStockData(getCoinroomMarketData(res));
+    @Override
+    public String getEthPlnApiUrl() {
+        return "https://coinroom.com/api/ticker/ETH/PLN";
     }
 
-    public CoinroomDashStockStockData getDashPlnStockData() {
-        String res = null;
-        try {
-            res = RequestSender.sendRequest(CoinroomDashPlnApiUrl);
-        } catch (Exception e) {
-            System.out.println(e.getMessage().concat(" " + getStockCodeName()));
-        }
-        return new CoinroomDashStockStockData(getCoinroomMarketData(res));
+    @Override
+    public String getLtcPlnApiUrl() {
+        return "https://coinroom.com/api/ticker/LTC/PLN";
+    }
+
+    @Override
+    public BtcStockDataInterface getBtcStockData(String res) {
+        return new CoinroomBtcStockData(getMarketDataFromJson(res));
+    }
+
+    @Override
+    public BccStockDataInterface getBccStockData(String res) {
+        return new CoinroomBccStockData(getMarketDataFromJson(res));
+    }
+
+    @Override
+    public EthStockDataInterface getEthStockData(String res) {
+        return new CoinroomEthStockData(getMarketDataFromJson(res));
+    }
+
+    @Override
+    public LtcStockDataInterface getLtcStockData(String res) {
+        return new CoinroomLtcStockData(getMarketDataFromJson(res));
+    }
+
+    @Override
+    public DashStockDataInterface getDashStockData(String res) {
+        return new CoinroomDashStockData(getMarketDataFromJson(res));
+    }
+
+    @Override
+    public String getBtcEurApiUrl() {
+        return "https://coinroom.com/api/ticker/BTC/EUR";
+    }
+
+    @Override
+    public String getBccEurApiUrl() {
+        return "https://coinroom.com/api/ticker/BCC/EUR";
+    }
+
+    @Override
+    public String getEthEurApiUrl() {
+        return "https://coinroom.com/api/ticker/ETH/EUR";
+    }
+
+    @Override
+    public String getLtcEurApiUrl() {
+        return "https://coinroom.com/api/ticker/LTC/EUR";
+    }
+
+    @Override
+    public String getDashEurApiUrl() {
+        return (String) throwNotSupportedOperationAndReturnNull();
     }
 
     @Override
@@ -112,27 +109,38 @@ public class CoinroomStockDataService extends AbstractStockDataService {
     }
 
     @Override
-    protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
+    public BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
         return numberOfDashBoughtAfterTradeProv.subtract(COINROOM_DASH_WITHDRAW_PROV_AMOUNT);
     }
 
     @Override
-    protected BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
+    public BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
         return numberOfEthBoughtAfterTradeProv.subtract(COINROOM_ETH_WITHDRAW_PROV_AMOUNT);
     }
 
     @Override
-    protected BigDecimal getEuroAfterWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
+    public BigDecimal getEuroAfterMoneyWithdrawalProv(BigDecimal numberOfEuroToWithdraw) {
         return numberOfEuroToWithdraw.subtract(COINROOM_EUR_WITHDRAW_PROV_AMOUNT);
     }
 
+    @Override
+    public BtcStockDataInterface getBtcEurStockData() {
+        return EurStockDataService.super.getBtcEurStockData();
+    }
 
-    private static CoinroomStockData getCoinroomMarketData(String res) {
+    @Override
+    public EthStockDataInterface getEthEurStockData() {
+        return EurStockDataService.super.getEthEurStockData();
+    }
+
+    @Override
+    public LtcStockDataInterface getLtcEurStockData() {
+        return EurStockDataService.super.getLtcEurStockData();
+    }
+
+    private static CoinroomStockData getMarketDataFromJson(String res) {
         Gson gson = new Gson();
         return gson.fromJson(res, CoinroomStockData.class);
     }
 
-    public CoinroomDashStockStockData getDashEurStockData() {
-        return null;
-    }
 }

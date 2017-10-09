@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by jkostrzewa on 2017-09-03.
- */
 public class CsvTradesLoaderCustom extends CsvTradesLoader {
 
     public static final String UTF_8 = "UTF-8";
@@ -45,8 +42,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
             if (csvReader != null) {
                 try {
                     csvReader.close();
-                } catch (IOException var20) {
-                    ;
+                } catch (IOException ignored) {
                 }
             }
 
@@ -86,7 +82,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
             removeEmptyTicks(ticks);
         }
         long endTime = System.nanoTime();
-        System.out.println("Ended loading of csv file: " + ((endTime - startTime)) / 1000000000l + " sek");
+        System.out.println("Ended loading of csv file: " + ((endTime - startTime)) / 1000000000L + " sek");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         String formatDateTime = now.format(formatter);
@@ -95,7 +91,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
     }
 
     private static List<Tick> buildEmptyTicks(DateTime beginTime, DateTime endTime, int duration) {
-        List<Tick> emptyTicks = new ArrayList();
+        ArrayList emptyTicks = new ArrayList();
         Period tickTimePeriod = Period.seconds(duration);
         DateTime tickEndTime = beginTime;
 
@@ -109,7 +105,7 @@ public class CsvTradesLoaderCustom extends CsvTradesLoader {
 
     private static void removeEmptyTicks(List<Tick> ticks) {
         for (int i = ticks.size() - 1; i >= 0; --i) {
-            if (((Tick) ticks.get(i)).getTrades() == 0) {
+            if (ticks.get(i).getTrades() == 0) {
                 ticks.remove(i);
             }
         }
