@@ -3,6 +3,7 @@ package com.jarkos.stock;
 import java.math.BigDecimal;
 
 public class Indicators {
+
     public static BigDecimal bitBayLtcBuyToKrakenSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayLtcBuyToBitstampSellToBtcWithdrawalRoi = BigDecimal.valueOf(0d);
     public static BigDecimal euroBuyToKrakenBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
@@ -31,4 +32,6 @@ public class Indicators {
     public static BigDecimal bitBayDashBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBccBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal prepareBitBayEthBuyToExternalStockSellToEuroWithdrawal = BigDecimal.valueOf(0d);
+    public static BigDecimal coinroomDashBuyToBitbayPlnSell = BigDecimal.valueOf(0d);
+    
 }

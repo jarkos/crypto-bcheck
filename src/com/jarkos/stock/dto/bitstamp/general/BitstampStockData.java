@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.BITSTAMP_TRADE_PROVISION_PERCENTAGE;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -64,12 +66,12 @@ public class BitstampStockData implements GeneralStockDataInterface {
     }
 
     @Override
-    public BigDecimal getMakerTradeProvision() {
-        return null;
+    public BigDecimal getMakerProvision() {
+        return BITSTAMP_TRADE_PROVISION_PERCENTAGE;
     }
 
     @Override
-    public BigDecimal getTakerTradeProvision() {
-        return null;
+    public BigDecimal getTakerProvision() {
+        return BITSTAMP_TRADE_PROVISION_PERCENTAGE;
     }
 }

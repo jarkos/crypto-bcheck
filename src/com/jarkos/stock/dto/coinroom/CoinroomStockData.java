@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.COINROOM_TRADE_PROVISION_PERCENTAGE_MAKER;
+import static com.jarkos.config.StockConfig.COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -56,12 +59,12 @@ public class CoinroomStockData implements GeneralStockDataInterface {
     }
 
     @Override
-    public BigDecimal getMakerTradeProvision() {
-        return null;
+    public BigDecimal getMakerProvision() {
+        return COINROOM_TRADE_PROVISION_PERCENTAGE_MAKER;
     }
 
     @Override
-    public BigDecimal getTakerTradeProvision() {
-        return null;
+    public BigDecimal getTakerProvision() {
+        return COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER;
     }
 }

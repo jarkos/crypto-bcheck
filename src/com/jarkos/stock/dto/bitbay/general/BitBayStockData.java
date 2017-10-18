@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.jarkos.config.StockConfig.BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER;
+import static com.jarkos.config.StockConfig.BITBAY_TRADE_PROVISION_PERCENTAGE_TAKER;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -72,13 +75,12 @@ public class BitBayStockData implements Serializable, GeneralStockDataInterface 
         return BigDecimal.valueOf(this.getBid());
     }
 
-
-    public BigDecimal getMakerTradeProvision() {
-        return null;
+    public BigDecimal getMakerProvision() {
+        return BITBAY_TRADE_PROVISION_PERCENTAGE_MAKER;
     }
 
-    public BigDecimal getTakerTradeProvision() {
-        return null;
+    public BigDecimal getTakerProvision() {
+        return BITBAY_TRADE_PROVISION_PERCENTAGE_TAKER;
     }
 
 }

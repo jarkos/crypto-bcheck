@@ -10,8 +10,8 @@ public interface GeneralStockDataInterface {
 
     BigDecimal getBidPrice();
 
-    BigDecimal getMakerTradeProvision();
+    BigDecimal getMakerProvision();
 
-    BigDecimal getTakerTradeProvision();
+    BigDecimal getTakerProvision();
 
 }

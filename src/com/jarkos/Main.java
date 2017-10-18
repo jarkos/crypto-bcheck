@@ -36,14 +36,14 @@ public class Main {
             }
             CandlestickChart.refresh();
 
-            goodIndicatorsMailNotify();
+            //            highRoiMailNotify();
 
             logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD);
-            Thread.sleep(2 * HALF_MINUTE_IN_MILLIS);
+            Thread.sleep(HALF_MINUTE_IN_MILLIS);
         }
     }
 
-    private static void goodIndicatorsMailNotify() {
+    private static void highRoiMailNotify() {
         Map<String, BigDecimal> internalIndicators = innitInternalIndicatorsList();
 
         if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginTransferRoiValueForMailNotification) > 0)) {

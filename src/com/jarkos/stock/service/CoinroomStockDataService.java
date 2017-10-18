@@ -45,27 +45,32 @@ public class CoinroomStockDataService extends AbstractStockDataService implement
 
     @Override
     public BtcStockDataInterface getBtcStockData(String res) {
-        return new CoinroomBtcStockData(getMarketDataFromJson(res));
+        CoinroomStockData marketData = getMarketDataFromJson(res);
+        return marketData != null ? new CoinroomBtcStockData(marketData) : null;
     }
 
     @Override
     public BccStockDataInterface getBccStockData(String res) {
-        return new CoinroomBccStockData(getMarketDataFromJson(res));
+        CoinroomStockData marketData = getMarketDataFromJson(res);
+        return marketData != null ? new CoinroomBccStockData(marketData) : null;
     }
 
     @Override
     public EthStockDataInterface getEthStockData(String res) {
-        return new CoinroomEthStockData(getMarketDataFromJson(res));
+        CoinroomStockData marketData = getMarketDataFromJson(res);
+        return marketData != null ? new CoinroomEthStockData(marketData) : null;
     }
 
     @Override
     public LtcStockDataInterface getLtcStockData(String res) {
-        return new CoinroomLtcStockData(getMarketDataFromJson(res));
+        CoinroomStockData marketData = getMarketDataFromJson(res);
+        return marketData != null ? new CoinroomLtcStockData(marketData) : null;
     }
 
     @Override
     public DashStockDataInterface getDashStockData(String res) {
-        return new CoinroomDashStockData(getMarketDataFromJson(res));
+        CoinroomStockData marketData = getMarketDataFromJson(res);
+        return marketData != null ? new CoinroomDashStockData(marketData) : null;
     }
 
     @Override

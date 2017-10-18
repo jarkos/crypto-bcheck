@@ -25,9 +25,6 @@ public class StockConfig {
     public static final BigDecimal BITSTAMP_TRADE_PROVISION_PERCENTAGE = BigDecimal.valueOf(0.0025F);
     public static final BigDecimal BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.09F);
 
-    public static final BigDecimal HUOBI_TRADE_PROVISION = BigDecimal.valueOf(0.002F);
-    public static final BigDecimal HUOBI_WITHDRAW_PROV_AMOUNT = BigDecimal.valueOf(0.0001F);
-
     public static final BigDecimal KRAKEN_MAKER_TRADE_PROV_PERCENTAGE = BigDecimal.valueOf(0.0016d);
     public static final BigDecimal KRAKEN_TAKER_TRADE_PROV_PERCENTAGE = BigDecimal.valueOf(0.0026d);
     public static final BigDecimal KRAKEN_BTC_WITHDRAW_PROV = BigDecimal.valueOf(0.001F);

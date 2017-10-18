@@ -11,6 +11,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.jarkos.config.StockConfig.KRAKEN_MAKER_TRADE_PROV_PERCENTAGE;
+import static com.jarkos.config.StockConfig.KRAKEN_TAKER_TRADE_PROV_PERCENTAGE;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -39,12 +42,12 @@ public class KrakenStockData implements GeneralStockDataInterface {
         return null;
     }
 
-    public BigDecimal getMakerTradeProvision() {
-        return null;
+    public BigDecimal getMakerProvision() {
+        return KRAKEN_MAKER_TRADE_PROV_PERCENTAGE;
     }
 
-    public BigDecimal getTakerTradeProvision() {
-        return null;
+    public BigDecimal getTakerProvision() {
+        return KRAKEN_TAKER_TRADE_PROV_PERCENTAGE;
     }
 
 }
