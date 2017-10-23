@@ -5,6 +5,8 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.KRAKEN_DASH_WITHDRAW_PROV;
+
 public class KrakenDashStockData extends KrakenStockData implements DashStockDataInterface {
 
     public KrakenDashStockData(KrakenStockData k) {
@@ -26,6 +28,11 @@ public class KrakenDashStockData extends KrakenStockData implements DashStockDat
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getDASHEUR().getBid().get(0)));
     }
 
+
+    @Override
+    public BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
+        return numberOfDashBoughtAfterTradeProv.subtract(KRAKEN_DASH_WITHDRAW_PROV);
+    }
 
     @Override
     public Object getDashEurStockData() {

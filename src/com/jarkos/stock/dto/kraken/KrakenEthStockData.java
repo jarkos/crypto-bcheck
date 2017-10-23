@@ -5,6 +5,8 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.KRAKEN_ETH_WITHDRAW_PROV_AMOUNT;
+
 public class KrakenEthStockData extends KrakenStockData implements EthStockDataInterface {
 
     public KrakenEthStockData(KrakenStockData k) {
@@ -30,4 +32,10 @@ public class KrakenEthStockData extends KrakenStockData implements EthStockDataI
     public Object getEthEurStockData() {
         return this.getResult().getXETHZEUR();
     }
+
+    @Override
+    public BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
+        return numberOfEthBoughtAfterTradeProv.subtract(KRAKEN_ETH_WITHDRAW_PROV_AMOUNT);
+    }
+
 }

@@ -6,14 +6,12 @@ import com.jarkos.stock.dto.bitstamp.BitstampBtcStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampEthStockData;
 import com.jarkos.stock.dto.bitstamp.BitstampLtcStockData;
 import com.jarkos.stock.dto.bitstamp.general.BitstampStockData;
-import com.jarkos.stock.exception.NotSupportedOperationException;
 import com.jarkos.stock.service.abstractional.AbstractStockDataService;
 import com.jarkos.stock.service.abstractional.EurStockDataService;
 
 import java.math.BigDecimal;
 
 import static com.jarkos.config.StockConfig.BITSTAMP_EUR_WITHDRAW_PROV_AMOUNT;
-import static com.jarkos.config.StockConfig.BITSTAMP_WITHDRAW_PROV;
 
 public class BitstampStockDataService extends AbstractStockDataService implements EurStockDataService {
 
@@ -88,38 +86,6 @@ public class BitstampStockDataService extends AbstractStockDataService implement
     @Override
     public DashStockDataInterface getDashStockData(String response) {
         return (DashStockDataInterface) throwNotSupportedOperationAndReturnNull();
-    }
-
-    @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
-        // NON FEE
-        return btcToSubtractWithdrawProv.subtract(BITSTAMP_WITHDRAW_PROV);
-    }
-
-    @Override
-    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
-        // NON FEE
-        return ltcToSubtractWithdrawProv.subtract(BITSTAMP_WITHDRAW_PROV);
-    }
-
-    @Override
-    public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
-        try {
-            throw new NotSupportedOperationException("Exception for fetching bcc withdrawal fee from " + getStockCodeName());
-        } catch (NotSupportedOperationException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
-        return numberOfDashBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
-    }
-
-    @Override
-    public BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
-        return numberOfEthBoughtAfterTradeProv.subtract(BITSTAMP_WITHDRAW_PROV);
     }
 
     @Override

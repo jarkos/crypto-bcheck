@@ -9,7 +9,7 @@ import com.jarkos.stock.service.abstractional.PlnStockDataService;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.StockConfig.*;
+import static com.jarkos.config.StockConfig.COINROOM_EUR_WITHDRAW_PROV_AMOUNT;
 
 public class CoinroomStockDataService extends AbstractStockDataService implements PlnStockDataService, EurStockDataService {
 
@@ -96,31 +96,6 @@ public class CoinroomStockDataService extends AbstractStockDataService implement
     @Override
     public String getDashEurApiUrl() {
         return (String) throwNotSupportedOperationAndReturnNull();
-    }
-
-    @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
-        return btcToSubtractWithdrawProv.subtract(COINROOM_BTC_WITHDRAW_PROV_AMOUNT);
-    }
-
-    @Override
-    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
-        return ltcToSubtractWithdrawProv.subtract(COINROOM_LTC_WITHDRAW_PROV_AMOUNT);
-    }
-
-    @Override
-    public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
-        return bccToSubtractWithdrawProv.subtract(COINROOM_BCC_WITHDRAW_PROV_AMOUNT);
-    }
-
-    @Override
-    public BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
-        return numberOfDashBoughtAfterTradeProv.subtract(COINROOM_DASH_WITHDRAW_PROV_AMOUNT);
-    }
-
-    @Override
-    public BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
-        return numberOfEthBoughtAfterTradeProv.subtract(COINROOM_ETH_WITHDRAW_PROV_AMOUNT);
     }
 
     @Override

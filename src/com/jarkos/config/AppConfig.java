@@ -11,12 +11,7 @@ public class AppConfig {
     public static final BigDecimal maxRoiValueForWarnDisplay = BigDecimal.valueOf(1.025d);
     public static final BigDecimal minRoiValueForWarnDisplay = BigDecimal.valueOf(0.955d);
 
-    public static final BigDecimal BTC_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal LTC_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal ETH_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal DASH_BUY_MONEY = BigDecimal.valueOf(1000F);
-    public static final BigDecimal PLN_MONEY_TO_EUR_BUY = BigDecimal.valueOf(1000F);
-
+    public static final BigDecimal MONEY_FOR_CRYPTO_BUY = BigDecimal.valueOf(1000F);
     public static final BigDecimal MARKET_MIN_VOLUME_TO_CONSIDER_COMPARING = BigDecimal.valueOf(88000);
 
 }

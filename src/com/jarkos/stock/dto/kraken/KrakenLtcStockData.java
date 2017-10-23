@@ -5,6 +5,8 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.KRAKEN_LTC_WITHDRAW_PROV;
+
 public class KrakenLtcStockData extends KrakenStockData implements LtcStockDataInterface {
 
     public KrakenLtcStockData(KrakenStockData k) {
@@ -24,6 +26,11 @@ public class KrakenLtcStockData extends KrakenStockData implements LtcStockDataI
     @Override
     public BigDecimal getBidPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXLTCZEUR().getBid().get(0)));
+    }
+
+    @Override
+    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
+        return ltcToSubtractWithdrawProv.subtract(KRAKEN_LTC_WITHDRAW_PROV);
     }
 
     @Override

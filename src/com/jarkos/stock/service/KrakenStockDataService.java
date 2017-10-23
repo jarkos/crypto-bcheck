@@ -9,7 +9,7 @@ import com.jarkos.stock.service.abstractional.EurStockDataService;
 
 import java.math.BigDecimal;
 
-import static com.jarkos.config.StockConfig.*;
+import static com.jarkos.config.StockConfig.KRAKEN_EUR_WITHDRAW_PROV_AMOUNT;
 
 public class KrakenStockDataService extends AbstractStockDataService implements EurStockDataService {
 
@@ -92,31 +92,6 @@ public class KrakenStockDataService extends AbstractStockDataService implements 
     public DashStockDataInterface getDashStockData(String response) {
         KrakenStockData krakenMarketData = getKrakenMarketData(response);
         return krakenMarketData != null ? new KrakenDashStockData(krakenMarketData) : null;
-    }
-
-    @Override
-    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
-        return btcToSubtractWithdrawProv.subtract(KRAKEN_BTC_WITHDRAW_PROV);
-    }
-
-    @Override
-    public BigDecimal getLtcAfterWithdrawalProv(BigDecimal ltcToSubtractWithdrawProv) {
-        return ltcToSubtractWithdrawProv.subtract(KRAKEN_LTC_WITHDRAW_PROV);
-    }
-
-    @Override
-    public BigDecimal getBccAfterWithdrawalProv(BigDecimal bccToSubtractWithdrawProv) {
-        return bccToSubtractWithdrawProv.subtract(KRAKEN_BCC_WITHDRAW_PROV);
-    }
-
-    @Override
-    protected BigDecimal getDashAfterWithdrawalProv(BigDecimal numberOfDashBoughtAfterTradeProv) {
-        return numberOfDashBoughtAfterTradeProv.subtract(KRAKEN_DASH_WITHDRAW_PROV);
-    }
-
-    @Override
-    protected BigDecimal getEthAfterWithdrawalProv(BigDecimal numberOfEthBoughtAfterTradeProv) {
-        return numberOfEthBoughtAfterTradeProv.subtract(KRAKEN_ETH_WITHDRAW_PROV_AMOUNT);
     }
 
     @Override

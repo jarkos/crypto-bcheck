@@ -5,6 +5,8 @@ import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 
 import java.math.BigDecimal;
 
+import static com.jarkos.config.StockConfig.KRAKEN_BTC_WITHDRAW_PROV;
+
 public class KrakenBtcStockData extends KrakenStockData implements BtcStockDataInterface {
 
     public KrakenBtcStockData(KrakenStockData k) {
@@ -24,6 +26,11 @@ public class KrakenBtcStockData extends KrakenStockData implements BtcStockDataI
     @Override
     public BigDecimal getBidPrice() {
         return BigDecimal.valueOf(Float.valueOf(this.getResult().getXXBTZEUR().getBid().get(0)));
+    }
+
+    @Override
+    public BigDecimal getBtcAfterWithdrawalProv(BigDecimal btcToSubtractWithdrawProv) {
+        return btcToSubtractWithdrawProv.subtract(KRAKEN_BTC_WITHDRAW_PROV);
     }
 
     @Override
