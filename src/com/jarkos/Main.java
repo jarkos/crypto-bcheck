@@ -49,7 +49,7 @@ public class Main {
         if (lastMACD < -180.0d || internalIndicators.values().stream().anyMatch(i -> i.compareTo(marginTransferRoiValueForMailNotification) > 0)) {
             StringBuilder sb = new StringBuilder();
             internalIndicators.forEach((k, v) -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")));
-            JavaMailSender.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString());
+            JavaMailSender.Companion.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString());
         }
     }
 

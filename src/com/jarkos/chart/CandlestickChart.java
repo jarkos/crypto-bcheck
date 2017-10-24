@@ -142,7 +142,7 @@ public class CandlestickChart {
         /**
          * Getting time series
          */
-        TimeSeries series = CsvTradesLoaderCustom.loadStockSeries(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
+        TimeSeries series = CsvTradesLoaderCustom.Companion.loadStockSeries(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
 
         /**
          * Creating the OHLC dataset
