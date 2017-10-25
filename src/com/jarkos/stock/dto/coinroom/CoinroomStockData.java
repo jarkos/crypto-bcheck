@@ -2,6 +2,7 @@ package com.jarkos.stock.dto.coinroom;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.coinmarket.enums.StockNameEnum;
 import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,5 +67,10 @@ public class CoinroomStockData implements GeneralStockDataInterface {
     @Override
     public BigDecimal getTakerProvision() {
         return COINROOM_TRADE_PROVISION_PERCENTAGE_TAKER;
+    }
+
+    @Override
+    public String getStockName() {
+        return StockNameEnum.Coinroom.name();
     }
 }

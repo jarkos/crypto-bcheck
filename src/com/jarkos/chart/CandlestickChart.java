@@ -106,7 +106,7 @@ public class CandlestickChart {
     }
 
     public static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries, TimeSeries series) {
-        Main.lastMACD = chartTimeSeries.getDataItem(series.getEnd()).getValue().doubleValue();
+        Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(series.getEnd()).getValue().doubleValue());
     }
 
     /**

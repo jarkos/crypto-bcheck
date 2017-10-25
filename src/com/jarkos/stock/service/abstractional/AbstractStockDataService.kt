@@ -44,11 +44,11 @@ abstract class AbstractStockDataService {
 
             val bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
             val bitBayLtcBuyAndBtcSellRoiPessimistic = numberOfMoneyFromBtcSellAfterProvPessimistic.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
-            val resultToDisplay = "ROI LTC BitBay -> $stockCodeName BTC : $bitBayLtcBuyAndBtcSellRoi {$bitBayLtcBuyAndBtcSellRoiPessimistic} -> BitBay PLN"
+            val resultToDisplay = "ROI LTC " + bitBayLtcPlnStockData.stockName + "  -> $stockCodeName BTC : $bitBayLtcBuyAndBtcSellRoi {$bitBayLtcBuyAndBtcSellRoiPessimistic} -> BitBay PLN"
             displayDependOnRoi(bitBayLtcBuyAndBtcSellRoi, resultToDisplay)
             return bitBayLtcBuyAndBtcSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -70,17 +70,16 @@ abstract class AbstractStockDataService {
 
             val bitBayLtcBuyAndBtcSellRoi = numberOfMoneyFromBccSellAfterProv.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
             val bitBayLtcBuyAndBtcSellRoiPessimistic = numberOfMoneyFromBccSellAfterProvPessimistic.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
-            val resultToDisplay = "ROI LTC BitBay -> $stockCodeName BCC -> Bitbay PLN : $bitBayLtcBuyAndBtcSellRoi {$bitBayLtcBuyAndBtcSellRoiPessimistic}"
+            val resultToDisplay = "ROI LTC " + bitBayLtcPlnStockData.stockName + " -> $stockCodeName BCC -> Bitbay PLN : $bitBayLtcBuyAndBtcSellRoi {$bitBayLtcBuyAndBtcSellRoiPessimistic}"
             displayDependOnRoi(bitBayLtcBuyAndBtcSellRoi, resultToDisplay)
-            println("LTC BitBay -> " + bitBayLtcPlnStockData.lastPrice + " {" + bitBayLtcPlnStockData.askPrice.setScale(2, RoundingMode.HALF_DOWN) + "} LTC " +
-                    stockCodeName + " -> " +
+            println("LTC " + bitBayLtcPlnStockData.stockName + " -> " + bitBayLtcPlnStockData.lastPrice + " {" + bitBayLtcPlnStockData.askPrice.setScale(2, RoundingMode.HALF_DOWN) + "} LTC " + stockCodeName + " -> " +
                     ltcEurStockData.lastPrice.multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate!!).setScale(2, BigDecimal.ROUND_HALF_DOWN) + " # BCC " +
                     stockCodeName + " -> " +
                     bccEurAbstractStockData.lastPrice.multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate!!).setScale(2, BigDecimal.ROUND_HALF_DOWN) +
                     " BCC BitBay -> " + bitBayBccPlnStockData.lastPrice + " {" + bitBayBccPlnStockData.bidPrice + "} ")
             return bitBayLtcBuyAndBtcSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -102,7 +101,7 @@ abstract class AbstractStockDataService {
 
             val bitBayEthBuyAndBccSellRoi = numberOfMoneyFromBccSellAfterProv.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
             val bitBayEthBuyAndBccSellRoiPessimistic = numberOfMoneyFromBccSellAfterProvPessimistic.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
-            val resultToDisplay = "ROI ETH BitBay -> $stockCodeName BCC -> Bitbay PLN : $bitBayEthBuyAndBccSellRoi {$bitBayEthBuyAndBccSellRoiPessimistic}"
+            val resultToDisplay = "ROI ETH " + bitBayEthPlnStockData.stockName + "  -> $stockCodeName BCC -> Bitbay PLN : $bitBayEthBuyAndBccSellRoi {$bitBayEthBuyAndBccSellRoiPessimistic}"
             displayDependOnRoi(bitBayEthBuyAndBccSellRoi, resultToDisplay)
             println(
                     "ETH BitBay -> " + bitBayEthPlnStockData.lastPrice + " {" + bitBayEthPlnStockData.askPrice.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "} ETH  " +
@@ -113,7 +112,7 @@ abstract class AbstractStockDataService {
                             " BCC BitBay -> " + bitBayBccPlnStockData.lastPrice + " {" + bitBayBccPlnStockData.bidPrice + ")")
             return bitBayEthBuyAndBccSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -147,7 +146,7 @@ abstract class AbstractStockDataService {
                             " BCC BitBay -> " + bitBayBccPlnStockData.lastPrice + " {" + bitBayBtcPlnStockData.bidPrice.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "}")
             return bitBayBtcBuyAndBccSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -329,7 +328,7 @@ abstract class AbstractStockDataService {
                             " DASH BitBay -> " + bitBayDashPlnStockData.lastPrice + " {" + bitBayEthPlnStockData.bidPrice + "}")
             return bitBayEthBuyAndBtcSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -360,7 +359,7 @@ abstract class AbstractStockDataService {
                     " LTC BitBay -> " + bitBayLtcPlnStockData.lastPrice + " {" + bitBayLtcPlnStockData.bidPrice + "}")
             return bitBayEthBuyAndLtcSellRoi
         }
-        println("NO$stockCodeName data")
+        println("NO $stockCodeName data")
         return BigDecimal.ZERO
     }
 
@@ -410,14 +409,14 @@ abstract class AbstractStockDataService {
         return bitBayLtcBuyAndExternalStockPlnSellRoi
     }
 
-    fun prepareBitBayDashBuyToExternalStockPlnSellRoi(firstStockDashPlnData: DashStockDataInterface, dashPlnStockDataInterface: DashStockDataInterface): BigDecimal {
+    fun prepareBitBayDashBuyToExternalStockPlnSellRoi(firstStockDashPlnData: DashStockDataInterface, secondDashPlnStockDataInterface: DashStockDataInterface): BigDecimal {
         val amountOfDashBoughtOnBitBay = getAmountOfDashBoughtOnBitBay(firstStockDashPlnData)
         val amountOfDashBoughtOnBitBayPessimistic = getAmountOfDashBoughtOnBitBayPessimistic(firstStockDashPlnData)
-        val plnFromExternalStockDashSell = getPlnFromExternalStockDashSell(dashPlnStockDataInterface, amountOfDashBoughtOnBitBay)
-        val plnFromExternalStockDashSellPessimistic = getPlnFromExternalStockDashSellPessimistic(dashPlnStockDataInterface, amountOfDashBoughtOnBitBayPessimistic)
+        val plnFromExternalStockDashSell = getPlnFromExternalStockDashSell(secondDashPlnStockDataInterface, amountOfDashBoughtOnBitBay)
+        val plnFromExternalStockDashSellPessimistic = getPlnFromExternalStockDashSellPessimistic(secondDashPlnStockDataInterface, amountOfDashBoughtOnBitBayPessimistic)
         val bitBayDashBuyAndExternalStockPlnSellRoi = plnFromExternalStockDashSell.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
         val bitBayDashBuyAndExternalStockPlnSellRoiPessimistic = plnFromExternalStockDashSellPessimistic.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
-        val resultToDisplay = "ROI DASH BitBay -> " + stockCodeName + " PLN -> Bank PLN: " + bitBayDashBuyAndExternalStockPlnSellRoi + "{" +
+        val resultToDisplay = "ROI DASH " + firstStockDashPlnData.stockName + " -> " + secondDashPlnStockDataInterface.stockName + " PLN -> Bank PLN: " + bitBayDashBuyAndExternalStockPlnSellRoi + "{" +
                 bitBayDashBuyAndExternalStockPlnSellRoiPessimistic + "}"
         displayDependOnRoi(bitBayDashBuyAndExternalStockPlnSellRoi, resultToDisplay)
         return bitBayDashBuyAndExternalStockPlnSellRoi

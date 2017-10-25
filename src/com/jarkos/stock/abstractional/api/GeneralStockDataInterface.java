@@ -14,4 +14,6 @@ public interface GeneralStockDataInterface {
 
     BigDecimal getTakerProvision();
 
+    String getStockName();
+
 }

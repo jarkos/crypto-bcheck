@@ -2,6 +2,7 @@ package com.jarkos.stock.dto.bitstamp.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.coinmarket.enums.StockNameEnum;
 import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,4 +75,10 @@ public class BitstampStockData implements GeneralStockDataInterface {
     public BigDecimal getTakerProvision() {
         return BITSTAMP_TRADE_PROVISION_PERCENTAGE;
     }
+
+    @Override
+    public String getStockName() {
+        return StockNameEnum.Bitstamp.name();
+    }
+
 }

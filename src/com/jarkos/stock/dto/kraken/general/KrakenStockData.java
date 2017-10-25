@@ -2,6 +2,7 @@ package com.jarkos.stock.dto.kraken.general;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jarkos.coinmarket.enums.StockNameEnum;
 import com.jarkos.stock.abstractional.api.GeneralStockDataInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +49,11 @@ public class KrakenStockData implements GeneralStockDataInterface {
 
     public BigDecimal getTakerProvision() {
         return KRAKEN_TAKER_TRADE_PROV_PERCENTAGE;
+    }
+
+    @Override
+    public String getStockName() {
+        return StockNameEnum.Kraken.name();
     }
 
 }
