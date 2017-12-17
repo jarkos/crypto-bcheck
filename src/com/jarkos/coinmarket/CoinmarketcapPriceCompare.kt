@@ -42,41 +42,41 @@ class CoinmarketcapPriceCompare {
         log.error("*** BTC")
         val btcCurrencyPairEnums = BtcCurrencyPairEnum.values().map { it.name }.toSet()
         compareStockPrice(btcMarketsData, StockNameEnum.BitBay, BtcCurrencyPairEnum.BTCPLN.toString(), btcCurrencyPairEnums)
-        recognizeMinMaxExchange(btcMarketsData, "BTC MAX/MIN stocks:")
+        recognizeMinMaxPrices(btcMarketsData, "BTC MAX/MIN stocks:")
 
         log.error("*** LTC")
         val ltcCurrencyParisToCompare = LtcCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(ltcMarketsData, StockNameEnum.BitBay, LtcCurrencyPairEnum.LTCPLN.toString(), ltcCurrencyParisToCompare)
-        recognizeMinMaxExchange(ltcMarketsData, "LTC MAX/MIN stocks:")
+        recognizeMinMaxPrices(ltcMarketsData, "LTC MAX/MIN stocks:")
 
         log.error("*** ETH")
         val ethCurrencyParisToCompare = EthCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(ethMarketsData, StockNameEnum.BitBay, EthCurrencyPairEnum.ETHPLN.toString(), ethCurrencyParisToCompare)
-        recognizeMinMaxExchange(ethMarketsData, "ETH MAX/MIN stocks:")
+        recognizeMinMaxPrices(ethMarketsData, "ETH MAX/MIN stocks:")
 
         log.error("*** BCC")
         val bccCurrencyParisToCompare = BccCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(bccMarketsData, StockNameEnum.BitBay, BccCurrencyPairEnum.BCCPLN.toString(), bccCurrencyParisToCompare)
-        recognizeMinMaxExchange(bccMarketsData, "BCC MAX/MIN stocks:")
+        recognizeMinMaxPrices(bccMarketsData, "BCC MAX/MIN stocks:")
 
         log.error("*** LISK")
         val liskCurrencyParisToCompare = LiskCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(liskMarketsData, StockNameEnum.BitBay, LiskCurrencyPairEnum.LSKPLN.toString(), liskCurrencyParisToCompare)
-        recognizeMinMaxExchange(liskMarketsData, "LISK MAX/MIN stocks:")
+        recognizeMinMaxPrices(liskMarketsData, "LISK MAX/MIN stocks:")
 
         log.error("*** DASH")
         val dashCurrencyParisToCompare = DashCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(dashMarketsData, StockNameEnum.BitBay, DashCurrencyPairEnum.DASHPLN.toString(), dashCurrencyParisToCompare)
-        recognizeMinMaxExchange(dashMarketsData, "DASH MAX/MIN stocks:")
+        recognizeMinMaxPrices(dashMarketsData, "DASH MAX/MIN stocks:")
 
         log.error("*** GAME")
         val gameCurrencyParisToCompare = GameCurrencyPairEnum.values().map { it.toString() }.toSet()
         compareStockPrice(gameMarketsData, StockNameEnum.BitBay, GameCurrencyPairEnum.GAMEPLN.toString(), gameCurrencyParisToCompare)
-        //        recognizeMinMaxExchange(gameMarketsData, "GAME MAX/MIN stocks:");
+        //        recognizeMinMaxPrices(gameMarketsData, "GAME MAX/MIN stocks:");
 
     }
 
-    private fun recognizeMinMaxExchange(marketList: List<MarketTableRow>, nameToDisplay: String) {
+    private fun recognizeMinMaxPrices(marketList: List<MarketTableRow>, nameToDisplay: String) {
         println(nameToDisplay)
         val marketsToRecognize: List<MarketTableRow> = marketList.filter { s -> s.volume > MARKET_MIN_VOLUME_TO_CONSIDER_COMPARING }
         val blackListCurrencies = BlackListCoinmarketCurrencies.values().map { it.name }.toList()
@@ -85,7 +85,7 @@ class CoinmarketcapPriceCompare {
         filteredMarkets.sorted()
         filteredMarkets.subList(0, 4).forEach { m -> print(m.stockName + " " + m.price + " " + m.exchangePair + " ") }
         println()
-        filteredMarkets.subList(filteredMarkets.size - 5, filteredMarkets.size - 1) //not safe, possible OOB
+        filteredMarkets.subList(filteredMarkets.size - 5, filteredMarkets.size - 1) //not safe, possible IOoBE
                 .forEach { m -> print(m.stockName + " " + m.price + " " + m.exchangePair + " ") }
         println()
     }
@@ -116,7 +116,7 @@ class CoinmarketcapPriceCompare {
         }
     }
 
-    internal fun getMarketsData(url: String): List<MarketTableRow> {
+    private fun getMarketsData(url: String): List<MarketTableRow> {
         val marketTableRows = ArrayList<MarketTableRow>()
         try {
             val doc = Jsoup.connect(url).get()
@@ -148,15 +148,15 @@ class CoinmarketcapPriceCompare {
         return BlackListCoinmarketStocks.values().any { s -> s.name == stockName }
     }
 
-    internal fun parseValue(s: String): String {
+    private fun parseValue(s: String): String {
         return s.replace("* ", "").replace(" *", "").replace("*", "").substring(1)
     }
 
-    internal fun parseVolume(s: String): String {
+    private fun parseVolume(s: String): String {
         return s.replace("* ", "").replace(" *", "").replace("*", "").substring(1).replace(",", "")
     }
 
-    internal fun getPriceInUsdByStockAndCurrencyPair(marketTableRows: List<MarketTableRow>, stockCode: String, currencyPair: String): MarketTableRow? {
+    private fun getPriceInUsdByStockAndCurrencyPair(marketTableRows: List<MarketTableRow>, stockCode: String, currencyPair: String): MarketTableRow? {
         var marketTableRow: MarketTableRow? = null
         try {
             marketTableRow = marketTableRows.first { m -> stockCode == m.stockName && currencyPair == m.exchangePair }

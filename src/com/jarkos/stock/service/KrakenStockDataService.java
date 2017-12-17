@@ -1,11 +1,13 @@
 package com.jarkos.stock.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.jarkos.stock.abstractional.api.*;
 import com.jarkos.stock.dto.kraken.*;
 import com.jarkos.stock.dto.kraken.general.KrakenStockData;
 import com.jarkos.stock.service.abstractional.AbstractStockDataService;
 import com.jarkos.stock.service.abstractional.EurStockDataService;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 
@@ -18,6 +20,7 @@ public class KrakenStockDataService extends AbstractStockDataService implements 
     private static final String KrakenEthEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=ETHEUR";
     private static final String KrakenLtcEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=LTCEUR";
     private static final String KrakenDashEurApiUrl = "https://api.kraken.com/0/public/Ticker?pair=DASHEUR";
+    private static final Logger logger = Logger.getLogger(KrakenStockDataService.class);
 
     @Override
     public String getStockCodeName() {
@@ -50,7 +53,7 @@ public class KrakenStockDataService extends AbstractStockDataService implements 
     }
 
     @Override
-    public BtcStockDataInterface getBtcEurStockData() {
+    public BtcStockDataInterface getBtcEurStockDataInterface() {
         return EurStockDataService.super.getBtcEurStockData();
     }
 
@@ -100,7 +103,13 @@ public class KrakenStockDataService extends AbstractStockDataService implements 
     }
 
     private static KrakenStockData getKrakenMarketData(String response) {
-        Gson gson = new Gson();
-        return gson.fromJson(response, KrakenStockData.class);
+        KrakenStockData krakenStockData = null;
+        try {
+            Gson gson = new Gson();
+            krakenStockData = gson.fromJson(response, KrakenStockData.class);
+        } catch (JsonSyntaxException jse) {
+            logger.error(jse.getMessage());
+        }
+        return krakenStockData;
     }
 }

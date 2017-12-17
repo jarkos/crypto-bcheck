@@ -95,18 +95,18 @@ public class CandlestickChart {
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
         MACDIndicator indicator = new MACDIndicator(closePrice, 12, 26);
         TimeSeriesCollection dataset = new TimeSeriesCollection();
-        org.jfree.data.time.TimeSeries chartTimeSeries = new org.jfree.data.time.TimeSeries("Btc macd");
+        org.jfree.data.time.TimeSeries macdChartTimeSeries = new org.jfree.data.time.TimeSeries("Btc MACD series");
         for (int i = 0; i < series.getTickCount(); i++) {
             Tick tick = series.getTick(i);
-            chartTimeSeries.add(new Second(new Date(tick.getEndTime().getMillis())), indicator.getValue(i).toDouble());
+            macdChartTimeSeries.addOrUpdate(new Second(new Date(tick.getEndTime().getMillis())), indicator.getValue(i).toDouble());
         }
-        dataset.addSeries(chartTimeSeries);
-        updateLastMacdValue(chartTimeSeries, series);
+        dataset.addSeries(macdChartTimeSeries);
+        updateLastMacdValue(macdChartTimeSeries);
         return dataset;
     }
 
-    public static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries, TimeSeries series) {
-        Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(series.getEnd()).getValue().doubleValue());
+    public static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries) {
+        Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(chartTimeSeries.getItems().size() - 1).getValue().doubleValue());
     }
 
     /**

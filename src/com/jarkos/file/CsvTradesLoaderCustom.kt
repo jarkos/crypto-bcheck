@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 import org.joda.time.Period
 import ta4jexamples.loaders.CsvTradesLoader
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.Charset
@@ -19,7 +20,7 @@ import java.util.logging.Logger
 class CsvTradesLoaderCustom : CsvTradesLoader() {
     companion object {
 
-        val UTF_8 = "UTF-8"
+        private val UTF_8 = "UTF-8"
 
         fun loadStockSeries(filePath: String): TimeSeries {
             println("Loading csv file...")
@@ -32,15 +33,14 @@ class CsvTradesLoaderCustom : CsvTradesLoader() {
                 csvReader = CSVReader(InputStreamReader(stream, Charset.forName(UTF_8)), ',')
                 lines = csvReader.readAll()
                 lines!!.removeAt(0)
-            } catch (var21: IOException) {
-                Logger.getLogger(CsvTradesLoader::class.java.name).log(Level.SEVERE, "Unable to load trades from CSV", var21)
+            } catch (fnfe: FileNotFoundException) {
+                Logger.getLogger(CsvTradesLoader::class.java.name).log(Level.WARNING, "Unable to load trades from CSV. Create new file.", fnfe)
             } finally {
                 if (csvReader != null) {
                     try {
                         csvReader.close()
                     } catch (ignored: IOException) {
                     }
-
                 }
 
             }
@@ -101,11 +101,9 @@ class CsvTradesLoaderCustom : CsvTradesLoader() {
         }
 
         private fun removeEmptyTicks(ticks: MutableList<Tick>) {
-            for (i in ticks.indices.reversed()) {
-                if (ticks[i].trades == 0) {
-                    ticks.removeAt(i)
-                }
-            }
+            ticks.indices.reversed()
+                    .filter { ticks[it].trades == 0 }
+                    .forEach { ticks.removeAt(it) }
 
         }
 

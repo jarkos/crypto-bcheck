@@ -31,6 +31,7 @@ public class JsonFetcher {
         BufferedReader buf = new BufferedReader(new InputStreamReader(ips, UTF_8));
         StringBuilder sb = new StringBuilder();
         String s;
+
         while (true) {
             s = buf.readLine();
             if (s == null || s.length() == 0) {

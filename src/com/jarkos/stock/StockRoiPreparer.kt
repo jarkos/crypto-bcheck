@@ -38,6 +38,7 @@ class StockRoiPreparer {
         val coinroomDashPlnStockData = CoinroomStockDataService().dashPlnStockData
         val coinroomBccPlnStockData = CoinroomStockDataService().bccPlnStockData
 
+
         if (bitBayBtcPlnStockData != null) {
             // LTC on Bitbay -> External LTC to BTC -> BTC sell on Bitbay
             if (krakenBtcEurStockData != null && bitBayLtcPlnStockData != null) {
@@ -103,7 +104,7 @@ class StockRoiPreparer {
                 Indicators.bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi = bitBayEthBuyToKrakenSellAndBccSellOnBitBayRoi
             }
         }
-        if (krakenBccEurStockData != null && bitBayBccPlnStockData != null) {
+        if (krakenBccEurStockData != null && bitBayBccPlnStockData != null && bitBayBtcPlnStockData != null) {
             val bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi = KrakenStockDataService()
                     .prepareBitBayBtcBuyToExternalStockSellToEurToBccBitBaySellRoi(bitBayBtcPlnStockData, krakenBccEurStockData, bitBayBccPlnStockData)
             if (bitBayBtcBuyToKrakenSellToEurToBccBitBaySellRoi > BigDecimal.ZERO) {
@@ -170,8 +171,16 @@ class StockRoiPreparer {
             Indicators.bitBayBccBuyToCoinroomPlnSell = CoinroomStockDataService().prepareBitBayBccBuyToExternalStockPlnSellRoi(bitBayBccPlnStockData, coinroomBccPlnStockData)
         }
         if (bitBayEthPlnStockData != null && krakenEthEurStockData != null) {
-            Indicators.prepareBitBayEthBuyToExternalStockSellToEuroWithdrawal = KrakenStockDataService()
+            Indicators.bitBayEthBuyToExternalStockSellToEuroWithdrawal = KrakenStockDataService()
                     .prepareBitBayEthBuyToExternalStockSellToEuroWithdrawalRoi(bitBayEthPlnStockData, krakenEthEurStockData)
+        }
+        if (bitBayEthPlnStockData != null && krakenBtcEurStockData != null && bitBayBtcPlnStockData != null) {
+            Indicators.bitBayEthBuyToKrakenSellAndBtcSellOnBitBayRoi = KrakenStockDataService()
+                    .prepareBitBayEthBuyToExternalStockSellAndBtcSellOnBitBayRoi(bitBayEthPlnStockData, krakenBtcEurStockData, bitBayBtcPlnStockData)
+        }
+        if (bitBayEthPlnStockData != null && bitstampBtcEurStockData != null && bitBayBtcPlnStockData != null) {
+            Indicators.bitBayEthBuyToBitstampSellAndBtcSellOnBitBayRoi = BitstampStockDataService()
+                    .prepareBitBayEthBuyToExternalStockSellAndBtcSellOnBitBayRoi(bitBayEthPlnStockData, bitstampBtcEurStockData, bitBayBtcPlnStockData)
         }
     }
 

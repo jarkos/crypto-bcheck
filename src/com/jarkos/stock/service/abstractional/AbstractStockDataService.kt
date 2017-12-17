@@ -17,7 +17,7 @@ abstract class AbstractStockDataService {
 
     abstract val ethEurStockData: EthStockDataInterface?
 
-    protected abstract val btcEurStockData: BtcStockDataInterface?
+    protected abstract val btcEurStockDataInterface: BtcStockDataInterface?
 
     protected abstract fun getEuroAfterMoneyWithdrawalProv(numberOfEuroToWithdraw: BigDecimal): BigDecimal
 
@@ -116,10 +116,43 @@ abstract class AbstractStockDataService {
         return BigDecimal.ZERO
     }
 
+    fun prepareBitBayEthBuyToExternalStockSellAndBtcSellOnBitBayRoi(bitBayEthPlnStockData: EthStockDataInterface, btcEurAbstractStockData: BtcStockDataInterface,
+                                                                    bitBayBtcPlnStockData: BtcStockDataInterface): BigDecimal {
+        val ethEurStockData = ethEurStockData
+        if (ethEurStockData != null && ethEurStockData.ethEurStockData != null) {
+            //BITBAY LTC
+            val eurNumberAfterEthSellAfterTradeProv = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStock(bitBayEthPlnStockData, ethEurStockData)
+            val eurNumberAfterEthSellAfterTradeProvPessimistic = getEuroFromBuyEthBitbayAndSellForEuroOnExternalStockPessimistic(bitBayEthPlnStockData, ethEurStockData)
+            // EURO - > BCC EXTERNAL STOCK
+            val numberOfBtcBoughtWithdrawToBitBayAfterProv = amountOfBtcBoughtFromEuroOnExternalStock(btcEurAbstractStockData, eurNumberAfterEthSellAfterTradeProv)
+            val numberOfBtcBoughtWithdrawToBitBayAfterProvPessimistic = amountOfBtcBoughtFromEuroOnExternalStockPessimistic(btcEurAbstractStockData,
+                    eurNumberAfterEthSellAfterTradeProvPessimistic)
+            //BITBAY BCC
+            val numberOfMoneyFromBtcSellAfterProv = getPlnFromBitBayBtcSell(bitBayBtcPlnStockData, numberOfBtcBoughtWithdrawToBitBayAfterProv)
+            val numberOfMoneyFromBtcSellAfterProvPessimistic = getPlnFromBitBayBtcSellPessimistic(bitBayBtcPlnStockData,
+                    numberOfBtcBoughtWithdrawToBitBayAfterProvPessimistic)
+
+            val bitBayEthBuyAndBccSellRoi = numberOfMoneyFromBtcSellAfterProv.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
+            val bitBayEthBuyAndBccSellRoiPessimistic = numberOfMoneyFromBtcSellAfterProvPessimistic.divide(MONEY_FOR_CRYPTO_BUY, 3, RoundingMode.HALF_DOWN)
+            val resultToDisplay = "ROI ETH " + bitBayEthPlnStockData.stockName + " -> $stockCodeName BTC -> " + bitBayBtcPlnStockData.stockName + " PLN : $bitBayEthBuyAndBccSellRoi {$bitBayEthBuyAndBccSellRoiPessimistic}"
+            displayDependOnRoi(bitBayEthBuyAndBccSellRoi, resultToDisplay)
+            println(
+                    "ETH BitBay -> " + bitBayEthPlnStockData.lastPrice + " {" + bitBayEthPlnStockData.askPrice.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "} ETH  " +
+                            stockCodeName + " -> " +
+                            ethEurStockData.lastPrice.multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate!!).setScale(2, BigDecimal.ROUND_HALF_DOWN) + " # BTC " +
+                            stockCodeName + " -> " +
+                            btcEurAbstractStockData.lastPrice.multiply(StockRoiPreparer.lastBuyWalutomatEurPlnExchangeRate!!).setScale(2, BigDecimal.ROUND_HALF_DOWN) +
+                            " BTC BitBay -> " + bitBayBtcPlnStockData.lastPrice + " {" + bitBayBtcPlnStockData.bidPrice + ")")
+            return bitBayEthBuyAndBccSellRoi
+        }
+        println("NO $stockCodeName data")
+        return BigDecimal.ZERO
+    }
+
     fun prepareBitBayBtcBuyToExternalStockSellToEurToBccBitBaySellRoi(bitBayBtcPlnStockData: BtcStockDataInterface, bccEurAbstractStockData: BccStockDataInterface,
                                                                       bitBayBccPlnStockData: BccStockDataInterface): BigDecimal {
-        val btcEurStockData = btcEurStockData
-        if (btcEurStockData!!.btcEurStockData != null) {
+        val btcEurStockData = btcEurStockDataInterface
+        if (btcEurStockData != null && btcEurStockData.btcEurStockData != null) {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             val eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, btcEurStockData)
             val eurNumberAfterBtcSellAfterTradeProvPessimistic = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStockPessimistic(bitBayBtcPlnStockData, btcEurStockData)
@@ -191,7 +224,7 @@ abstract class AbstractStockDataService {
     fun prepareBitBayBtcBuyToExternalStockEurSellToLtcBuyWithdrawalToBitBayPlnRoi(bitBayBtcPlnStockData: BtcStockDataInterface,
                                                                                   ltcEurAbstractStockData: LtcStockDataInterface,
                                                                                   bitBayLctPlnStockData: LtcStockDataInterface): BigDecimal {
-        val btcEurStockData = btcEurStockData
+        val btcEurStockData = btcEurStockDataInterface
         if (btcEurStockData != null && btcEurStockData.btcEurStockData != null) {
             // BTC BITBAY -> EURO EXTERNAL STOCK
             val eurNumberAfterBtcSellAfterTradeProv = getEuroFromBuyBtcBitbayAndSellForEuroOnExternalStock(bitBayBtcPlnStockData, btcEurStockData)

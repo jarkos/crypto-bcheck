@@ -104,7 +104,7 @@ public class CoinroomStockDataService extends AbstractStockDataService implement
     }
 
     @Override
-    public BtcStockDataInterface getBtcEurStockData() {
+    public BtcStockDataInterface getBtcEurStockDataInterface() {
         return EurStockDataService.super.getBtcEurStockData();
     }
 

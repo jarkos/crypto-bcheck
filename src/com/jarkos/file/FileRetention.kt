@@ -14,18 +14,18 @@ class FileRetention : TimerTask() {
 
     private fun removeOldRows() {
         println("Removing old lines")
-        val entriesDateToRemove = DateTime.now().minusDays(DAYS_BACK_CSV_FILE_RETENTION).millis / 1000
+        val limitDateForClean = DateTime.now().minusDays(DAYS_BACK_CSV_FILE_RETENTION).millis / 1000
         //not efficient, but OK
-        val filteredList = File(BIT_BAY_BTC_DATA_REPOSITORY_CSV).readLines().filter {
-            isNotOlderThanDate(it, entriesDateToRemove)
+        val filteredList = File(BIT_BAY_BTC_DATA_REPOSITORY_CSV).readLines().filter { line ->
+            isNotOlderThanDate(line, limitDateForClean)
         }.toList()
         val text = filteredList.joinToString(System.lineSeparator())
         File(BIT_BAY_BTC_DATA_REPOSITORY_CSV).writeText(text)
     }
 
-    private fun isNotOlderThanDate(it: String, currentUnixTimestampDay: Long): Boolean {
+    private fun isNotOlderThanDate(line: String, currentUnixTimestampDay: Long): Boolean {
         try {
-            return it.split(",")[0].toLong() > currentUnixTimestampDay
+            return line.split(",")[0].toLong() > currentUnixTimestampDay
         } catch (ignore: NumberFormatException) {
             // DO NOTHING
         }

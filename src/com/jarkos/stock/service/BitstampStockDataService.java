@@ -46,7 +46,7 @@ public class BitstampStockDataService extends AbstractStockDataService implement
     }
 
     @Override
-    public BtcStockDataInterface getBtcEurStockData() {
+    public BtcStockDataInterface getBtcEurStockDataInterface() {
         return EurStockDataService.super.getBtcEurStockData();
     }
 

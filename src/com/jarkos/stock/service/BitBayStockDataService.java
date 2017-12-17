@@ -94,8 +94,11 @@ public class BitBayStockDataService implements PlnStockDataService {
     @Override
     public BtcStockDataInterface getBtcStockData(String res) {
         BitBayStockData bitBayStockData = getMarketDataFromJson(res);
-        addNewBitBayTransactionsToCSV(bitBayStockData);
-        return new BitBayBtcStockData(bitBayStockData);
+        if (bitBayStockData != null) {
+            addNewBitBayTransactionsToCSV(bitBayStockData);
+            return new BitBayBtcStockData(bitBayStockData);
+        }
+        return null;
     }
 
     @Override
@@ -126,7 +129,7 @@ public class BitBayStockDataService implements PlnStockDataService {
     public static void addNewBitBayTransactionsToCSV(BitBayStockData bitbayStockData) {
         Long lastCsvUpdateTimeStamp = getLastTransactionUpdateTime();
         Collections.sort(bitbayStockData.getTransactions());
-        bitbayStockData.getTransactions().stream().forEach(t -> saveDataRowIfNotAvailable(t, lastCsvUpdateTimeStamp));
+        bitbayStockData.getTransactions().forEach(t -> saveDataRowIfNotAvailable(t, lastCsvUpdateTimeStamp));
         System.out.println("Last BitBay BTC price PLN: " + bitbayStockData.getLast());
     }
 

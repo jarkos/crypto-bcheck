@@ -14,7 +14,8 @@ public enum StockNameEnum {
     GetBTC("GetBTC"),
     CoinsBank("CoinsBank"),
     TheRockTrading("The Rock Trading"),
-    LitBit("LiteBit.eu");
+    LitBit("LiteBit.eu"),
+    Exmo("Exmo");
 
     private String value;
 

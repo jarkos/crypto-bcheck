@@ -50,7 +50,7 @@ object Main {
         if (lastMACD < -180.0 || internalIndicators.values.stream().anyMatch { i -> i > marginTransferRoiValueForMailNotification }) {
             val sb = StringBuilder()
             internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }
-            JavaMailSender.sendMail("MACD BitBay: " + lastMACD.toString() + " " + sb.toString())
+            JavaMailSender.sendMail("ROI BB: " + lastMACD.toString() + " " + sb.toString())
         }
     }
 

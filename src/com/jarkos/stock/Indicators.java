@@ -31,7 +31,8 @@ public class Indicators {
     public static BigDecimal bitBayLtcBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayDashBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
     public static BigDecimal bitBayBccBuyToCoinroomPlnSell = BigDecimal.valueOf(0d);
-    public static BigDecimal prepareBitBayEthBuyToExternalStockSellToEuroWithdrawal = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToExternalStockSellToEuroWithdrawal = BigDecimal.valueOf(0d);
     public static BigDecimal coinroomDashBuyToBitbayPlnSell = BigDecimal.valueOf(0d);
-    
+    public static BigDecimal bitBayEthBuyToKrakenSellAndBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
+    public static BigDecimal bitBayEthBuyToBitstampSellAndBtcSellOnBitBayRoi = BigDecimal.valueOf(0d);
 }
