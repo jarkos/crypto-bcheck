@@ -133,7 +133,6 @@ public class BitBayStockDataService implements PlnStockDataService {
         System.out.println("Last BitBay BTC price PLN: " + bitbayStockData.getLast());
     }
 
-
     private static Long getLastTransactionUpdateTime() {
         long lastTimeStamp = 0L;
         try {

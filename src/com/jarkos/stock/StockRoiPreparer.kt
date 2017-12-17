@@ -15,7 +15,7 @@ class StockRoiPreparer {
         var lastSellWalutomatEurPlnExchangeRate: BigDecimal? = null
     }
 
-    fun fetchAndPrintStockData() {
+    fun prepareStocksData() {
         lastBuyWalutomatEurPlnExchangeRate = WalutomatDataService().walutomatEurToPlnData.buyExchangeRate
         lastSellWalutomatEurPlnExchangeRate = WalutomatDataService().walutomatEurToPlnData.sellExchangeRate
 
@@ -37,7 +37,6 @@ class StockRoiPreparer {
         val coinroomLtcPlnStockData = CoinroomStockDataService().ltcPlnStockData
         val coinroomDashPlnStockData = CoinroomStockDataService().dashPlnStockData
         val coinroomBccPlnStockData = CoinroomStockDataService().bccPlnStockData
-
 
         if (bitBayBtcPlnStockData != null) {
             // LTC on Bitbay -> External LTC to BTC -> BTC sell on Bitbay

@@ -1,13 +1,16 @@
 package com.jarkos
 
 import com.jarkos.chart.CandlestickChart
+import com.jarkos.chart.XyRoiChart
 import com.jarkos.coinmarket.CoinmarketcapPriceCompare
 import com.jarkos.config.AppConfig.*
 import com.jarkos.file.FileRetention
+import com.jarkos.file.FileUpdater
 import com.jarkos.mail.JavaMailSender
 import com.jarkos.stock.Indicators
 import com.jarkos.stock.StockRoiPreparer
 import org.apache.log4j.Logger
+import org.joda.time.DateTime
 import java.lang.reflect.Modifier
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -28,25 +31,41 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         CandlestickChart.start()
+        val internalIndicators = innitInternalIndicatorsList()
+        XyRoiChart.start(internalIndicators)
+
         appTimer.schedule(0L, 2 * HALF_MINUTE_IN_MILLIS) {
             try {
-                StockRoiPreparer().fetchAndPrintStockData()
+                StockRoiPreparer().prepareStocksData()
                 CoinmarketcapPriceCompare().compare()
 
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("PREPARE DATA EXCEPTION! " + e.message)
             }
+            val innitInternalIndicatorsList = innitInternalIndicatorsList()
+            saveIndicators(innitInternalIndicatorsList)
             CandlestickChart.refresh()
-            highRoiMailNotify()
+            XyRoiChart.refresh(innitInternalIndicatorsList)
+//            highRoiMailNotify(innitInternalIndicatorsList)
+
             logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
         }
         retentionScheduler.schedule(FileRetention(), getNextMidnight(), TWENTY_FOUR_HOURS_IN_MILLIS)
     }
 
-    private fun highRoiMailNotify() {
-        val internalIndicators = innitInternalIndicatorsList()
+    private fun saveIndicators(innitInternalIndicatorsList: Map<String, BigDecimal>) {
+        val date = DateTime().millis;
+        innitInternalIndicatorsList.forEach { k, v ->
+            FileUpdater.addResultData(getIndicatorNewRow(k, v, date), ROI_DATA_REPOSITORY_CSV)
+        }
+    }
 
+    private fun getIndicatorNewRow(key: String, value: BigDecimal, date: Long): String {
+        return date.toString() + "," + key + "," + value.toDouble()
+    }
+
+    private fun highRoiMailNotify(internalIndicators: Map<String, BigDecimal>) {
         if (lastMACD < -180.0 || internalIndicators.values.stream().anyMatch { i -> i > marginTransferRoiValueForMailNotification }) {
             val sb = StringBuilder()
             internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }

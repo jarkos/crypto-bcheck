@@ -53,7 +53,7 @@ import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
  */
 public class CandlestickChart {
 
-    static ApplicationFrame frame;
+    private static ApplicationFrame frame;
 
     /**
      * Builds stockName JFreeChart OHLC dataset from stockName ta4j time series.

@@ -15,7 +15,7 @@ public class FileUpdater {
         try {
             rfu.updateResultFile(newResult, filePath);
         } catch (IOException e) {
-            logger.info("Nie można otowrzyc pliku i dodac rezusltatu ");
+            logger.info("Nie mozna otworzyc pliku i dodac rezultatu ");
             e.printStackTrace();
         }
     }
