@@ -31,7 +31,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         CandlestickChart.start()
-        val internalIndicators = innitInternalIndicatorsList()
+        val internalIndicators = innitCurrentRoiIndicatorsMap()
         XyRoiChart.start(internalIndicators)
 
         appTimer.schedule(0L, 2 * HALF_MINUTE_IN_MILLIS) {
@@ -43,11 +43,11 @@ object Main {
                 e.printStackTrace()
                 println("PREPARE DATA EXCEPTION! " + e.message)
             }
-            val innitInternalIndicatorsList = innitInternalIndicatorsList()
-            saveIndicators(innitInternalIndicatorsList)
+            val indicatorsMap = innitCurrentRoiIndicatorsMap()
+            saveIndicators(indicatorsMap)
             CandlestickChart.refresh()
-            XyRoiChart.refresh(innitInternalIndicatorsList)
-//            highRoiMailNotify(innitInternalIndicatorsList)
+            XyRoiChart.refresh(indicatorsMap)
+//            highRoiMailNotify(indicatorsMap)
 
             logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
         }
@@ -73,7 +73,7 @@ object Main {
         }
     }
 
-    private fun innitInternalIndicatorsList(): Map<String, BigDecimal> {
+    private fun innitCurrentRoiIndicatorsMap(): Map<String, BigDecimal> {
         val indicatorsMap = HashMap<String, BigDecimal>()
         val allFields = Indicators::class.java.declaredFields
         for (field in allFields) {

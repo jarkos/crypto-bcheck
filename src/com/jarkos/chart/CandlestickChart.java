@@ -23,7 +23,7 @@ package com.jarkos.chart;
  */
 
 import com.jarkos.Main;
-import com.jarkos.file.CsvTradesLoaderCustom;
+import com.jarkos.file.CsvDataLoader;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
@@ -54,6 +54,7 @@ import static com.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 public class CandlestickChart {
 
     private static ApplicationFrame frame;
+    private static CsvDataLoader csvStockDataLoader = new CsvDataLoader();
 
     /**
      * Builds stockName JFreeChart OHLC dataset from stockName ta4j time series.
@@ -131,10 +132,6 @@ public class CandlestickChart {
 
     public static void start() {
         JFreeChart chart = prepareChart();
-
-        /**
-         * Displaying the chart
-         */
         frame = displayChart(chart);
     }
 
@@ -142,7 +139,8 @@ public class CandlestickChart {
         /**
          * Getting time series
          */
-        TimeSeries series = CsvTradesLoaderCustom.Companion.loadStockSeries(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
+
+        TimeSeries series = csvStockDataLoader.loadStockSeries(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
 
         /**
          * Creating the OHLC dataset
