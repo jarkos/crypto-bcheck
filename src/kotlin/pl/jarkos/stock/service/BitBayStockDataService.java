@@ -13,11 +13,9 @@ import pl.jarkos.stock.service.abstractional.PlnStockDataService;
 import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
-import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Collections;
 
-import static pl.jarkos.communication.JsonFetcher.UTF_8;
 import static pl.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 import static pl.jarkos.config.AppConfig.bigSpreadMarginDisplayWarnForCompareRoi;
 
@@ -137,7 +135,7 @@ public class BitBayStockDataService implements PlnStockDataService {
         long lastTimeStamp = 0L;
         try {
             File file = new File(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
-            ReversedLinesFileReader object = new ReversedLinesFileReader(file, Charset.forName(UTF_8));
+            ReversedLinesFileReader object = new ReversedLinesFileReader(file);
             String[] line = object.readLine().split(",");
             lastTimeStamp = Long.parseLong(line[0]);
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package pl.jarkos
 
-import org.apache.log4j.Logger
+import org.apache.log4j.LogManager
 import org.joda.time.DateTime
 import pl.jarkos.chart.CandlestickChart
 import pl.jarkos.chart.XyRoiChart
@@ -21,7 +21,7 @@ import kotlin.concurrent.schedule
 
 object Main {
 
-    private val logger = Logger.getLogger(Main::class.java)
+    private val logger = LogManager.getLogger("Main")
     private val LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: "
     var lastMACD: Double = 0.0
     private val appTimer = Timer("App timer", false)

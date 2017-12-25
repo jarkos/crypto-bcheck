@@ -11,7 +11,6 @@ import pl.jarkos.config.AppConfig.*
 import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.net.MalformedURLException
 import java.util.*
 
 class CoinmarketcapPriceCompare {
@@ -130,9 +129,6 @@ class CoinmarketcapPriceCompare {
                             BigDecimal(parseVolume(allTdElements[3].text()))))
                 }
             }
-        } catch (mue: MalformedURLException) {
-            println("Ouch - stockName MalformedURLException happened.")
-            mue.printStackTrace()
         } catch (nmb: java.lang.NumberFormatException) {
             println("Ouch - stockName NumberFormatException happened.")
             nmb.printStackTrace()
