@@ -1,1 +1,1 @@
-web: mvn exec:java
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/bcheck-1-jar-with-dependencies.jar

@@ -106,8 +106,10 @@ public class CandlestickChart {
         return dataset;
     }
 
-    public static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries) {
-        Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(chartTimeSeries.getItems().size() - 1).getValue().doubleValue());
+    private static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries) {
+        if (chartTimeSeries.getItems().size() > 0) {
+            Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(chartTimeSeries.getItems().size() - 1).getValue().doubleValue());
+        }
     }
 
     /**

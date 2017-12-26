@@ -27,7 +27,12 @@ class CsvDataLoader {
         val now = LocalDateTime.now()
         val formatDateTime = now.format(formatter)
         println(formatDateTime)
-        return TimeSeries("TS", ticks!!)
+
+        return if (ticks != null) {
+            TimeSeries("TS", ticks)
+        } else {
+            TimeSeries("TS", Period.ZERO)
+        }
     }
 
     private fun buildListOfTicks(lines: List<*>): List<Tick>? {

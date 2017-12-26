@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 
 import static pl.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
@@ -136,8 +138,12 @@ public class BitBayStockDataService implements PlnStockDataService {
         try {
             File file = new File(BIT_BAY_BTC_DATA_REPOSITORY_CSV);
             ReversedLinesFileReader object = new ReversedLinesFileReader(file);
-            String[] line = object.readLine().split(",");
-            lastTimeStamp = Long.parseLong(line[0]);
+            String fullLine = object.readLine();
+            if (fullLine == null) {
+                return LocalDateTime.now().minusDays(30).toEpochSecond(ZoneOffset.UTC);
+            }
+            String[] lineArray = object.readLine().split(",");
+            lastTimeStamp = Long.parseLong(lineArray[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }
