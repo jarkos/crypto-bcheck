@@ -11,7 +11,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-import pl.jarkos.file.CsvReader;
+import pl.jarkos.backend.file.CsvReader;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import static pl.jarkos.config.AppConfig.ROI_DATA_REPOSITORY_CSV;
+import static pl.jarkos.backend.config.AppConfig.ROI_DATA_REPOSITORY_CSV;
 
 // TODO make abstract with CandleChart
 public class XyRoiChart {

@@ -40,13 +40,12 @@ import org.jfree.data.xy.DefaultHighLowDataset;
 import org.jfree.data.xy.OHLCDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-import pl.jarkos.Main;
-import pl.jarkos.file.CsvDataLoader;
+import pl.jarkos.backend.file.CsvDataLoader;
 
 import java.awt.*;
 import java.util.Date;
 
-import static pl.jarkos.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
+import static pl.jarkos.backend.config.AppConfig.BIT_BAY_BTC_DATA_REPOSITORY_CSV;
 
 /**
  * This class builds stockName traditional candlestick chart.
@@ -108,7 +107,7 @@ public class CandlestickChart {
 
     private static void updateLastMacdValue(org.jfree.data.time.TimeSeries chartTimeSeries) {
         if (chartTimeSeries.getItems().size() > 0) {
-            Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(chartTimeSeries.getItems().size() - 1).getValue().doubleValue());
+//            Main.INSTANCE.setLastMACD(chartTimeSeries.getDataItem(chartTimeSeries.getItems().size() - 1).getValue().doubleValue());
         }
     }
 
