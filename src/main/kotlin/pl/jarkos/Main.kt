@@ -1,3 +1,4 @@
+@file:JvmName("Main")
 package pl.jarkos
 
 import org.apache.log4j.LogManager
@@ -17,7 +18,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import kotlin.concurrent.schedule
-
 
 object Main {
 
