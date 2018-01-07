@@ -1,7 +1,6 @@
 package pl.jarkos.backend.file
 
-import au.com.bytecode.opencsv.CSVReader
-import ta4jexamples.loaders.CsvTradesLoader
+import com.opencsv.CSVReader
 import java.io.*
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -21,7 +20,7 @@ class CsvReader {
             csvReader = CSVReader(InputStreamReader(stream, UTF_8), ',')
             lines = csvReader.readAll()
         } catch (fnfe: FileNotFoundException) {
-            Logger.getLogger(CsvTradesLoader::class.java.name).log(Level.WARNING, "Unable to load trades from CSV. Create new file.", fnfe)
+            Logger.getLogger(CsvReader::class.java.name).log(Level.WARNING, "Unable to load trades from CSV. Create new file.", fnfe)
 
         } finally {
             if (csvReader != null) {
