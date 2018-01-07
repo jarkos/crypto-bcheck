@@ -24,7 +24,6 @@ import java.time.ZoneId
 import java.util.*
 import kotlin.concurrent.schedule
 
-
 @SpringBootApplication
 @EnableWebMvc
 @EnableAutoConfiguration
