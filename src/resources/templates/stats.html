@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Access the bootstrap Css like this,
+        Spring boot will handle the resource mapping automcatically -->
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+    google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawLineStyles);
+
+
+    </script>
+</head>
+<body>
+
+<div id="chart_div"></div>
+
+<div class="container">
+
+    <!--Current time is <span th:text="${indicators}" />-->
+    <script type="text/javascript" th:inline="javascript">
+    function drawLineStyles() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'X');
+        var map = /*[[${indicators}]]*/ [];
+        var codes2 = /*[[${codes}]]*/ [];
+
+        codes2.forEach(myFunction);
+
+        function myFunction(code) {
+         data.addColumn('number',code);
+        }
+
+        data.addRows([
+        [new Date(1515368766994), 2, 5,6,7,8,9,10,11,12,13,114,115,12,15,16,17,18,19,110,111,121,113,141,151,231,451,
+            331,121,331,441, 331]
+         ]);
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, null);
+    }
+    drawLineStyles();
+
+    </script>
+
+</div>
+
+<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

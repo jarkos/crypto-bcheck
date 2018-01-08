@@ -15,7 +15,6 @@ import pl.jarkos.backend.file.CsvReader;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +49,13 @@ public class XyRoiChart {
     @NotNull
     private static TimeSeriesCollection prepareTimeSeriesCollection(Map<String, BigDecimal> indicatorsMap, CsvReader csvReader) {
         TimeSeriesCollection timeSeriesCollection = new TimeSeriesCollection();
-        List<String[]> lines = (ArrayList<String[]>) csvReader.getLines(ROI_DATA_REPOSITORY_CSV);
+        List<String[]> lines = csvReader.getLines(ROI_DATA_REPOSITORY_CSV);
 
         indicatorsMap.forEach((k, v) -> {
-            if (lines != null) {
-                List<String[]> results = lines.stream().filter(l -> l[1].equals(k) && isMoreThanZero(l[2])).collect(Collectors.toList());
-                TimeSeries singleTimeSeries = new TimeSeries(k);
-                results.forEach(r -> singleTimeSeries.addOrUpdate(new Second(new Date(Long.valueOf(r[0]))), Double.valueOf(r[2])));
-                timeSeriesCollection.addSeries(singleTimeSeries);
-            }
+            List<String[]> results = lines.stream().filter(l -> l[1].equals(k) && isMoreThanZero(l[2])).collect(Collectors.toList());
+            TimeSeries singleTimeSeries = new TimeSeries(k);
+            results.forEach(r -> singleTimeSeries.addOrUpdate(new Second(new Date(Long.valueOf(r[0]))), Double.valueOf(r[2])));
+            timeSeriesCollection.addSeries(singleTimeSeries);
         });
         return timeSeriesCollection;
     }

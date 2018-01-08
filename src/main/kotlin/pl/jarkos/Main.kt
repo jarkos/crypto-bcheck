@@ -5,11 +5,7 @@ package pl.jarkos
 import org.apache.log4j.LogManager
 import org.joda.time.DateTime
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.Bean
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.view.InternalResourceViewResolver
 import pl.jarkos.backend.coinmarket.CoinmarketcapPriceCompare
 import pl.jarkos.backend.config.AppConfig.*
 import pl.jarkos.backend.file.FileRetention
@@ -25,8 +21,6 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 @SpringBootApplication
-@EnableWebMvc
-@EnableAutoConfiguration
 open class Main {
     companion object {
         private val logger = LogManager.getLogger("Main")
@@ -105,14 +99,6 @@ open class Main {
             return Date.from(midnight.atZone(ZoneId.systemDefault()).toInstant())
         }
 
-    }
-
-    @Bean
-    open fun resolver(): InternalResourceViewResolver {
-        val resolver = InternalResourceViewResolver()
-        resolver.setPrefix("/webapp/")
-        resolver.setSuffix(".jsp")
-        return resolver
     }
 
 }

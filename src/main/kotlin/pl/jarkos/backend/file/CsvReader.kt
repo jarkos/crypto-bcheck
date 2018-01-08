@@ -1,16 +1,18 @@
 package pl.jarkos.backend.file
 
 import com.opencsv.CSVReader
+import org.springframework.stereotype.Component
 import java.io.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.text.Charsets.UTF_8
 
+@Component
 class CsvReader {
 
-    fun getLines(filePath: String): List<*>? {
+    fun getLines(filePath: String): ArrayList<Array<String>> {
         var csvReader: CSVReader? = null
-        var lines: List<*>? = null
+        var lines: MutableList<Array<String>>? = null
         try {
             val file = File(filePath)
             if (!file.isFile) {
