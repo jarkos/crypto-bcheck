@@ -47,7 +47,7 @@ public class RoiIndicatorsService {
         ArrayList<String[]> allLinesOfSavedRoi = getAllLinesOfSavedRoi();
         LinkedHashMap<String, Map<String, String>> allIndicatorsValuesMap = new LinkedHashMap<>();
         currentIndicatorsMap.forEach((k, v) -> {
-            List<String[]> results = allLinesOfSavedRoi.stream().filter(l -> l[1].equals(k)).collect(Collectors.toList());
+            List<String[]> results = allLinesOfSavedRoi.stream().filter(l -> l.length > 0 && l[1].equals(k)).collect(Collectors.toList());
             Map<String, String> dateValuesMap = results.stream().collect(Collectors.toMap(result -> result[0], result -> result[2]));
             allIndicatorsValuesMap.put(k, dateValuesMap);
         });
