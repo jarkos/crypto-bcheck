@@ -22,7 +22,7 @@ public class StatsController {
     @RequestMapping("/stats")
     public String stats(Model model) {
         List<ArrayList<String>> list = prepareGoogleDataTableForChart();
-        model.addAttribute("indicators", list.subList(list.size() - 1000, list.size()));
+        model.addAttribute("indicators", list.subList(list.size() - 2000, list.size()));
         model.addAttribute("labels", roiIndicatorsService.fetchRoiIndicatorsNames());
         return "stats";
     }
