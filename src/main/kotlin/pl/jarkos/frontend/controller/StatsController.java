@@ -22,8 +22,8 @@ public class StatsController {
     @RequestMapping("/stats")
     public String stats(Model model) {
         List<ArrayList<String>> list = prepareGoogleDataTableForChart();
-        model.addAttribute("indicators", list.subList(0, 1000));
-        model.addAttribute("codes", roiIndicatorsService.fetchRoiIndicatorsNames());
+        model.addAttribute("indicators", list.subList(list.size() - 1000, list.size()));
+        model.addAttribute("labels", roiIndicatorsService.fetchRoiIndicatorsNames());
         return "stats";
     }
 
@@ -33,8 +33,7 @@ public class StatsController {
         allDatesAndIndicatorsValuesMap.forEach((k, v) -> {
             ArrayList<String> temp = new ArrayList<>();
             temp.add(k.toString());
-            List<String> collect = new ArrayList<>(v.values());
-            temp.addAll(collect);
+            temp.addAll(v.values());
             list.add(temp);
         });
         return list;

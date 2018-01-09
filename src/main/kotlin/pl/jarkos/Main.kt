@@ -8,12 +8,12 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import pl.jarkos.backend.coinmarket.CoinmarketcapPriceCompare
 import pl.jarkos.backend.config.AppConfig.*
+import pl.jarkos.backend.file.CsvReader
 import pl.jarkos.backend.file.FileRetention
 import pl.jarkos.backend.file.FileUpdater
 import pl.jarkos.backend.mail.JavaMailSender
-import pl.jarkos.backend.stock.Indicators
 import pl.jarkos.backend.stock.StockRoiPreparer
-import java.lang.reflect.Modifier
+import pl.jarkos.backend.stock.service.RoiIndicatorsService
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -29,36 +29,30 @@ open class Main {
         private val appTimer = Timer("App timer", false)
         private val retentionScheduler = Timer("Retention scheduler", true)
 
+        var indicatorService = RoiIndicatorsService(CsvReader())
+
         @Throws(InterruptedException::class, IllegalAccessException::class)
         @JvmStatic
         fun main(args: Array<String>) {
             SpringApplication.run(Main::class.java, *args)
-//        CandlestickChart.start()
-            val internalIndicators = innitCurrentRoiIndicatorsMap()
-//        XyRoiChart.start(internalIndicators)
-
             appTimer.schedule(0L, 2 * HALF_MINUTE_IN_MILLIS) {
                 try {
                     StockRoiPreparer().prepareStocksData()
                     CoinmarketcapPriceCompare().compare()
-
+                    val indicatorsMap = indicatorService.fetchCurrentRoiIndicatorsMap()
+                    saveIndicators(indicatorsMap)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     println("PREPARE DATA EXCEPTION! " + e.message)
                 }
-                val indicatorsMap = innitCurrentRoiIndicatorsMap()
-                saveIndicators(indicatorsMap)
-//            CandlestickChart.refresh()
-//            XyRoiChart.refresh(indicatorsMap)
 //            highRoiMailNotify(indicatorsMap)
-
-//                logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
+                logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
             }
             retentionScheduler.schedule(FileRetention(), getNextMidnight(), TWENTY_FOUR_HOURS_IN_MILLIS)
         }
 
         private fun saveIndicators(innitInternalIndicatorsList: Map<String, BigDecimal>) {
-            val date = DateTime().millis;
+            val date = DateTime().millis
             innitInternalIndicatorsList.forEach { k, v ->
                 FileUpdater.addResultData(getIndicatorNewRow(k, v, date), ROI_DATA_REPOSITORY_CSV)
             }
@@ -74,23 +68,6 @@ open class Main {
                 internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }
                 JavaMailSender.sendMail("ROI BB: " + lastMACD.toString() + " " + sb.toString())
             }
-        }
-
-        private fun innitCurrentRoiIndicatorsMap(): Map<String, BigDecimal> {
-            val indicatorsMap = HashMap<String, BigDecimal>()
-            val allFields = Indicators::class.java.declaredFields
-            for (field in allFields) {
-                if (Modifier.isPublic(field.modifiers) && field.type == BigDecimal::class.java) {
-                    val indicator: BigDecimal
-                    try {
-                        indicator = field.get(BigDecimal::class.java) as BigDecimal
-                        indicatorsMap.put(field.name, indicator)
-                    } catch (ignored: IllegalAccessException) {
-                        // DO NOTHING, GO AHEAD
-                    }
-                }
-            }
-            return indicatorsMap
         }
 
         private fun getNextMidnight(): Date {

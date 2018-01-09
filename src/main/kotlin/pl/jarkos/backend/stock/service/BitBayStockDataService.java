@@ -165,7 +165,7 @@ public class BitBayStockDataService implements PlnStockDataService {
     }
 
     private void bigSpreadRecognizer(GeneralStockDataInterface bitBayStockData, String currency) {
-        if (bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN).compareTo(bigSpreadMarginDisplayWarnForCompareRoi) > 0) {
+        if (bitBayStockData != null && bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN).compareTo(bigSpreadMarginDisplayWarnForCompareRoi) > 0) {
             logger.warn(">>> BIG SPREAD na " + getStockCodeName() + " " + currency + ": " +
                     bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN) + "  " + bitBayStockData.getAskPrice() + "/" +
                     bitBayStockData.getBidPrice());
