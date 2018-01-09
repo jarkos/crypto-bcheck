@@ -47,7 +47,7 @@ public class RoiIndicatorsService {
         ArrayList<String[]> allLinesOfSavedRoi = getAllLinesOfSavedRoi();
         LinkedHashMap<String, Map<String, String>> allIndicatorsValuesMap = new LinkedHashMap<>();
         currentIndicatorsMap.forEach((k, v) -> {
-            List<String[]> results = allLinesOfSavedRoi.stream().filter(l -> l[1].equals(k) && isMoreThanZero(l[2])).collect(Collectors.toList());
+            List<String[]> results = allLinesOfSavedRoi.stream().filter(l -> l[1].equals(k)).collect(Collectors.toList());
             Map<String, String> dateValuesMap = results.stream().collect(Collectors.toMap(result -> result[0], result -> result[2]));
             allIndicatorsValuesMap.put(k, dateValuesMap);
         });
@@ -84,11 +84,6 @@ public class RoiIndicatorsService {
 
     public ArrayList<String[]> getAllLinesOfSavedRoi() {
         return csvReader.getLines(ROI_DATA_REPOSITORY_CSV);
-    }
-
-    private static boolean isMoreThanZero(String s) {
-        Double value = Double.valueOf(s);
-        return value.compareTo(0.0) > 0;
     }
 
 }
