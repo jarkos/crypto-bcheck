@@ -7,13 +7,6 @@
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-    google.charts.load('current', {packages: ['corechart', 'line']});
-google.charts.setOnLoadCallback(drawLineStyles);
-
-
-    </script>
 </head>
 <body>
 
@@ -23,10 +16,15 @@ google.charts.setOnLoadCallback(drawLineStyles);
 
     <!--Current time is <span th:text="${indicators}" />-->
     <script type="text/javascript" th:inline="javascript">
+    var tempArr;
+        google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawLineStyles);
+
     function drawLineStyles() {
         var data = new google.visualization.DataTable();
-        data.addColumn('datetime', 'X');
-        var map = /*[[${indicators}]]*/ [];
+        data.addColumn('number', 'X');
+        var indi = /*[[${indicators}]]*/ [];
+        console.log(indi);
         var codes2 = /*[[${codes}]]*/ [];
 
         codes2.forEach(myFunction);
@@ -35,10 +33,29 @@ google.charts.setOnLoadCallback(drawLineStyles);
          data.addColumn('number',code);
         }
 
-        data.addRows([
-        [new Date(1515368766994), 2, 5,6,7,8,9,10,11,12,13,114,115,12,15,16,17,18,19,110,111,121,113,141,151,231,451,
-            331,121,331,441, 331]
-         ]);
+        Array.prototype.extend = function (other_array) {
+            other_array.forEach(function(v) {this.push(v)}, this);
+        }
+     function addRowsData(item,index) {
+     tempArr = new Array();
+        var result = item.map(function (x) {
+    return parseFloat(x);
+});
+    <!--item[0] = new Date(item[0]);-->
+    <!--tempArr.push(item[0]);-->
+     data.addRows([tempArr.concat(result)]);
+     console.log(tempArr);
+/*
+     console.log(item[0]);
+     console.log(item.slice(1)); */
+     /* console.log(tempArr) */
+    }
+indi.map(addRowsData);
+
+        <!--data.addRows([-->
+        <!--[new Date(1515368766994), 2, 5,6,7,8,9,10,11,12,13,114,115,12,15,16,17,18,19,110,111,121,113,141,151,231,451,-->
+            <!--331,121,331,441, 331]-->
+         <!--]);-->
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, null);

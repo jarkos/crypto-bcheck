@@ -75,7 +75,7 @@ public class RoiIndicatorsService {
         return filterNotConsistentData(allDatesAndIndicatorsValuesMap);
     }
 
-    public LinkedHashMap<Long, Map<String, String>> filterNotConsistentData(Map<Long, Map<String, String>> allDatesAndIndicatorsValuesMap) {
+    private LinkedHashMap<Long, Map<String, String>> filterNotConsistentData(Map<Long, Map<String, String>> allDatesAndIndicatorsValuesMap) {
         int maxValuesSize = allDatesAndIndicatorsValuesMap.values().stream().max(Comparator.comparingInt(Map::size)).get().size();
         return allDatesAndIndicatorsValuesMap.entrySet().stream().filter(dateMapEntry -> dateMapEntry.getValue().size() == maxValuesSize)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1,

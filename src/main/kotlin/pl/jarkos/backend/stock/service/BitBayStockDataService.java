@@ -1,6 +1,7 @@
 package pl.jarkos.backend.stock.service;
 
 import com.google.gson.Gson;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.apache.log4j.Logger;
 import pl.jarkos.backend.file.FileUpdater;
@@ -94,7 +95,7 @@ public class BitBayStockDataService implements PlnStockDataService {
     @Override
     public BtcStockDataInterface getBtcStockData(String res) {
         BitBayStockData bitBayStockData = getMarketDataFromJson(res);
-        if (bitBayStockData != null) {
+        if (bitBayStockData != null && CollectionUtils.isNotEmpty(bitBayStockData.getTransactions())) {
             addNewBitBayTransactionsToCSV(bitBayStockData);
             return new BitBayBtcStockData(bitBayStockData);
         }
@@ -166,8 +167,8 @@ public class BitBayStockDataService implements PlnStockDataService {
     private void bigSpreadRecognizer(GeneralStockDataInterface bitBayStockData, String currency) {
         if (bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN).compareTo(bigSpreadMarginDisplayWarnForCompareRoi) > 0) {
             logger.warn(">>> BIG SPREAD na " + getStockCodeName() + " " + currency + ": " +
-                        bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN) + "  " + bitBayStockData.getAskPrice() + "/" +
-                        bitBayStockData.getBidPrice());
+                    bitBayStockData.getAskPrice().divide(bitBayStockData.getBidPrice(), 4, RoundingMode.HALF_DOWN) + "  " + bitBayStockData.getAskPrice() + "/" +
+                    bitBayStockData.getBidPrice());
         }
     }
 
