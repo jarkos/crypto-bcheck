@@ -14,13 +14,9 @@
 <div class="container">
     <!--Current time is <span th:text="${indicators}" />-->
     <script type="text/javascript" th:inline="javascript">
-
-        google.charts.load('current', {packages: ['corechart', 'line']});
-        google.charts.setOnLoadCallback(drawLineStyles);
-
         function drawLineStyles() {
             var data = new google.visualization.DataTable();
-            data.addColumn('number', 'X');
+            data.addColumn('datetime', 'X');
             var dataTable = /*[[${indicators}]]*/ [];
             var labels = /*[[${labels}]]*/ [];
 
@@ -38,6 +34,7 @@
                 var result = item.map(function (x) {
                     return parseFloat(x);
                 });
+                result[0] = new Date(result[0]);
              data.addRows([tempArr.concat(result)]);
             }
             dataTable.map(addRowsData);
@@ -50,7 +47,8 @@
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
-        drawLineStyles();
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawLineStyles);
     </script>
 </div>
 

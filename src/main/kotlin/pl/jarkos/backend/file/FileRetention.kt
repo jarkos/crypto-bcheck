@@ -9,10 +9,10 @@ import java.util.*
 class FileRetention : TimerTask() {
 
     override fun run() {
-        removeOldRows()
+        removeOldBitBayCsvRows()
     }
 
-    private fun removeOldRows() {
+    private fun removeOldBitBayCsvRows() {
         println("Removing old lines")
         val limitDateForClean = DateTime.now().minusDays(DAYS_BACK_CSV_FILE_RETENTION).millis / 1000
         //not efficient, but OK

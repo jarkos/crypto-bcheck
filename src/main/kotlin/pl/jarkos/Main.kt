@@ -9,14 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import pl.jarkos.backend.coinmarket.CoinmarketcapPriceCompare
 import pl.jarkos.backend.config.AppConfig.*
 import pl.jarkos.backend.file.CsvReader
-import pl.jarkos.backend.file.FileRetention
 import pl.jarkos.backend.file.FileUpdater
 import pl.jarkos.backend.mail.JavaMailSender
+import pl.jarkos.backend.scheduler.Scheduler
 import pl.jarkos.backend.stock.StockRoiPreparer
 import pl.jarkos.backend.stock.service.RoiIndicatorsService
 import java.math.BigDecimal
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -27,8 +25,6 @@ open class Main {
         private val LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: "
         var lastMACD: Double = 0.0
         private val appTimer = Timer("App timer", false)
-        private val retentionScheduler = Timer("Retention scheduler", true)
-
         var indicatorService = RoiIndicatorsService(CsvReader())
 
         @Throws(InterruptedException::class, IllegalAccessException::class)
@@ -48,7 +44,7 @@ open class Main {
 //            highRoiMailNotify(indicatorsMap)
                 logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
             }
-            retentionScheduler.schedule(FileRetention(), getNextMidnight(), TWENTY_FOUR_HOURS_IN_MILLIS)
+            Scheduler().scheduleRetention()
         }
 
         private fun saveIndicators(innitInternalIndicatorsList: Map<String, BigDecimal>) {
@@ -68,12 +64,6 @@ open class Main {
                 internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }
                 JavaMailSender.sendMail("ROI BB: " + lastMACD.toString() + " " + sb.toString())
             }
-        }
-
-        private fun getNextMidnight(): Date {
-            val now = LocalDateTime.now() // current date and time
-            val midnight = now.toLocalDate().atStartOfDay().plusDays(1L)
-            return Date.from(midnight.atZone(ZoneId.systemDefault()).toInstant())
         }
 
     }
