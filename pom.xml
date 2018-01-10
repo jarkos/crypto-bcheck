@@ -3,10 +3,11 @@
     <groupId>com.jarkos</groupId>
     <artifactId>bcheck</artifactId>
     <version>1</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Bcheck</name>
 
     <properties>
+        <project.name>Bcheck</project.name>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!--<kotlin.compiler.incremental>true</kotlin.compiler.incremental>-->
@@ -188,30 +189,30 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>pl.jarkos.Main</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-assembly-plugin</artifactId>-->
+            <!--<version>2.6</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>make-assembly</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+            <!--<goal>single</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<archive>-->
+            <!--<manifest>-->
+            <!--<mainClass>pl.jarkos.Main</mainClass>-->
+            <!--</manifest>-->
+            <!--</archive>-->
+            <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+            <!--</descriptorRefs>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -246,6 +247,44 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <appName>${project.name}</appName>
+                    <processTypes>
+                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+                    </processTypes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.jsimone</groupId>
+                                    <artifactId>webapp-runner</artifactId>
+                                    <version>8.5.23.0</version>
+                                    <destFileName>webapp-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

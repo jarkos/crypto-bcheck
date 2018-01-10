@@ -8,6 +8,7 @@ out
 *.txt
 *.csv
 /lib
+/target
 
 # User-specific stuff:
 log4j-application.log*
