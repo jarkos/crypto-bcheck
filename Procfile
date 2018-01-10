@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/bcheckFat.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/bcheckFat.war
