@@ -3,6 +3,7 @@ package pl.jarkos.frontend.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.jarkos.backend.stock.service.RoiIndicatorsService;
 
 import java.util.ArrayList;
@@ -19,10 +20,16 @@ public class StatsController {
         this.roiIndicatorsService = roiIndicatorsService;
     }
 
+
     @RequestMapping("/stats")
-    public String stats(Model model) {
+    public String stats(@RequestParam(value = "size", required = false, defaultValue = "100") int requestedSizeList,
+                        Model model) {
         List<ArrayList<String>> list = prepareGoogleDataTableForChart();
-        model.addAttribute("indicators", list.subList(list.size() - 2000, list.size()));
+        if (requestedSizeList > list.size()) {
+            model.addAttribute("message", "Given size is too big!");
+            return "error";
+        }
+        model.addAttribute("indicators", list.subList(list.size() - requestedSizeList, list.size()));
         model.addAttribute("labels", roiIndicatorsService.fetchRoiIndicatorsNames());
         return "stats";
     }
