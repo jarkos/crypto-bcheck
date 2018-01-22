@@ -16,9 +16,9 @@ import java.net.URISyntaxException;
 
 public class JsonFetcher {
 
-    public static final String UTF_8 = "UTF-8";
+    private static final String UTF_8 = "UTF-8";
 
-    public static String fetchJsonData(String url) throws URISyntaxException, IOException {
+    static String fetchJsonData(String url) throws URISyntaxException, IOException {
         HttpClient client = new DefaultHttpClient();
         HttpParams httpParameters = client.getParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);

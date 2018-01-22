@@ -7,10 +7,10 @@ import org.joda.time.DateTime
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import pl.jarkos.backend.coinmarket.CoinmarketcapPriceCompare
-import pl.jarkos.backend.config.AppConfig.*
+import pl.jarkos.backend.config.AppConfig.HALF_MINUTE_IN_MILLIS
+import pl.jarkos.backend.config.AppConfig.ROI_DATA_REPOSITORY_CSV
 import pl.jarkos.backend.file.CsvReader
 import pl.jarkos.backend.file.FileUpdater
-import pl.jarkos.backend.mail.JavaMailSender
 import pl.jarkos.backend.scheduler.Scheduler
 import pl.jarkos.backend.stock.StockRoiPreparer
 import pl.jarkos.backend.stock.service.RoiIndicatorsService
@@ -22,10 +22,8 @@ import kotlin.concurrent.schedule
 open class Main {
     companion object {
         private val logger = LogManager.getLogger("Main")
-        private val LAST_BB_BTC_MACD_INDICATOR = "Last BB BTC MACD indicator: "
-        var lastMACD: Double = 0.0
         private val appTimer = Timer("App timer", false)
-        var indicatorService = RoiIndicatorsService(CsvReader())
+        private var indicatorService = RoiIndicatorsService(CsvReader())
 
         @Throws(InterruptedException::class, IllegalAccessException::class)
         @JvmStatic
@@ -42,7 +40,6 @@ open class Main {
                     println("PREPARE DATA EXCEPTION! " + e.message)
                 }
 //            highRoiMailNotify(indicatorsMap)
-                logger.info(LAST_BB_BTC_MACD_INDICATOR + lastMACD)
             }
             Scheduler().scheduleRetention()
         }
@@ -58,13 +55,13 @@ open class Main {
             return date.toString() + "," + key + "," + value.toDouble()
         }
 
-        private fun highRoiMailNotify(internalIndicators: Map<String, BigDecimal>) {
-            if (lastMACD < -180.0 || internalIndicators.values.stream().anyMatch { i -> i > marginTransferRoiValueForMailNotification }) {
-                val sb = StringBuilder()
-                internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }
-                JavaMailSender.sendMail("ROI BB: " + lastMACD.toString() + " " + sb.toString())
-            }
-        }
+//        private fun highRoiMailNotify(internalIndicators: Map<String, BigDecimal>) {
+//            if (lastMACD < -180.0 || internalIndicators.values.stream().anyMatch { i -> i > marginTransferRoiValueForMailNotification }) {
+//                val sb = StringBuilder()
+//                internalIndicators.forEach { k, v -> sb.append(k).append(" ").append(v).append(System.getProperty("line.separator")) }
+//                JavaMailSender.sendMail("ROI BB: " + lastMACD.toString() + " " + sb.toString())
+//            }
+//        }
 
     }
 
